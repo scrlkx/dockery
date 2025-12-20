@@ -1,5 +1,4 @@
-from gi.repository import Adw
-from gi.repository import Gtk
+from gi.repository import Adw, Gtk
 
 from .container_page import ContainerPage
 from .containers_page import ContainersPage

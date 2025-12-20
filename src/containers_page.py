@@ -1,5 +1,7 @@
-from gi.repository import Adw, Gtk, GObject
+from typing import List
+
 import docker
+from gi.repository import Adw, GObject, Gtk
 
 
 class ContainerItem(GObject.Object):
@@ -15,7 +17,7 @@ class ContainersPage(Adw.NavigationPage):
         "container-activated": (GObject.SignalFlags.RUN_FIRST, None, (object,))
     }
 
-    _rows = []
+    _rows: List[Adw.ActionRow] = []
 
     search_entry = Gtk.Template.Child()
     containers_group = Gtk.Template.Child()
@@ -176,10 +178,10 @@ class ContainersPage(Adw.NavigationPage):
 
                 row.add_suffix(button)
 
-            next = Gtk.Image.new_from_icon_name("go-next-symbolic")
-            next.add_css_class("flat")
+            info = Gtk.Image.new_from_icon_name("go-next-symbolic")
+            info.add_css_class("flat")
 
-            row.add_suffix(next)
+            row.add_suffix(info)
 
             self.containers_group.add(row)
 

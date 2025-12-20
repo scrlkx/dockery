@@ -1,5 +1,5 @@
-from gi.repository import Adw, Gtk
 import docker
+from gi.repository import Adw, Gtk
 
 
 @Gtk.Template(resource_path="/com/scrlkx/dockery/container_page.ui")

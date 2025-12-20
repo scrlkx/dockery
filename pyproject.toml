@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "dockery"
+version = "0.1.0"
+description = "Docker management UI"
+authors = ["Daniel Freitas <me@scrlkx.com>"]
+
+[tool.black]
+line-length = 88
+target-version = ['py313']
+skip-string-normalization = false
+
+[tool.isort]
+profile = "black"
+line_length = 88
+multi_line_output = 3
+include_trailing_comma = true

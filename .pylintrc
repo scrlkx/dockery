@@ -1,1 +1,13 @@
-disable=C0114
+[MASTER]
+ignore=.venv
+jobs=1
+
+[MESSAGES CONTROL]
+disable=missing-module-docstring,
+    missing-class-docstring,
+    missing-function-docstring,
+    too-few-public-methods,
+    duplicate-code
+
+[TYPECHECK]
+ignored-modules=gi,gi.repository
