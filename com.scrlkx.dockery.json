@@ -27,13 +27,19 @@
     ],
     "modules" : [
         {
-            "name": "python3-docker",
+            "name": "python3",
             "buildsystem": "simple",
             "build-options": {
                 "build-args": ["--share=network"]
             },
             "build-commands": [
-                "pip3 install --prefix=/app docker"
+                "pip3 install --prefix=/app -r requirements.txt"
+            ],
+            "sources": [
+                {
+                    "type": "file",
+                    "path": "requirements.txt"
+                }
             ]
         },
         {
