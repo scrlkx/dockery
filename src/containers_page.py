@@ -171,7 +171,7 @@ class ContainersPage(Adw.NavigationPage):
                 row.add_suffix(button)
             elif action == "stop":
                 button = self._action_button(
-                    "stop.svg",
+                    "circle-crossed.svg",
                     self._stop_container,
                     container,
                 )

@@ -29,17 +29,17 @@ class ContainerPage(Adw.NavigationPage):
         actions_map = {
             "running": [
                 ("Pause", "pause.svg", self.on_pause_clicked),
-                ("Stop", "stop.svg", self.on_stop_clicked),
+                ("Stop", "circle-crossed.svg", self.on_stop_clicked),
                 ("Restart", "reload.svg", self.on_restart_clicked),
-                ("Kill", "shutdown.svg", self.on_kill_clicked),
+                ("Kill", "cross.svg", self.on_kill_clicked),
             ],
             "restarting": [
-                ("Stop", "stop.svg", self.on_stop_clicked),
-                ("Kill", "shutdown.svg", self.on_kill_clicked),
+                ("Stop", "circle-crossed.svg", self.on_stop_clicked),
+                ("Kill", "cross.svg", self.on_kill_clicked),
             ],
             "paused": [
                 ("Resume", "play.svg", self.on_resume_clicked),
-                ("Stop", "stop.svg", self.on_stop_clicked),
+                ("Stop", "circle-crossed.svg", self.on_stop_clicked),
             ],
             "stopped": [
                 ("Start", "play.svg", self.on_start_clicked),
