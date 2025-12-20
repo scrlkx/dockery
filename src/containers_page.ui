@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+    <requires lib="gtk" version="4.0"/>
+    <requires lib="Adw" version="1.0"/>
+    <template class="ContainersPage" parent="AdwNavigationPage">
+        <property name="title">Containers</property>
+        <property name="child">
+            <object class="GtkScrolledWindow">
+                <property name="vexpand">true</property>
+                <property name="has-frame">false</property>
+                <child>
+                    <object class="AdwClamp">
+                        <property name="maximum-size">700</property>
+                        <child>
+                            <object class="GtkBox">
+                                <property name="orientation">vertical</property>
+                                <property name="spacing">12</property>
+                                <property name="margin-top">24</property>
+                                <property name="margin-bottom">24</property>
+                                <property name="margin-start">12</property>
+                                <property name="margin-end">12</property>
+                                <child>
+                                    <object class="GtkSearchEntry" id="search_entry">
+                                        <property name="placeholder-text">Search by name</property>
+                                    </object>
+                                </child>
+                                <child>
+                                    <object class="AdwPreferencesGroup" id="containers_group">
+                                        <property name="title">Containers</property>
+                                    </object>
+                                </child>
+                            </object>
+                        </child>
+                    </object>
+                </child>
+            </object>
+        </property>
+    </template>
+</interface>
+

@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=dockery
+Exec=dockery
+Icon=com.scrlkx.dockery
+Terminal=false
+Type=Application
+Categories=Utility;
+Keywords=GTK;
+StartupNotify=true
+DBusActivatable=true

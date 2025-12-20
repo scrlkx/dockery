@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist gettext-domain="dockery">
+	<schema id="com.scrlkx.dockery" path="/com/scrlkx/dockery/">
+	</schema>
+</schemalist>
