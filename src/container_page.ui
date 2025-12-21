@@ -42,6 +42,11 @@
                                         <property name="title">Details</property>
                                     </object>
                                 </child>
+                                <child>
+                                    <object class="AdwPreferencesGroup" id="environment_group">
+                                        <property name="title">Environment Variables</property>
+                                    </object>
+                                </child>
                             </object>
                         </child>
                     </object>

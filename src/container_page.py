@@ -6,6 +6,7 @@ from .utils import (
     get_container_action_label,
     get_container_actions,
     get_container_attribute,
+    get_container_environment_variables,
     get_container_image,
     get_container_started_at,
     get_container_status_label,
@@ -27,9 +28,11 @@ class ContainerPage(Adw.NavigationPage):
     name_label = Gtk.Template.Child()
     details_group = Gtk.Template.Child()
     quick_actions_group = Gtk.Template.Child()
+    environment_group = Gtk.Template.Child()
 
     detail_rows: list[Adw.ActionRow] = []
     quick_action_rows: list[Adw.ActionRow] = []
+    environment_rows: list[Adw.ActionRow] = []
 
     def __init__(self, container):
         super().__init__()
@@ -38,6 +41,7 @@ class ContainerPage(Adw.NavigationPage):
 
         self._load_details()
         self._load_quick_actions()
+        self._load_environment_variables()
 
     def _load_details(self):
         if self.container:
@@ -100,6 +104,25 @@ class ContainerPage(Adw.NavigationPage):
 
             self.quick_actions_group.append(button)
             self.quick_action_rows.append(button)
+
+    def _load_environment_variables(self):
+        variables = get_container_environment_variables(self.container)
+
+        for row in self.environment_rows:
+            self.environment_group.remove(row)
+
+        self.environment_rows.clear()
+
+        for key, value in variables.items():
+            label = Gtk.Label(label=value)
+            label.set_valign(Gtk.Align.CENTER)
+
+            row = Adw.ActionRow()
+            row.set_title(key)
+            row.add_suffix(label)
+
+            self.environment_group.add(row)
+            self.environment_rows.append(row)
 
     def _create_quick_action_button(self, label_text, icon_name, callback):
         box = Gtk.Box(
