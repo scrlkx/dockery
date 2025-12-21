@@ -38,6 +38,11 @@
                                         </child>
                                     </object>
                                 </child>
+                                <child>
+                                    <object class="AdwPreferencesGroup" id="details_group">
+                                        <property name="title">Details</property>
+                                    </object>
+                                </child>
                             </object>
                         </child>
                     </object>

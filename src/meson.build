@@ -32,6 +32,7 @@ dockery_sources = [
   'window.py',
   'container_page.py',
   'containers_page.py',
+  'utils.py',
 ]
 
 install_data(dockery_sources, install_dir: moduledir)

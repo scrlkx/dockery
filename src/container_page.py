@@ -1,12 +1,21 @@
 import docker
 from gi.repository import Adw, Gtk
 
+from .utils import (
+    get_container_attribute,
+    get_container_image,
+    get_container_started_at,
+    get_container_status_label,
+    iso_to_local,
+)
+
 
 @Gtk.Template(resource_path="/com/scrlkx/dockery/container_page.ui")
 class ContainerPage(Adw.NavigationPage):
     __gtype_name__ = "ContainerPage"
 
     name_label = Gtk.Template.Child()
+    details_group = Gtk.Template.Child()
     quick_actions_box = Gtk.Template.Child()
 
     def __init__(self, container):
@@ -24,6 +33,27 @@ class ContainerPage(Adw.NavigationPage):
 
         self.set_title(self.container.name)
         self.name_label.set_text(self.container.name)
+
+        values = {
+            "ID": self.container.id,
+            "Name": self.container.name,
+            "Image": get_container_image(self.container),
+            "Status": get_container_status_label(self.container),
+            "Created": iso_to_local(
+                get_container_attribute(self.container, "Created", "-")
+            ),
+            "Start time": get_container_started_at(self.container),
+        }
+
+        for key, value in values.items():
+            label = Gtk.Label(label=value)
+            label.set_valign(Gtk.Align.CENTER)
+
+            row = Adw.ActionRow()
+            row.set_title(key)
+            row.add_suffix(label)
+
+            self.details_group.add(row)
 
     def _load_quick_actions(self):
         actions_map = {
