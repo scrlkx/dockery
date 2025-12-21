@@ -144,7 +144,7 @@ def get_container_volumes(
     volumes: dict[str, str] = {}
 
     for item in mounts:
-        name = item.get("Name")
+        name = item.get("Name") or item.get("Source")
         mode = item.get("Mode")
 
         volumes[name] = humanize_mount_mode(mode)
