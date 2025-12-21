@@ -133,6 +133,25 @@ def get_container_environment_variables(
     return variables
 
 
+def get_container_volumes(
+    container: Container,
+) -> dict[str, str]:
+    mounts = get_container_attribute(container, "Mounts", [])
+
+    if not isinstance(mounts, Iterable):
+        return {}
+
+    volumes: dict[str, str] = {}
+
+    for item in mounts:
+        name = item.get("Name")
+        mode = item.get("Mode")
+
+        volumes[name] = humanize_mount_mode(mode)
+
+    return volumes
+
+
 def get_container(name: str) -> Container:
     client = docker.from_env()
 
@@ -211,3 +230,34 @@ def iso_to_local(original: str) -> str:
     local_date_time = date_time.astimezone()
 
     return local_date_time.strftime("%c")
+
+
+def humanize_mount_mode(mode: str | None) -> str:
+    if not mode:
+        return "Read-write"
+
+    flags = set(mode.split(","))
+
+    if "ro" in flags:
+        access = "Read-only"
+    else:
+        access = "Read-write"
+
+    extras: list[str] = []
+
+    if "z" in flags:
+        extras.append("shared (SELinux)")
+    elif "Z" in flags:
+        extras.append("private (SELinux)")
+
+    if "rshared" in flags:
+        extras.append("shared")
+    elif "rslave" in flags:
+        extras.append("slave")
+    elif "rprivate" in flags:
+        extras.append("private")
+
+    if extras:
+        return f"{access} ({', '.join(extras)})"
+
+    return access
