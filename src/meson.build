@@ -33,6 +33,7 @@ dockery_sources = [
   'container_page.py',
   'containers_page.py',
   'utils.py',
+  'ui.py',
 ]
 
 install_data(dockery_sources, install_dir: moduledir)

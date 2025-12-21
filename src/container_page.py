@@ -1,12 +1,22 @@
-import docker
 from gi.repository import Adw, Gtk
 
 from .utils import (
+    get_container,
+    get_container_action_icon,
+    get_container_action_label,
+    get_container_actions,
     get_container_attribute,
     get_container_image,
     get_container_started_at,
     get_container_status_label,
     iso_to_local,
+    kill_container,
+    pause_container,
+    remove_container,
+    restart_container,
+    start_container,
+    stop_container,
+    unpause_container,
 )
 
 
@@ -18,23 +28,24 @@ class ContainerPage(Adw.NavigationPage):
     details_group = Gtk.Template.Child()
     quick_actions_box = Gtk.Template.Child()
 
+    detail_rows: list[Adw.ActionRow] = []
+
     def __init__(self, container):
         super().__init__()
 
-        self.container_name = container.name
+        self.container = get_container(container.name)
 
-        self._load_container()
+        self._load_details()
         self._load_quick_actions()
 
-    def _load_container(self):
-        client = docker.from_env()
-
-        self.container = client.containers.get(self.container_name)
+    def _load_details(self):
+        if self.container:
+            self.container = get_container(self.container.name)
 
         self.set_title(self.container.name)
         self.name_label.set_text(self.container.name)
 
-        values = {
+        details = {
             "ID": self.container.id,
             "Name": self.container.name,
             "Image": get_container_image(self.container),
@@ -45,7 +56,12 @@ class ContainerPage(Adw.NavigationPage):
             "Start time": get_container_started_at(self.container),
         }
 
-        for key, value in values.items():
+        for row in self.detail_rows:
+            self.details_group.remove(row)
+
+        self.detail_rows.clear()
+
+        for key, value in details.items():
             label = Gtk.Label(label=value)
             label.set_valign(Gtk.Align.CENTER)
 
@@ -54,41 +70,28 @@ class ContainerPage(Adw.NavigationPage):
             row.add_suffix(label)
 
             self.details_group.add(row)
+            self.detail_rows.append(row)
 
     def _load_quick_actions(self):
-        actions_map = {
-            "running": [
-                ("Pause", "pause.svg", self.on_pause_clicked),
-                ("Stop", "circle-crossed.svg", self.on_stop_clicked),
-                ("Restart", "reload.svg", self.on_restart_clicked),
-                ("Kill", "cross.svg", self.on_kill_clicked),
-            ],
-            "restarting": [
-                ("Stop", "circle-crossed.svg", self.on_stop_clicked),
-                ("Kill", "cross.svg", self.on_kill_clicked),
-            ],
-            "paused": [
-                ("Resume", "play.svg", self.on_resume_clicked),
-                ("Stop", "circle-crossed.svg", self.on_stop_clicked),
-            ],
-            "stopped": [
-                ("Start", "play.svg", self.on_start_clicked),
-                ("Remove", "trash.svg", self.on_remove_clicked),
-            ],
-            "exited": [
-                ("Start", "play.svg", self.on_start_clicked),
-                ("Remove", "trash.svg", self.on_remove_clicked),
-            ],
-            "created": [
-                ("Start", "start.svg", self.on_start_clicked),
-                ("Remove", "trash.svg", self.on_remove_clicked),
-            ],
+        callbacks = {
+            "start": self.on_start_clicked,
+            "stop": self.on_stop_clicked,
+            "pause": self.on_pause_clicked,
+            "resume": self.on_resume_clicked,
+            "restart": self.on_restart_clicked,
+            "kill": self.on_kill_clicked,
+            "remove": self.on_remove_clicked,
         }
 
-        actions = actions_map.get(self.container.status, [])
+        actions = get_container_actions(self.container)
 
-        for label, icon, callback in actions:
-            button = self._create_quick_action_button(label, icon, callback)
+        for action in actions:
+            button = self._create_quick_action_button(
+                get_container_action_label(action),
+                get_container_action_icon(action),
+                callbacks.get(action),
+            )
+
             self.quick_actions_box.append(button)
 
     def _create_quick_action_button(self, label_text, icon_name, callback):
@@ -112,43 +115,43 @@ class ContainerPage(Adw.NavigationPage):
         return button
 
     def on_start_clicked(self, _):
-        self.container.start()
+        start_container(self.container.name)
 
-        self._load_container()
+        self._load_details()
         self._load_quick_actions()
 
     def on_pause_clicked(self, _):
-        self.container.pause()
+        pause_container(self.container.name)
 
-        self._load_container()
+        self._load_details()
         self._load_quick_actions()
 
     def on_resume_clicked(self, _):
-        self.container.resume()
+        unpause_container(self.container.name)
 
-        self._load_container()
+        self._load_details()
         self._load_quick_actions()
 
     def on_stop_clicked(self, _):
-        self.container.stop()
+        stop_container(self.container.name)
 
-        self._load_container()
+        self._load_details()
         self._load_quick_actions()
 
     def on_restart_clicked(self, _):
-        self.container.restart()
+        restart_container(self.container.name)
 
-        self._load_container()
+        self._load_details()
         self._load_quick_actions()
 
     def on_kill_clicked(self, _):
-        self.container.kill()
+        kill_container(self.container.name)
 
-        self._load_container()
+        self._load_details()
         self._load_quick_actions()
 
     def on_remove_clicked(self, _):
-        self.container.remove()
+        remove_container(self.container.name)
 
-        self._load_container()
+        self._load_details()
         self._load_quick_actions()

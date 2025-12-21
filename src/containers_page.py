@@ -1,7 +1,17 @@
 from typing import List
 
-import docker
 from gi.repository import Adw, GObject, Gtk
+
+from .ui import Badge
+from .utils import (
+    get_container_actions,
+    get_container_image,
+    get_container_status_class,
+    get_container_status_label,
+    get_containers,
+    start_container,
+    stop_container,
+)
 
 
 class ContainerItem(GObject.Object):
@@ -22,42 +32,6 @@ class ContainersPage(Adw.NavigationPage):
     search_entry = Gtk.Template.Child()
     containers_group = Gtk.Template.Child()
 
-    CONTAINER_STATUS_ORDER = {
-        "running": 0,
-        "paused": 1,
-        "restarting": 2,
-        "created": 3,
-        "exited": 4,
-        "dead": 5,
-    }
-
-    CONTAINER_STATUS_LABEL = {
-        "running": "Running",
-        "paused": "Paused",
-        "restarting": "Restarting",
-        "created": "Created",
-        "exited": "Exited",
-        "dead": "Dead",
-    }
-
-    CONTAINER_STATUS_STYLE = {
-        "running": "tag-green",
-        "paused": "tag-blue",
-        "restarting": "tag-red",
-        "created": "tag-gray",
-        "exited": "tag-orange",
-        "dead": "tag-black",
-    }
-
-    CONTAINER_STATUS_ACTIONS = {
-        "running": "stop",
-        "paused": "start",
-        "restarting": "stop",
-        "created": "start",
-        "exited": "start",
-        "dead": None,
-    }
-
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
@@ -74,30 +48,12 @@ class ContainersPage(Adw.NavigationPage):
             visible = text in row.container_name
             row.set_visible(visible)
 
-    def _get_container_list(self):
-        client = docker.from_env()
-
-        containers = client.containers.list(all=True)
-        containers.sort(
-            key=lambda item: self.CONTAINER_STATUS_ORDER.get(item.status, 99)
-        )
-
-        return containers
-
     def _start_container(self, _, container):
-        client = docker.from_env()
-
-        container = client.containers.get(container.name)
-        container.start()
-
+        start_container(container.name)
         self._reload_list()
 
     def _stop_container(self, _, container):
-        client = docker.from_env()
-
-        container = client.containers.get(container.name)
-        container.stop()
-
+        stop_container(container.name)
         self._reload_list()
 
     def _on_row_activated(self, _, container):
@@ -127,14 +83,12 @@ class ContainersPage(Adw.NavigationPage):
         return button
 
     def _load_containers(self):
-        containers = self._get_container_list()
+        containers = get_containers()
 
         for container in containers:
             row = Adw.ActionRow(title=container.name)
             row.container_name = container.name.lower()
-            row.container_image = (
-                container.image.tags[0] if len(container.image.tags) > 0 else ""
-            )
+            row.container_image = get_container_image(container)
 
             row.set_activatable(True)
             row.connect("activated", self._on_row_activated, container)
@@ -142,24 +96,22 @@ class ContainersPage(Adw.NavigationPage):
             self._rows.append(row)
 
             if row.container_image:
-                image = Gtk.Label(label=row.container_image)
-                image.set_valign(Gtk.Align.CENTER)
-                image.add_css_class("tag")
-                image.add_css_class("caption")
-                image.set_margin_end(12)
+                image = Badge(
+                    text=get_container_image(container),
+                    margin_end=12,
+                )
 
                 row.add_suffix(image)
 
-            status = Gtk.Label(label=self.CONTAINER_STATUS_LABEL[container.status])
-            status.set_valign(Gtk.Align.CENTER)
-            status.add_css_class("tag")
-            status.add_css_class("caption")
-            status.add_css_class(self.CONTAINER_STATUS_STYLE[container.status])
-            status.set_margin_end(12)
+            status = Badge(
+                text=get_container_status_label(container),
+                style_class=get_container_status_class(container),
+                margin_end=12,
+            )
 
             row.add_suffix(status)
 
-            action = self.CONTAINER_STATUS_ACTIONS[container.status]
+            action = get_container_actions(container)[0]
 
             if action == "start":
                 button = self._action_button(
@@ -178,7 +130,10 @@ class ContainersPage(Adw.NavigationPage):
 
                 row.add_suffix(button)
 
-            info = Gtk.Image.new_from_icon_name("go-next-symbolic")
+            info = Gtk.Image.new_from_resource(
+                "/com/scrlkx/dockery/icons/chevron-right.svg"
+            )
+
             info.add_css_class("flat")
 
             row.add_suffix(info)

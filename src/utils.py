@@ -1,6 +1,7 @@
 from datetime import datetime
 from typing import Any, Optional
 
+import docker
 from docker.models.containers import Container
 
 
@@ -49,7 +50,136 @@ def get_container_status_label(
         "dead": "Dead",
     }
 
-    return labels[container.status] or default
+    return labels.get(container.status, default)
+
+
+def get_container_status_class(
+    container: Container, default: Optional[str] = None
+) -> Optional[str]:
+    classes = {
+        "running": "tag-green",
+        "paused": "tag-blue",
+        "restarting": "tag-red",
+        "created": "tag-gray",
+        "exited": "tag-orange",
+        "dead": "tag-black",
+    }
+
+    return classes.get(container.status, default)
+
+
+def get_container_actions(container: Container) -> list[str]:
+    actions = {
+        "running": ["stop", "pause", "restart", "kill"],
+        "restarting": ["stop", "kill"],
+        "paused": ["resume", "stop", "kill"],
+        "stopped": ["start", "remove"],
+        "exited": ["start", "remove"],
+        "created": ["start", "remove"],
+    }
+
+    return actions.get(container.status, [])
+
+
+def get_container_action_label(action: str) -> Optional[str]:
+    actions = {
+        "start": "Start",
+        "stop": "Stop",
+        "pause": "Pause",
+        "resume": "Resume",
+        "restart": "Restart",
+        "kill": "Kill",
+        "remove": "Remove",
+    }
+
+    return actions.get(action)
+
+
+def get_container_action_icon(action: str) -> Optional[str]:
+    actions = {
+        "start": "play.svg",
+        "stop": "circle-crossed.svg",
+        "pause": "pause.svg",
+        "resume": "arrow-pointing-away.svg",
+        "restart": "reload.svg",
+        "kill": "cross.svg",
+        "remove": "trash.svg",
+    }
+
+    return actions.get(action)
+
+
+def get_container(name: str) -> Container:
+    client = docker.from_env()
+
+    return client.containers.get(name)
+
+
+def get_containers() -> list[Container]:
+    status_order = {
+        "running": 0,
+        "paused": 1,
+        "restarting": 2,
+        "created": 3,
+        "exited": 4,
+        "dead": 5,
+    }
+
+    client = docker.from_env()
+
+    containers = client.containers.list(all=True)
+    containers.sort(key=lambda item: status_order.get(item.status, 99))
+
+    return containers
+
+
+def start_container(name: str) -> None:
+    client = docker.from_env()
+
+    container = client.containers.get(name)
+    container.start()
+
+
+def stop_container(name: str) -> None:
+    client = docker.from_env()
+
+    container = client.containers.get(name)
+    container.stop()
+
+
+def pause_container(name: str) -> None:
+    client = docker.from_env()
+
+    container = client.containers.get(name)
+    container.pause()
+
+
+def unpause_container(name: str) -> None:
+    client = docker.from_env()
+
+    container = client.containers.get(name)
+    container.unpause()
+
+
+def restart_container(name: str) -> None:
+    client = docker.from_env()
+
+    container = client.containers.get(name)
+    container.restart()
+
+
+def kill_container(name: str) -> None:
+    client = docker.from_env()
+
+    container = client.containers.get(name)
+    container.kill()
+
+
+def remove_container(name: str) -> None:
+    client = docker.from_env()
+
+    container = client.containers.get(name)
+    container.kill()
 
 
 def iso_to_local(original: str) -> str:
