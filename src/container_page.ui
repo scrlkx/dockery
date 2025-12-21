@@ -30,7 +30,7 @@
                                     <object class="AdwPreferencesGroup">
                                         <property name="title">Quick Actions</property>
                                         <child>
-                                            <object class="GtkBox" id="quick_actions_box">
+                                            <object class="GtkBox" id="quick_actions_group">
                                                 <property name="orientation">horizontal</property>
                                                 <property name="spacing">6</property>
                                             </object>

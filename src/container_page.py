@@ -26,9 +26,10 @@ class ContainerPage(Adw.NavigationPage):
 
     name_label = Gtk.Template.Child()
     details_group = Gtk.Template.Child()
-    quick_actions_box = Gtk.Template.Child()
+    quick_actions_group = Gtk.Template.Child()
 
     detail_rows: list[Adw.ActionRow] = []
+    quick_action_rows: list[Adw.ActionRow] = []
 
     def __init__(self, container):
         super().__init__()
@@ -83,6 +84,11 @@ class ContainerPage(Adw.NavigationPage):
             "remove": self.on_remove_clicked,
         }
 
+        for row in self.quick_action_rows:
+            self.quick_actions_group.remove(row)
+
+        self.quick_action_rows.clear()
+
         actions = get_container_actions(self.container)
 
         for action in actions:
@@ -92,7 +98,8 @@ class ContainerPage(Adw.NavigationPage):
                 callbacks.get(action),
             )
 
-            self.quick_actions_box.append(button)
+            self.quick_actions_group.append(button)
+            self.quick_action_rows.append(button)
 
     def _create_quick_action_button(self, label_text, icon_name, callback):
         box = Gtk.Box(
