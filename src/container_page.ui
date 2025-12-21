@@ -47,6 +47,11 @@
                                         <property name="title">Environment Variables</property>
                                     </object>
                                 </child>
+                                <child>
+                                    <object class="AdwPreferencesGroup" id="volumes_group">
+                                        <property name="title">Volumes</property>
+                                    </object>
+                                </child>
                             </object>
                         </child>
                     </object>

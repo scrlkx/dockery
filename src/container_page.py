@@ -10,6 +10,7 @@ from .utils import (
     get_container_image,
     get_container_started_at,
     get_container_status_label,
+    get_container_volumes,
     iso_to_local,
     kill_container,
     pause_container,
@@ -29,10 +30,12 @@ class ContainerPage(Adw.NavigationPage):
     details_group = Gtk.Template.Child()
     quick_actions_group = Gtk.Template.Child()
     environment_group = Gtk.Template.Child()
+    volumes_group = Gtk.Template.Child()
 
     detail_rows: list[Adw.ActionRow] = []
     quick_action_rows: list[Adw.ActionRow] = []
     environment_rows: list[Adw.ActionRow] = []
+    volumes_rows: list[Adw.ActionRow] = []
 
     def __init__(self, container):
         super().__init__()
@@ -42,6 +45,7 @@ class ContainerPage(Adw.NavigationPage):
         self._load_details()
         self._load_quick_actions()
         self._load_environment_variables()
+        self._load_volumes()
 
     def _load_details(self):
         if self.container:
@@ -123,6 +127,25 @@ class ContainerPage(Adw.NavigationPage):
 
             self.environment_group.add(row)
             self.environment_rows.append(row)
+
+    def _load_volumes(self):
+        volumes = get_container_volumes(self.container)
+
+        for row in self.volumes_rows:
+            self.volumes_group.remove(row)
+
+        self.volumes_rows.clear()
+
+        for key, value in volumes.items():
+            label = Gtk.Label(label=value)
+            label.set_valign(Gtk.Align.CENTER)
+
+            row = Adw.ActionRow()
+            row.set_title(key)
+            row.add_suffix(label)
+
+            self.volumes_group.add(row)
+            self.volumes_rows.append(row)
 
     def _create_quick_action_button(self, label_text, icon_name, callback):
         box = Gtk.Box(
