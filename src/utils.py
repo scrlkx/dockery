@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Any, Optional
+from typing import Any, Iterable, Optional
 
 import docker
 from docker.models.containers import Container
@@ -107,6 +107,30 @@ def get_container_action_icon(action: str) -> Optional[str]:
     }
 
     return actions.get(action)
+
+
+def get_container_environment_variables(
+    container: Container,
+) -> dict[str, str]:
+    env = get_container_attribute(container, "Config.Env", [])
+
+    if not isinstance(env, Iterable):
+        return {}
+
+    variables: dict[str, str] = {}
+
+    for item in env:
+        if not isinstance(item, str):
+            continue
+
+        # split only on first "="
+        key, sep, value = item.partition("=")
+        if not sep:
+            continue
+
+        variables[key] = value
+
+    return variables
 
 
 def get_container(name: str) -> Container:
