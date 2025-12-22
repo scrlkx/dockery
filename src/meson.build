@@ -32,6 +32,8 @@ dockery_sources = [
   'window.py',
   'container_page.py',
   'containers_page.py',
+  'client.py',
+  'events.py',
   'utils.py',
   'ui.py',
 ]
