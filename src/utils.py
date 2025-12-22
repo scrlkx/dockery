@@ -152,6 +152,22 @@ def get_container_volumes(
     return volumes
 
 
+def get_container_networks(
+    container: Container,
+) -> dict[str, str]:
+    net = get_container_attribute(container, "NetworkSettings.Networks", [])
+
+    if not isinstance(net, Iterable):
+        return {}
+
+    networks: dict[str, str] = {}
+
+    for key, item in net.items():  # type: ignore[attr-defined]
+        networks[key] = item.get("IPAddress", "-")
+
+    return networks
+
+
 def get_container(name: str) -> Container:
     client = docker.from_env()
 

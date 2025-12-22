@@ -52,6 +52,11 @@
                                         <property name="title">Volumes</property>
                                     </object>
                                 </child>
+                                <child>
+                                    <object class="AdwPreferencesGroup" id="networks_group">
+                                        <property name="title">Networks</property>
+                                    </object>
+                                </child>
                             </object>
                         </child>
                     </object>
