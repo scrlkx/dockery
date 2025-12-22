@@ -8,6 +8,7 @@ from .utils import (
     get_container_attribute,
     get_container_environment_variables,
     get_container_image,
+    get_container_networks,
     get_container_started_at,
     get_container_status_label,
     get_container_volumes,
@@ -31,11 +32,13 @@ class ContainerPage(Adw.NavigationPage):
     quick_actions_group = Gtk.Template.Child()
     environment_group = Gtk.Template.Child()
     volumes_group = Gtk.Template.Child()
+    networks_group = Gtk.Template.Child()
 
     detail_rows: list[Adw.ActionRow] = []
     quick_action_rows: list[Adw.ActionRow] = []
     environment_rows: list[Adw.ActionRow] = []
     volumes_rows: list[Adw.ActionRow] = []
+    networks_rows: list[Adw.ActionRow] = []
 
     def __init__(self, container):
         super().__init__()
@@ -46,6 +49,7 @@ class ContainerPage(Adw.NavigationPage):
         self._load_quick_actions()
         self._load_environment_variables()
         self._load_volumes()
+        self._load_networks()
 
     def _load_details(self):
         if self.container:
@@ -146,6 +150,25 @@ class ContainerPage(Adw.NavigationPage):
 
             self.volumes_group.add(row)
             self.volumes_rows.append(row)
+
+    def _load_networks(self):
+        networks = get_container_networks(self.container)
+
+        for row in self.networks_rows:
+            self.networks_group.remove(row)
+
+        self.networks_rows.clear()
+
+        for key, value in networks.items():
+            label = Gtk.Label(label=value)
+            label.set_valign(Gtk.Align.CENTER)
+
+            row = Adw.ActionRow()
+            row.set_title(key)
+            row.add_suffix(label)
+
+            self.networks_group.add(row)
+            self.networks_rows.append(row)
 
     def _create_quick_action_button(self, label_text, icon_name, callback):
         box = Gtk.Box(
