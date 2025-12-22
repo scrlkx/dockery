@@ -1,8 +1,9 @@
 from datetime import datetime
 from typing import Any, Iterable, Optional
 
-import docker
 from docker.models.containers import Container
+
+from .client import get_docker_client
 
 
 def get_container_attribute(
@@ -169,9 +170,7 @@ def get_container_networks(
 
 
 def get_container(name: str) -> Container:
-    client = docker.from_env()
-
-    return client.containers.get(name)
+    return get_docker_client().containers.get(name)
 
 
 def get_containers() -> list[Container]:
@@ -184,60 +183,44 @@ def get_containers() -> list[Container]:
         "dead": 5,
     }
 
-    client = docker.from_env()
-
-    containers = client.containers.list(all=True)
+    containers = get_docker_client().containers.list(all=True)
     containers.sort(key=lambda item: status_order.get(item.status, 99))
 
     return containers
 
 
 def start_container(name: str) -> None:
-    client = docker.from_env()
-
-    container = client.containers.get(name)
+    container = get_docker_client().containers.get(name)
     container.start()
 
 
 def stop_container(name: str) -> None:
-    client = docker.from_env()
-
-    container = client.containers.get(name)
+    container = get_docker_client().containers.get(name)
     container.stop()
 
 
 def pause_container(name: str) -> None:
-    client = docker.from_env()
-
-    container = client.containers.get(name)
+    container = get_docker_client().containers.get(name)
     container.pause()
 
 
 def unpause_container(name: str) -> None:
-    client = docker.from_env()
-
-    container = client.containers.get(name)
+    container = get_docker_client().containers.get(name)
     container.unpause()
 
 
 def restart_container(name: str) -> None:
-    client = docker.from_env()
-
-    container = client.containers.get(name)
+    container = get_docker_client().containers.get(name)
     container.restart()
 
 
 def kill_container(name: str) -> None:
-    client = docker.from_env()
-
-    container = client.containers.get(name)
+    container = get_docker_client().containers.get(name)
     container.kill()
 
 
 def remove_container(name: str) -> None:
-    client = docker.from_env()
-
-    container = client.containers.get(name)
+    container = get_docker_client().containers.get(name)
     container.kill()
 
 

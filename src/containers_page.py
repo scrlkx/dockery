@@ -2,6 +2,7 @@ from typing import List
 
 from gi.repository import Adw, GObject, Gtk
 
+from .events import on_containers_chage
 from .ui import Badge
 from .utils import (
     get_container_actions,
@@ -40,6 +41,8 @@ class ContainersPage(Adw.NavigationPage):
         self.search_entry.connect("search-changed", self._on_search_changed)
 
         self._load_containers()
+
+        on_containers_chage(self._reload_list)
 
     def _on_search_changed(self, entry):
         text = entry.get_text().lower()

@@ -1,5 +1,6 @@
 from gi.repository import Adw, Gtk
 
+from .events import on_container_chage
 from .utils import (
     get_container,
     get_container_action_icon,
@@ -45,6 +46,15 @@ class ContainerPage(Adw.NavigationPage):
 
         self.container = get_container(container.name)
 
+        self._load_details()
+        self._load_quick_actions()
+        self._load_environment_variables()
+        self._load_volumes()
+        self._load_networks()
+
+        on_container_chage(self._reload, self.container.id)
+
+    def _reload(self):
         self._load_details()
         self._load_quick_actions()
         self._load_environment_variables()
