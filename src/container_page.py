@@ -7,9 +7,12 @@ from .utils import (
     get_container_action_label,
     get_container_actions,
     get_container_attribute,
+    get_container_cmd,
+    get_container_entrypoint,
     get_container_environment_variables,
     get_container_image,
     get_container_networks,
+    get_container_restart_policy,
     get_container_started_at,
     get_container_status_label,
     get_container_volumes,
@@ -46,15 +49,11 @@ class ContainerPage(Adw.NavigationPage):
 
         self.container = get_container(container.name)
 
-        self._load_details()
-        self._load_quick_actions()
-        self._load_environment_variables()
-        self._load_volumes()
-        self._load_networks()
+        on_container_chage(self._load, self.container.id)
 
-        on_container_chage(self._reload, self.container.id)
+        self._load()
 
-    def _reload(self):
+    def _load(self):
         self._load_details()
         self._load_quick_actions()
         self._load_environment_variables()
@@ -77,6 +76,9 @@ class ContainerPage(Adw.NavigationPage):
                 get_container_attribute(self.container, "Created", "-")
             ),
             "Start time": get_container_started_at(self.container),
+            "CMD": get_container_cmd(self.container),
+            "Entrypoint": get_container_entrypoint(self.container),
+            "Restart Policy": get_container_restart_policy(self.container),
         }
 
         for row in self.detail_rows:
