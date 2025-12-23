@@ -12,6 +12,7 @@ from .utils import (
     get_container_environment_variables,
     get_container_image,
     get_container_networks,
+    get_container_ports,
     get_container_restart_policy,
     get_container_started_at,
     get_container_status_label,
@@ -37,15 +38,24 @@ class ContainerPage(Adw.NavigationPage):
     environment_group = Gtk.Template.Child()
     volumes_group = Gtk.Template.Child()
     networks_group = Gtk.Template.Child()
+    ports_group = Gtk.Template.Child()
 
-    detail_rows: list[Adw.ActionRow] = []
-    quick_action_rows: list[Adw.ActionRow] = []
-    environment_rows: list[Adw.ActionRow] = []
-    volumes_rows: list[Adw.ActionRow] = []
-    networks_rows: list[Adw.ActionRow] = []
+    detail_rows: list[Adw.ActionRow]
+    quick_action_rows: list[Adw.ActionRow]
+    environment_rows: list[Adw.ActionRow]
+    volumes_rows: list[Adw.ActionRow]
+    networks_rows: list[Adw.ActionRow]
+    ports_rows: list[Adw.ActionRow]
 
     def __init__(self, container):
         super().__init__()
+
+        self.detail_rows = []
+        self.quick_action_rows = []
+        self.environment_rows = []
+        self.volumes_rows = []
+        self.networks_rows = []
+        self.ports_rows = []
 
         self.container = get_container(container.name)
 
@@ -59,6 +69,7 @@ class ContainerPage(Adw.NavigationPage):
         self._load_environment_variables()
         self._load_volumes()
         self._load_networks()
+        self._load_ports()
 
     def _load_details(self):
         if self.container:
@@ -181,6 +192,25 @@ class ContainerPage(Adw.NavigationPage):
 
             self.networks_group.add(row)
             self.networks_rows.append(row)
+
+    def _load_ports(self):
+        ports = get_container_ports(self.container)
+
+        for row in self.ports_rows:
+            self.ports_group.remove(row)
+
+        self.ports_rows.clear()
+
+        for key, value in ports.items():
+            label = Gtk.Label(label=value)
+            label.set_valign(Gtk.Align.CENTER)
+
+            row = Adw.ActionRow()
+            row.set_title(key)
+            row.add_suffix(label)
+
+            self.ports_group.add(row)
+            self.ports_rows.append(row)
 
     def _create_quick_action_button(self, label_text, icon_name, callback):
         box = Gtk.Box(

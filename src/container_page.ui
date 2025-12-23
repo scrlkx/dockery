@@ -57,6 +57,11 @@
                                         <property name="title">Networks</property>
                                     </object>
                                 </child>
+                                <child>
+                                    <object class="AdwPreferencesGroup" id="ports_group">
+                                        <property name="title">Port Bindings</property>
+                                    </object>
+                                </child>
                             </object>
                         </child>
                     </object>
