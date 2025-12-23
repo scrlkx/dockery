@@ -208,6 +208,22 @@ def get_container_networks(
     return networks
 
 
+def get_container_ports(
+    container: Container,
+) -> dict[str, str]:
+    bindings = get_container_attribute(container, "HostConfig.PortBindings", [])
+
+    if not isinstance(bindings, Iterable):
+        return {}
+
+    ports: dict[str, str] = {}
+
+    for key, item in bindings.items():  # type: ignore[attr-defined]
+        ports[key] = ", ".join(list(map(lambda binding: binding.get("HostPort"), item)))
+
+    return ports
+
+
 def get_container(name: str) -> Container:
     return get_docker_client().containers.get(name)
 
