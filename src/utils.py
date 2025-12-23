@@ -39,6 +39,45 @@ def get_container_image(
     )
 
 
+def get_container_cmd(
+    container: Container, default: Optional[str] = None
+) -> Optional[str]:
+    cmd = get_container_attribute(container, "Config.Cmd")
+
+    if cmd and isinstance(cmd, str):
+        return cmd
+
+    if cmd and isinstance(cmd, list):
+        return " ".join(cmd)
+
+    return default
+
+
+def get_container_entrypoint(
+    container: Container, default: Optional[str] = None
+) -> Optional[str]:
+    entrypoint = get_container_attribute(container, "Config.Entrypoint")
+
+    if entrypoint and isinstance(entrypoint, str):
+        return entrypoint
+
+    if entrypoint and isinstance(entrypoint, list):
+        return " ".join(entrypoint)
+
+    return default
+
+
+def get_container_restart_policy(
+    container: Container, default: Optional[str] = None
+) -> Optional[str]:
+    policy = get_container_attribute(container, "HostConfig.RestartPolicy")
+
+    if policy:
+        return policy.get("Name")
+
+    return default
+
+
 def get_container_status_label(
     container: Container, default: Optional[str] = None
 ) -> Optional[str]:
