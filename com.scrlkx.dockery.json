@@ -48,8 +48,8 @@
             "buildsystem" : "meson",
             "sources" : [
                 {
-                    "type" : "git",
-                    "url" : "file:///home/scrlkx/Code/oss"
+                    "type" : "dir",
+                    "path" : "."
                 }
             ]
         }
