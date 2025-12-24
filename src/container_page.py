@@ -1,6 +1,9 @@
+from collections.abc import Callable
+
+from docker.models.containers import Container
 from gi.repository import Adw, Gtk
 
-from .events import on_container_chage
+from .events import on_container_change
 from .utils.docker import (
     get_container,
     get_container_actions,
@@ -43,65 +46,68 @@ class ContainerPage(Adw.NavigationPage):
     networks_group = Gtk.Template.Child()
     ports_group = Gtk.Template.Child()
 
-    detail_rows: list[Adw.ActionRow]
-    quick_action_rows: list[Adw.ActionRow]
-    environment_rows: list[Adw.ActionRow]
-    volumes_rows: list[Adw.ActionRow]
-    networks_rows: list[Adw.ActionRow]
-    ports_rows: list[Adw.ActionRow]
+    detail_rows: list[Adw.ActionRow] = []
+    quick_action_rows: list[Gtk.Button] = []
+    environment_rows: list[Adw.ActionRow] = []
+    volumes_rows: list[Adw.ActionRow] = []
+    networks_rows: list[Adw.ActionRow] = []
+    ports_rows: list[Adw.ActionRow] = []
 
-    def __init__(self, container):
+    container: Container
+
+    def __init__(self, container: Container):
         super().__init__()
-
-        self.detail_rows = []
-        self.quick_action_rows = []
-        self.environment_rows = []
-        self.volumes_rows = []
-        self.networks_rows = []
-        self.ports_rows = []
 
         self.container = get_container(container.name)
 
-        on_container_chage(self._load, self.container.id)
+        self.register_events()
+        self.build_ui()
 
-        self._load()
+    def register_events(self) -> None:
+        on_container_change(self.reload_ui, self.container)
 
-    def _load(self):
-        self._load_details()
-        self._load_quick_actions()
-        self._load_environment_variables()
-        self._load_volumes()
-        self._load_networks()
-        self._load_ports()
+    def build_ui(self) -> None:
+        self.load_details()
+        self.load_quick_actions()
+        self.load_environment_variables()
+        self.load_volumes()
+        self.load_networks()
+        self.load_ports()
 
-    def _load_details(self):
-        if self.container:
-            self.container = get_container(self.container.name)
+    def reload_ui(self) -> None:
+        self.container = get_container(self.container.name)
+        self.build_ui()
+
+    def load_details(self) -> None:
+        self.detail_rows = []
 
         self.set_title(self.container.name)
         self.name_label.set_text(self.container.name)
 
-        created_at = get_container_created_at(self.container)
-
-        if created_at:
-            created_at = iso_to_local(created_at)
+        details = {
+            "ID": self.container.id,
+            "Name": self.container.name,
+            "Image": get_container_image(self.container) or "-",
+            "Status": get_container_status_label(self.container) or "-",
+            "Created at": iso_to_local(get_container_created_at(self.container)),
+        }
 
         started_at = get_container_started_at(self.container)
 
         if started_at:
-            started_at = iso_to_local(started_at)
+            details["Started at"] = iso_to_local(started_at)
 
-        details = {
-            "ID": self.container.id,
-            "Name": self.container.name,
-            "Image": get_container_image(self.container),
-            "Status": get_container_status_label(self.container),
-            "Created at": created_at,
-            "Started at": started_at,
-            "CMD": get_container_cmd(self.container),
-            "Entrypoint": get_container_entrypoint(self.container),
-            "Restart Policy": get_container_restart_policy(self.container),
-        }
+        cmd = get_container_cmd(self.container)
+
+        if cmd:
+            details["CMD"] = cmd
+
+        entrypoint = get_container_entrypoint(self.container)
+
+        if entrypoint:
+            details["Entrypoint"] = entrypoint
+
+        details["Restart Policy"] = get_container_restart_policy(self.container)
 
         for row in self.detail_rows:
             self.details_group.remove(row)
@@ -119,7 +125,9 @@ class ContainerPage(Adw.NavigationPage):
             self.details_group.add(row)
             self.detail_rows.append(row)
 
-    def _load_quick_actions(self):
+    def load_quick_actions(self) -> None:
+        self.quick_action_rows = []
+
         callbacks = {
             "start": self.on_start_clicked,
             "stop": self.on_stop_clicked,
@@ -138,16 +146,23 @@ class ContainerPage(Adw.NavigationPage):
         actions = get_container_actions(self.container)
 
         for action in actions:
-            button = self._create_quick_action_button(
-                get_container_action_label(action),
-                get_container_action_icon(action),
-                callbacks.get(action),
-            )
+            label = get_container_action_label(action)
+            icon = get_container_action_icon(action)
+            callback = callbacks.get(action)
 
-            self.quick_actions_group.append(button)
-            self.quick_action_rows.append(button)
+            if label and icon and callback:
+                button = self.build_quick_action_button(
+                    label,
+                    icon,
+                    callback,
+                )
 
-    def _load_environment_variables(self):
+                self.quick_actions_group.append(button)
+                self.quick_action_rows.append(button)
+
+    def load_environment_variables(self) -> None:
+        self.environment_rows = []
+
         variables = get_container_environment_variables(self.container)
 
         for row in self.environment_rows:
@@ -166,7 +181,9 @@ class ContainerPage(Adw.NavigationPage):
             self.environment_group.add(row)
             self.environment_rows.append(row)
 
-    def _load_volumes(self):
+    def load_volumes(self) -> None:
+        self.volumes_rows = []
+
         volumes = get_container_volumes(self.container)
 
         for row in self.volumes_rows:
@@ -185,7 +202,9 @@ class ContainerPage(Adw.NavigationPage):
             self.volumes_group.add(row)
             self.volumes_rows.append(row)
 
-    def _load_networks(self):
+    def load_networks(self) -> None:
+        self.networks_rows = []
+
         networks = get_container_networks(self.container)
 
         for row in self.networks_rows:
@@ -204,7 +223,9 @@ class ContainerPage(Adw.NavigationPage):
             self.networks_group.add(row)
             self.networks_rows.append(row)
 
-    def _load_ports(self):
+    def load_ports(self) -> None:
+        self.ports_rows = []
+
         ports = get_container_ports(self.container)
 
         for row in self.ports_rows:
@@ -223,7 +244,9 @@ class ContainerPage(Adw.NavigationPage):
             self.ports_group.add(row)
             self.ports_rows.append(row)
 
-    def _create_quick_action_button(self, label_text, icon_name, callback):
+    def build_quick_action_button(
+        self, label_text: str, icon_name: str, callback: Callable[[Gtk.Button], None]
+    ) -> Gtk.Button:
         box = Gtk.Box(
             orientation=Gtk.Orientation.HORIZONTAL,
             spacing=6,
@@ -243,44 +266,30 @@ class ContainerPage(Adw.NavigationPage):
 
         return button
 
-    def on_start_clicked(self, _):
+    def on_start_clicked(self, _: Gtk.Button) -> None:
         start_container(self.container.name)
+        self.reload_ui()
 
-        self._load_details()
-        self._load_quick_actions()
-
-    def on_pause_clicked(self, _):
+    def on_pause_clicked(self, _: Gtk.Button) -> None:
         pause_container(self.container.name)
+        self.reload_ui()
 
-        self._load_details()
-        self._load_quick_actions()
-
-    def on_resume_clicked(self, _):
+    def on_resume_clicked(self, _: Gtk.Button) -> None:
         unpause_container(self.container.name)
+        self.reload_ui()
 
-        self._load_details()
-        self._load_quick_actions()
-
-    def on_stop_clicked(self, _):
+    def on_stop_clicked(self, _: Gtk.Button) -> None:
         stop_container(self.container.name)
+        self.reload_ui()
 
-        self._load_details()
-        self._load_quick_actions()
-
-    def on_restart_clicked(self, _):
+    def on_restart_clicked(self, _: Gtk.Button) -> None:
         restart_container(self.container.name)
+        self.reload_ui()
 
-        self._load_details()
-        self._load_quick_actions()
-
-    def on_kill_clicked(self, _):
+    def on_kill_clicked(self, _: Gtk.Button) -> None:
         kill_container(self.container.name)
+        self.reload_ui()
 
-        self._load_details()
-        self._load_quick_actions()
-
-    def on_remove_clicked(self, _):
+    def on_remove_clicked(self, _: Gtk.Button) -> None:
         remove_container(self.container.name)
-
-        self._load_details()
-        self._load_quick_actions()
+        self.reload_ui()

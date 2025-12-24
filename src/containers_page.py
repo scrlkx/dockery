@@ -1,12 +1,13 @@
-from typing import List
+from typing import Any, Callable, List
 
+from docker.models.containers import Container
 from gi.repository import Adw, GObject, Gtk
 
-from .events import on_containers_chage
+from .events import on_containers_change
 from .ui import Badge
 from .utils.docker import (
-    get_container_actions,
     get_container_image,
+    get_container_next_action,
     get_containers,
     start_container,
     stop_container,
@@ -17,9 +18,13 @@ from .utils.ui import (
 )
 
 
-class ContainerItem(GObject.Object):
+class ContainerRow(Adw.ActionRow):
+    __gtype_name__ = "ContainerRow"
+
     name = GObject.Property(type=str)
-    status = GObject.Property(type=str)
+    image = GObject.Property(type=str)
+    status_label = GObject.Property(type=str)
+    status_class = GObject.Property(type=str)
 
 
 @Gtk.Template(resource_path="/com/scrlkx/dockery/containers_page.ui")
@@ -30,41 +35,95 @@ class ContainersPage(Adw.NavigationPage):
         "container-activated": (GObject.SignalFlags.RUN_FIRST, None, (object,))
     }
 
-    _rows: List[Adw.ActionRow] = []
-
     search_entry = Gtk.Template.Child()
     containers_group = Gtk.Template.Child()
 
-    def __init__(self, **kwargs):
+    container_rows: List[ContainerRow] = []
+
+    def __init__(self, **kwargs: Any) -> None:
         super().__init__(**kwargs)
 
-        self._rows = []
+        self.register_events()
+        self.build_ui()
 
-        self.search_entry.connect("search-changed", self._on_search_changed)
+    def register_events(self) -> None:
+        self.search_entry.connect("search-changed", self.on_search_changed)
 
-        self._load_containers()
+        on_containers_change(self.reload_ui)
 
-        on_containers_chage(self._reload_list)
+    def build_ui(self) -> None:
+        containers = get_containers()
 
-    def _on_search_changed(self, entry):
-        text = entry.get_text().lower()
+        for container in containers:
+            row = ContainerRow(title=container.name)
+            row.name = container.name.lower()
+            row.image = get_container_image(container)
+            row.status_label = get_container_status_label(container)
+            row.status_class = get_container_status_class(container)
 
-        for row in self._rows:
-            visible = text in row.container_name
-            row.set_visible(visible)
+            row.set_activatable(True)
+            row.connect("activated", self.on_container_row_clicked, container)
 
-    def _start_container(self, _, container):
-        start_container(container.name)
-        self._reload_list()
+            self.container_rows.append(row)
 
-    def _stop_container(self, _, container):
-        stop_container(container.name)
-        self._reload_list()
+            if row.image:
+                image = Badge(
+                    text=row.image,
+                    margin_end=12,
+                )
 
-    def _on_row_activated(self, _, container):
-        self.emit("container-activated", container)
+                row.add_suffix(image)
 
-    def _action_button(self, icon_name, callback, container):
+            if row.status_label and row.status_class:
+                status = Badge(
+                    text=row.status_label,
+                    style_class=row.status_class,
+                    margin_end=12,
+                )
+
+                row.add_suffix(status)
+
+            next_action = get_container_next_action(container)
+
+            if next_action == "start":
+                button = self.build_next_action_button(
+                    container,
+                    self.row_start_container,
+                    "play.svg",
+                )
+
+                row.add_suffix(button)
+            elif next_action == "stop":
+                button = self.build_next_action_button(
+                    container,
+                    self.row_stop_container,
+                    "circle-crossed.svg",
+                )
+
+                row.add_suffix(button)
+
+            info = Gtk.Image.new_from_resource(
+                "/com/scrlkx/dockery/icons/chevron-right.svg"
+            )
+            info.add_css_class("flat")
+
+            row.add_suffix(info)
+
+            self.containers_group.add(row)
+
+    def reload_ui(self) -> None:
+        for row in self.container_rows:
+            self.containers_group.remove(row)
+
+        self.container_rows.clear()
+        self.build_ui()
+
+    def build_next_action_button(
+        self,
+        container: Container,
+        callback: Callable[[Gtk.Button, Container], None],
+        icon_name: str,
+    ) -> Gtk.Button:
         button = Gtk.Button()
         button.add_css_class("flat")
         button.set_valign(Gtk.Align.CENTER)
@@ -87,67 +146,20 @@ class ContainersPage(Adw.NavigationPage):
 
         return button
 
-    def _load_containers(self):
-        containers = get_containers()
+    def on_search_changed(self, entry: Gtk.SearchEntry) -> None:
+        text = entry.get_text().lower()
 
-        for container in containers:
-            row = Adw.ActionRow(title=container.name)
-            row.container_name = container.name.lower()
-            row.container_image = get_container_image(container)
+        for row in self.container_rows:
+            visible = text in row.name
+            row.set_visible(visible)
 
-            row.set_activatable(True)
-            row.connect("activated", self._on_row_activated, container)
+    def on_container_row_clicked(self, _: Gtk.ListBoxRow, container: Container) -> None:
+        self.emit("container-activated", container)
 
-            self._rows.append(row)
+    def row_start_container(self, _: Any, container: Container) -> None:
+        start_container(container.name)
+        self.reload_ui()
 
-            if row.container_image:
-                image = Badge(
-                    text=get_container_image(container),
-                    margin_end=12,
-                )
-
-                row.add_suffix(image)
-
-            status = Badge(
-                text=get_container_status_label(container),
-                style_class=get_container_status_class(container),
-                margin_end=12,
-            )
-
-            row.add_suffix(status)
-
-            action = get_container_actions(container)[0]
-
-            if action == "start":
-                button = self._action_button(
-                    "play.svg",
-                    self._start_container,
-                    container,
-                )
-
-                row.add_suffix(button)
-            elif action == "stop":
-                button = self._action_button(
-                    "circle-crossed.svg",
-                    self._stop_container,
-                    container,
-                )
-
-                row.add_suffix(button)
-
-            info = Gtk.Image.new_from_resource(
-                "/com/scrlkx/dockery/icons/chevron-right.svg"
-            )
-
-            info.add_css_class("flat")
-
-            row.add_suffix(info)
-
-            self.containers_group.add(row)
-
-    def _reload_list(self):
-        for row in self._rows:
-            self.containers_group.remove(row)
-
-        self._rows.clear()
-        self._load_containers()
+    def row_stop_container(self, _: Any, container: Container) -> None:
+        stop_container(container.name)
+        self.reload_ui()

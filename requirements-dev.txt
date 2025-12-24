@@ -9,13 +9,13 @@ cryptography==46.0.3
 dill==0.4.0
 distlib==0.4.0
 docker==7.1.0
+docker-stubs==0.1.0
 filelock==3.20.1
 identify==2.6.15
 idna==3.11
 isort==7.0.0
 librt==0.7.4
 mccabe==0.7.0
-mypy==1.19.1
 mypy_extensions==1.1.0
 nodeenv==1.10.0
 packaging==25.0
@@ -25,6 +25,7 @@ pre_commit==4.5.1
 pycparser==2.23
 PyGObject-stubs==2.16.0
 pylint==4.0.4
+pyright==1.1.407
 pytokens==0.3.0
 PyYAML==6.0.3
 requests==2.32.5

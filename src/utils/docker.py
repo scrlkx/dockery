@@ -1,13 +1,28 @@
-from typing import Any, Iterable, Optional
+from typing import Any, Iterable, TypedDict, cast
 
 from docker.models.containers import Container
 
 from ..client import get_docker_client
 
 
+class DockerNetworkInfo(TypedDict, total=False):
+    IPAddress: str
+    Gateway: str
+    NetworkID: str
+    EndpointID: str
+
+
+DockerMount = dict[str, str]
+
+
+class DockerPortBinding(TypedDict, total=False):
+    HostIp: str
+    HostPort: str
+
+
 def get_container_attribute(
-    container: Container, attribute: str, default: Optional[Any] = None
-) -> Optional[Any]:
+    container: Container, attribute: str, default: Any | None = None
+) -> Any:
     keys = attribute.split(".")
 
     attrs = container.attrs
@@ -16,74 +31,55 @@ def get_container_attribute(
     try:
         for key in keys:
             current = current[key]
+
         return current
     except (KeyError, TypeError):
         return default
 
 
-def get_container_created_at(
-    container: Container, default: Optional[str] = None
-) -> Optional[str]:
-    original = get_container_attribute(container, "Created")
-
-    return original if original else default
+def get_container_created_at(container: Container) -> str:
+    return get_container_attribute(container, "Created")
 
 
-def get_container_started_at(
-    container: Container, default: Optional[str] = None
-) -> Optional[str]:
-    original = get_container_attribute(container, "State.StartedAt")
-
-    return original if original else default
+def get_container_started_at(container: Container) -> str | None:
+    return get_container_attribute(container, "State.StartedAt")
 
 
-def get_container_image(
-    container: Container, default: Optional[str] = None
-) -> Optional[str]:
-    return (
-        container.image.tags[0]
-        if container.image and len(container.image.tags) > 0
-        else default
-    )
+def get_container_image(container: Container) -> str | None:
+    if container.image and len(container.image.tags) > 0:
+        return container.image.tags[0]
+
+    return None
 
 
-def get_container_cmd(
-    container: Container, default: Optional[str] = None
-) -> Optional[str]:
+def get_container_cmd(container: Container) -> str | None:
     cmd = get_container_attribute(container, "Config.Cmd")
 
     if cmd and isinstance(cmd, str):
         return cmd
 
     if cmd and isinstance(cmd, list):
-        return " ".join(cmd)
+        return " ".join(cast(list[str], cmd))
 
-    return default
+    return None
 
 
-def get_container_entrypoint(
-    container: Container, default: Optional[str] = None
-) -> Optional[str]:
+def get_container_entrypoint(container: Container) -> str | None:
     entrypoint = get_container_attribute(container, "Config.Entrypoint")
 
     if entrypoint and isinstance(entrypoint, str):
         return entrypoint
 
     if entrypoint and isinstance(entrypoint, list):
-        return " ".join(entrypoint)
+        return " ".join(cast(list[str], entrypoint))
 
-    return default
+    return None
 
 
-def get_container_restart_policy(
-    container: Container, default: Optional[str] = None
-) -> Optional[str]:
-    policy = get_container_attribute(container, "HostConfig.RestartPolicy")
+def get_container_restart_policy(container: Container) -> str:
+    policy = get_container_attribute(container, "HostConfig.RestartPolicy", {})
 
-    if policy:
-        return policy.get("Name")
-
-    return default
+    return policy.get("Name", "no")
 
 
 def get_container_environment_variables(
@@ -96,12 +92,10 @@ def get_container_environment_variables(
 
     variables: dict[str, str] = {}
 
-    for item in env:
-        if not isinstance(item, str):
-            continue
-
+    for item in cast(list[str], env):
         # split only on first "="
         key, sep, value = item.partition("=")
+
         if not sep:
             continue
 
@@ -113,37 +107,63 @@ def get_container_environment_variables(
 def get_container_networks(
     container: Container,
 ) -> dict[str, str]:
-    net = get_container_attribute(container, "NetworkSettings.Networks", [])
+    raw = get_container_attribute(container, "NetworkSettings.Networks")
 
-    if not isinstance(net, Iterable):
+    if not isinstance(raw, dict):
         return {}
 
+    net = cast(dict[str, DockerNetworkInfo], raw)
     networks: dict[str, str] = {}
 
-    for key, item in net.items():  # type: ignore[attr-defined]
-        networks[key] = item.get("IPAddress", "-")
+    for key, item in net.items():
+        ip = item.get("IPAddress")
+
+        if ip:
+            networks[key] = ip
 
     return networks
+
+
+def get_container_volumes(
+    container: Container,
+) -> dict[str, str]:
+    raw = get_container_attribute(container, "Mounts", [])
+
+    if not isinstance(raw, dict):
+        return {}
+
+    mounts = cast(Iterable[DockerMount], raw)
+    volumes: dict[str, str] = {}
+
+    for item in mounts:
+        name = item.get("Name") or item.get("Source")
+        mode = item.get("Mode")
+
+        if name and mode:
+            volumes[name] = mode
+
+    return volumes
 
 
 def get_container_ports(
     container: Container,
 ) -> dict[str, str]:
-    bindings = get_container_attribute(container, "HostConfig.PortBindings", [])
+    raw = get_container_attribute(container, "HostConfig.PortBindings", [])
 
-    if not isinstance(bindings, Iterable):
+    if not isinstance(raw, dict):
         return {}
 
+    bindings = cast(dict[str, list[DockerPortBinding]], raw)
     ports: dict[str, str] = {}
 
-    for key, item in bindings.items():  # type: ignore[attr-defined]
-        ports[key] = ", ".join(list(map(lambda binding: binding.get("HostPort"), item)))
+    for key, items in bindings.items():
+        ports[key] = ", ".join(binding.get("HostPort", "-") for binding in items)
 
     return ports
 
 
 def get_container(name: str) -> Container:
-    return get_docker_client().containers.get(name)
+    return cast(Container, get_docker_client().containers.get(name))
 
 
 def get_containers() -> list[Container]:
@@ -156,40 +176,40 @@ def get_containers() -> list[Container]:
         "dead": 5,
     }
 
-    containers = get_docker_client().containers.list(all=True)
+    containers = (
+        get_docker_client().containers.list(  # pyright: ignore[reportUnknownMemberType]
+            all=True
+        )
+    )
+
+    containers = cast(list[Container], containers)
     containers.sort(key=lambda item: status_order.get(item.status, 99))
 
     return containers
 
 
 def start_container(name: str) -> None:
-    container = get_docker_client().containers.get(name)
-    container.start()
+    get_container(name).start()
 
 
 def stop_container(name: str) -> None:
-    container = get_docker_client().containers.get(name)
-    container.stop()
+    get_container(name).stop()
 
 
 def pause_container(name: str) -> None:
-    container = get_docker_client().containers.get(name)
-    container.pause()
+    get_container(name).pause()
 
 
 def unpause_container(name: str) -> None:
-    container = get_docker_client().containers.get(name)
-    container.unpause()
+    get_container(name).unpause()
 
 
 def restart_container(name: str) -> None:
-    container = get_docker_client().containers.get(name)
-    container.restart()
+    get_container(name).restart()
 
 
 def kill_container(name: str) -> None:
-    container = get_docker_client().containers.get(name)
-    container.kill()
+    get_container(name).kill()
 
 
 def remove_container(name: str) -> None:
@@ -207,23 +227,10 @@ def get_container_actions(container: Container) -> list[str]:
         "created": ["start", "remove"],
     }
 
-    return actions.get(container.status, [])
+    return actions.get(container.status, ["start", "stop"])
 
 
-def get_container_volumes(
-    container: Container,
-) -> dict[str, str]:
-    mounts = get_container_attribute(container, "Mounts", [])
+def get_container_next_action(container: Container) -> str:
+    actions = get_container_actions(container)
 
-    if not isinstance(mounts, Iterable):
-        return {}
-
-    volumes: dict[str, str] = {}
-
-    for item in mounts:
-        name = item.get("Name") or item.get("Source")
-        mode = item.get("Mode")
-
-        volumes[name] = mode
-
-    return volumes
+    return actions[0]

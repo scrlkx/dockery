@@ -18,6 +18,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import sys
+from typing import Any, Callable
 
 import gi
 
@@ -25,7 +26,7 @@ gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
 
 # pylint: disable=wrong-import-position
-from gi.repository import Adw, Gio
+from gi.repository import Adw, Gio, GLib
 
 from .window import DockeryWindow
 
@@ -37,17 +38,20 @@ class DockeryApplication(Adw.Application):
             flags=Gio.ApplicationFlags.DEFAULT_FLAGS,
             resource_base_path="/com/scrlkx/dockery",
         )
-        self.create_action("quit", lambda *_: self.quit(), ["<control>q"])
+
+        self.create_action("quit", lambda _, __: self.quit(), ["<control>q"])
         self.create_action("about", self.on_about_action)
         self.create_action("preferences", self.on_preferences_action)
 
-    def do_activate(self):
+    def do_activate(self) -> None:
         win = self.props.active_window
+
         if not win:
             win = DockeryWindow(application=self)
+
         win.present()
 
-    def on_about_action(self, _):
+    def on_about_action(self, _: Gio.SimpleAction, __: GLib.Variant | None) -> None:
         about = Adw.AboutDialog(
             application_name="dockery",
             application_icon="com.scrlkx.dockery",
@@ -60,10 +64,17 @@ class DockeryApplication(Adw.Application):
         about.set_translator_credits("")
         about.present(self.props.active_window)
 
-    def on_preferences_action(self, _, __):
+    def on_preferences_action(
+        self, _: Gio.SimpleAction, __: GLib.Variant | None
+    ) -> None:
         print("app.preferences action activated")
 
-    def create_action(self, name, callback, shortcuts=None):
+    def create_action(
+        self,
+        name: str,
+        callback: Callable[[Gio.SimpleAction, Any], None],
+        shortcuts: list[str] | None = None,
+    ) -> None:
         action = Gio.SimpleAction.new(name, None)
         action.connect("activate", callback)
 
