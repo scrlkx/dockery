@@ -1,12 +1,9 @@
 from datetime import datetime
-from typing import Optional
 
 from docker.models.containers import Container
 
 
-def get_container_status_label(
-    container: Container, default: Optional[str] = None
-) -> Optional[str]:
+def get_container_status_label(container: Container) -> str | None:
     labels = {
         "running": "Running",
         "paused": "Paused",
@@ -16,12 +13,10 @@ def get_container_status_label(
         "dead": "Dead",
     }
 
-    return labels.get(container.status, default)
+    return labels.get(container.status)
 
 
-def get_container_status_class(
-    container: Container, default: Optional[str] = None
-) -> Optional[str]:
+def get_container_status_class(container: Container) -> str | None:
     classes = {
         "running": "tag-green",
         "paused": "tag-blue",
@@ -31,10 +26,10 @@ def get_container_status_class(
         "dead": "tag-black",
     }
 
-    return classes.get(container.status, default)
+    return classes.get(container.status)
 
 
-def get_container_action_label(action: str) -> Optional[str]:
+def get_container_action_label(action: str) -> str | None:
     actions = {
         "start": "Start",
         "stop": "Stop",
@@ -48,7 +43,7 @@ def get_container_action_label(action: str) -> Optional[str]:
     return actions.get(action)
 
 
-def get_container_action_icon(action: str) -> Optional[str]:
+def get_container_action_icon(action: str) -> str | None:
     actions = {
         "start": "play.svg",
         "stop": "circle-crossed.svg",

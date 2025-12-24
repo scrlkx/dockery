@@ -1,0 +1,15 @@
+{
+    "pythonVersion": "3.13",
+    "pythonPlatform": "Linux",
+    "typeCheckingMode": "strict",
+    "reportMissingModuleSource": false,
+    "include": [
+        "src"
+    ],
+    "exclude": [
+        "**/__pycache__",
+        "**/site-packages"
+    ],
+    "stubPath": "typings",
+    "useLibraryCodeForTypes": true
+}
