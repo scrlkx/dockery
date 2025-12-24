@@ -1,13 +1,11 @@
 from gi.repository import Adw, Gtk
 
 from .events import on_container_chage
-from .utils import (
+from .utils.docker import (
     get_container,
-    get_container_action_icon,
-    get_container_action_label,
     get_container_actions,
-    get_container_attribute,
     get_container_cmd,
+    get_container_created_at,
     get_container_entrypoint,
     get_container_environment_variables,
     get_container_image,
@@ -15,9 +13,7 @@ from .utils import (
     get_container_ports,
     get_container_restart_policy,
     get_container_started_at,
-    get_container_status_label,
     get_container_volumes,
-    iso_to_local,
     kill_container,
     pause_container,
     remove_container,
@@ -25,6 +21,13 @@ from .utils import (
     start_container,
     stop_container,
     unpause_container,
+)
+from .utils.ui import (
+    get_container_action_icon,
+    get_container_action_label,
+    get_container_status_label,
+    humanize_mount_mode,
+    iso_to_local,
 )
 
 
@@ -78,15 +81,23 @@ class ContainerPage(Adw.NavigationPage):
         self.set_title(self.container.name)
         self.name_label.set_text(self.container.name)
 
+        created_at = get_container_created_at(self.container)
+
+        if created_at:
+            created_at = iso_to_local(created_at)
+
+        started_at = get_container_started_at(self.container)
+
+        if started_at:
+            started_at = iso_to_local(started_at)
+
         details = {
             "ID": self.container.id,
             "Name": self.container.name,
             "Image": get_container_image(self.container),
             "Status": get_container_status_label(self.container),
-            "Created": iso_to_local(
-                get_container_attribute(self.container, "Created", "-")
-            ),
-            "Start time": get_container_started_at(self.container),
+            "Created at": created_at,
+            "Started at": started_at,
             "CMD": get_container_cmd(self.container),
             "Entrypoint": get_container_entrypoint(self.container),
             "Restart Policy": get_container_restart_policy(self.container),
@@ -164,7 +175,7 @@ class ContainerPage(Adw.NavigationPage):
         self.volumes_rows.clear()
 
         for key, value in volumes.items():
-            label = Gtk.Label(label=value)
+            label = Gtk.Label(label=humanize_mount_mode(value))
             label.set_valign(Gtk.Align.CENTER)
 
             row = Adw.ActionRow()
