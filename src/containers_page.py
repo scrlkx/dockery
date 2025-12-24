@@ -4,14 +4,16 @@ from gi.repository import Adw, GObject, Gtk
 
 from .events import on_containers_chage
 from .ui import Badge
-from .utils import (
+from .utils.docker import (
     get_container_actions,
     get_container_image,
-    get_container_status_class,
-    get_container_status_label,
     get_containers,
     start_container,
     stop_container,
+)
+from .utils.ui import (
+    get_container_status_class,
+    get_container_status_label,
 )
 
 

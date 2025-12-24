@@ -26,7 +26,7 @@ configure_file(
   install_mode: 'rwxr-xr-x'
 )
 
-dockery_sources = [
+install_data([
   '__init__.py',
   'main.py',
   'window.py',
@@ -34,8 +34,11 @@ dockery_sources = [
   'containers_page.py',
   'client.py',
   'events.py',
-  'utils.py',
   'ui.py',
-]
+], install_dir: moduledir)
 
-install_data(dockery_sources, install_dir: moduledir)
+install_data([
+  'utils/__init__.py',
+  'utils/docker.py',
+  'utils/ui.py',
+], install_dir: moduledir / 'utils')

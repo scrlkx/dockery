@@ -1,18 +1,18 @@
-from datetime import datetime
 from typing import Any, Iterable, Optional
 
 from docker.models.containers import Container
 
-from .client import get_docker_client
+from ..client import get_docker_client
 
 
 def get_container_attribute(
     container: Container, attribute: str, default: Optional[Any] = None
 ) -> Optional[Any]:
-    attrs = container.attrs
     keys = attribute.split(".")
 
+    attrs = container.attrs
     current = attrs
+
     try:
         for key in keys:
             current = current[key]
@@ -21,12 +21,20 @@ def get_container_attribute(
         return default
 
 
+def get_container_created_at(
+    container: Container, default: Optional[str] = None
+) -> Optional[str]:
+    original = get_container_attribute(container, "Created")
+
+    return original if original else default
+
+
 def get_container_started_at(
     container: Container, default: Optional[str] = None
 ) -> Optional[str]:
     original = get_container_attribute(container, "State.StartedAt")
 
-    return iso_to_local(original) if original else default
+    return original if original else default
 
 
 def get_container_image(
@@ -78,77 +86,6 @@ def get_container_restart_policy(
     return default
 
 
-def get_container_status_label(
-    container: Container, default: Optional[str] = None
-) -> Optional[str]:
-    labels = {
-        "running": "Running",
-        "paused": "Paused",
-        "restarting": "Restarting",
-        "created": "Created",
-        "exited": "Exited",
-        "dead": "Dead",
-    }
-
-    return labels.get(container.status, default)
-
-
-def get_container_status_class(
-    container: Container, default: Optional[str] = None
-) -> Optional[str]:
-    classes = {
-        "running": "tag-green",
-        "paused": "tag-blue",
-        "restarting": "tag-red",
-        "created": "tag-gray",
-        "exited": "tag-orange",
-        "dead": "tag-black",
-    }
-
-    return classes.get(container.status, default)
-
-
-def get_container_actions(container: Container) -> list[str]:
-    actions = {
-        "running": ["stop", "pause", "restart", "kill"],
-        "restarting": ["stop", "kill"],
-        "paused": ["resume", "stop", "kill"],
-        "stopped": ["start", "remove"],
-        "exited": ["start", "remove"],
-        "created": ["start", "remove"],
-    }
-
-    return actions.get(container.status, [])
-
-
-def get_container_action_label(action: str) -> Optional[str]:
-    actions = {
-        "start": "Start",
-        "stop": "Stop",
-        "pause": "Pause",
-        "resume": "Resume",
-        "restart": "Restart",
-        "kill": "Kill",
-        "remove": "Remove",
-    }
-
-    return actions.get(action)
-
-
-def get_container_action_icon(action: str) -> Optional[str]:
-    actions = {
-        "start": "play.svg",
-        "stop": "circle-crossed.svg",
-        "pause": "pause.svg",
-        "resume": "arrow-pointing-away.svg",
-        "restart": "reload.svg",
-        "kill": "cross.svg",
-        "remove": "trash.svg",
-    }
-
-    return actions.get(action)
-
-
 def get_container_environment_variables(
     container: Container,
 ) -> dict[str, str]:
@@ -171,25 +108,6 @@ def get_container_environment_variables(
         variables[key] = value
 
     return variables
-
-
-def get_container_volumes(
-    container: Container,
-) -> dict[str, str]:
-    mounts = get_container_attribute(container, "Mounts", [])
-
-    if not isinstance(mounts, Iterable):
-        return {}
-
-    volumes: dict[str, str] = {}
-
-    for item in mounts:
-        name = item.get("Name") or item.get("Source")
-        mode = item.get("Mode")
-
-        volumes[name] = humanize_mount_mode(mode)
-
-    return volumes
 
 
 def get_container_networks(
@@ -279,39 +197,33 @@ def remove_container(name: str) -> None:
     container.kill()
 
 
-def iso_to_local(original: str) -> str:
-    date_time = datetime.fromisoformat(original.replace("Z", "+00:00"))
-    local_date_time = date_time.astimezone()
+def get_container_actions(container: Container) -> list[str]:
+    actions = {
+        "running": ["stop", "pause", "restart", "kill"],
+        "restarting": ["stop", "kill"],
+        "paused": ["resume", "stop", "kill"],
+        "stopped": ["start", "remove"],
+        "exited": ["start", "remove"],
+        "created": ["start", "remove"],
+    }
 
-    return local_date_time.strftime("%c")
+    return actions.get(container.status, [])
 
 
-def humanize_mount_mode(mode: str | None) -> str:
-    if not mode:
-        return "Read-write"
+def get_container_volumes(
+    container: Container,
+) -> dict[str, str]:
+    mounts = get_container_attribute(container, "Mounts", [])
 
-    flags = set(mode.split(","))
+    if not isinstance(mounts, Iterable):
+        return {}
 
-    if "ro" in flags:
-        access = "Read-only"
-    else:
-        access = "Read-write"
+    volumes: dict[str, str] = {}
 
-    extras: list[str] = []
+    for item in mounts:
+        name = item.get("Name") or item.get("Source")
+        mode = item.get("Mode")
 
-    if "z" in flags:
-        extras.append("shared (SELinux)")
-    elif "Z" in flags:
-        extras.append("private (SELinux)")
+        volumes[name] = mode
 
-    if "rshared" in flags:
-        extras.append("shared")
-    elif "rslave" in flags:
-        extras.append("slave")
-    elif "rprivate" in flags:
-        extras.append("private")
-
-    if extras:
-        return f"{access} ({', '.join(extras)})"
-
-    return access
+    return volumes
