@@ -1,8 +1,43 @@
-from typing import Any, Iterable, TypedDict, cast
+from functools import lru_cache
+from typing import (
+    Any,
+    Dict,
+    Iterable,
+    Iterator,
+    List,
+    Optional,
+    Protocol,
+    TypedDict,
+    cast,
+)
 
+from docker import from_env
 from docker.models.containers import Container
 
-from ..client import get_docker_client
+
+class ContainerCollectionProto(Protocol):
+    def list(
+        self,
+        # pylint: disable=redefined-builtin
+        all: bool = False,
+        filters: Optional[Dict[str, Any]] = None,
+        sparse: bool = False,
+        ignore_removed: bool = False,
+    ) -> List[Container]: ...
+    def get(self, container_id: str) -> Container: ...
+
+
+class DockerClientProto(Protocol):
+    @property
+    def containers(self) -> ContainerCollectionProto: ...
+
+    def events(
+        self,
+        since: Optional[int] = None,
+        until: Optional[int] = None,
+        filters: Optional[Dict[str, Any]] = None,
+        decode: bool = False,
+    ) -> Iterator[Dict[str, Any]]: ...
 
 
 class DockerNetworkInfo(TypedDict, total=False):
@@ -18,6 +53,11 @@ DockerMount = dict[str, str]
 class DockerPortBinding(TypedDict, total=False):
     HostIp: str
     HostPort: str
+
+
+@lru_cache(maxsize=1)
+def get_docker_client() -> DockerClientProto:
+    return from_env()
 
 
 def get_container_attribute(
@@ -129,7 +169,7 @@ def get_container_volumes(
 ) -> dict[str, str]:
     raw = get_container_attribute(container, "Mounts", [])
 
-    if not isinstance(raw, dict):
+    if not isinstance(raw, Iterable):
         return {}
 
     mounts = cast(Iterable[DockerMount], raw)
@@ -163,7 +203,7 @@ def get_container_ports(
 
 
 def get_container(name: str) -> Container:
-    return cast(Container, get_docker_client().containers.get(name))
+    return get_docker_client().containers.get(name)
 
 
 def get_containers() -> list[Container]:
@@ -176,13 +216,7 @@ def get_containers() -> list[Container]:
         "dead": 5,
     }
 
-    containers = (
-        get_docker_client().containers.list(  # pyright: ignore[reportUnknownMemberType]
-            all=True
-        )
-    )
-
-    containers = cast(list[Container], containers)
+    containers = get_docker_client().containers.list(all=True)
     containers.sort(key=lambda item: status_order.get(item.status, 99))
 
     return containers

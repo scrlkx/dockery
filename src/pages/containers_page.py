@@ -3,16 +3,16 @@ from typing import Any, Callable, List
 from docker.models.containers import Container
 from gi.repository import Adw, GObject, Gtk
 
-from .events import on_containers_change
-from .ui import Badge
-from .utils.docker import (
+from ..components.badge import Badge
+from ..utils.docker import (
     get_container_image,
     get_container_next_action,
     get_containers,
     start_container,
     stop_container,
 )
-from .utils.ui import (
+from ..utils.events import on_containers_change
+from ..utils.ui import (
     get_container_status_class,
     get_container_status_label,
 )
@@ -27,7 +27,7 @@ class ContainerRow(Adw.ActionRow):
     status_class = GObject.Property(type=str)
 
 
-@Gtk.Template(resource_path="/com/scrlkx/dockery/containers_page.ui")
+@Gtk.Template(resource_path="/com/scrlkx/dockery/pages/containers_page.ui")
 class ContainersPage(Adw.NavigationPage):
     __gtype_name__ = "ContainersPage"
 

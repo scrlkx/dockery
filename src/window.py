@@ -3,8 +3,8 @@ from typing import Any
 from docker.models.containers import Container
 from gi.repository import Adw, Gtk
 
-from .container_page import ContainerPage
-from .containers_page import ContainersPage
+from .pages.container_page import ContainerPage
+from .pages.containers_page import ContainersPage
 
 
 @Gtk.Template(resource_path="/com/scrlkx/dockery/window.ui")
