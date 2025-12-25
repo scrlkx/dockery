@@ -2,8 +2,10 @@
 <gresources>
   <gresource prefix="/com/scrlkx/dockery">
     <file preprocess="xml-stripblanks">window.ui</file>
-    <file preprocess="xml-stripblanks">container_page.ui</file>
-    <file preprocess="xml-stripblanks">containers_page.ui</file>
+    <!-- Pages -->
+    <file preprocess="xml-stripblanks">pages/container_page.ui</file>
+    <file preprocess="xml-stripblanks">pages/containers_page.ui</file>
+    <!-- Styles -->
     <file>style.css</file>
     <!-- Icons -->
     <file>icons/arrow-pointing-away.svg</file>

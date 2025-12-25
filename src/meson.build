@@ -30,15 +30,23 @@ install_data([
   '__init__.py',
   'main.py',
   'window.py',
-  'container_page.py',
-  'containers_page.py',
-  'client.py',
-  'events.py',
-  'ui.py',
 ], install_dir: moduledir)
 
 install_data([
+  'components/__init__.py',
+  'components/badge.py',
+  'components/key_value_row.py',
+], install_dir: moduledir / 'components')
+
+install_data([
+  'pages/__init__.py',
+  'pages/container_page.py',
+  'pages/containers_page.py',
+], install_dir: moduledir / 'pages')
+
+install_data([
   'utils/__init__.py',
+  'utils/events.py',
   'utils/docker.py',
   'utils/ui.py',
 ], install_dir: moduledir / 'utils')

@@ -5,7 +5,7 @@ from typing import Any, TypedDict, cast
 from docker.models.containers import Container
 from gi.repository import GLib
 
-from .client import get_docker_client
+from .docker import get_docker_client
 
 
 class DockerEvent(TypedDict, total=False):
@@ -54,9 +54,7 @@ def on_container_change(on_change: Callable[[], None], container: Container):
     client = get_docker_client()
 
     def _listen():
-        for (
-            _event
-        ) in client.events(  # pyright: ignore[reportUnknownMemberType, reportUnknownVariableType]
+        for _event in client.events(
             decode=True,
             filters={
                 "type": "container",

@@ -8,7 +8,9 @@
     ],
     "exclude": [
         "**/__pycache__",
-        "**/site-packages"
+        "**/site-packages",
+        "**/flatpak-build-dir",
+        "**/.flatpak-builder"
     ],
     "stubPath": "typings",
     "useLibraryCodeForTypes": true

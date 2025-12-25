@@ -3,8 +3,8 @@ from collections.abc import Callable
 from docker.models.containers import Container
 from gi.repository import Adw, Gtk
 
-from .events import on_container_change
-from .utils.docker import (
+from ..components.key_value_row import KeyValueRow
+from ..utils.docker import (
     get_container,
     get_container_actions,
     get_container_cmd,
@@ -25,7 +25,8 @@ from .utils.docker import (
     stop_container,
     unpause_container,
 )
-from .utils.ui import (
+from ..utils.events import on_container_change
+from ..utils.ui import (
     get_container_action_icon,
     get_container_action_label,
     get_container_status_label,
@@ -34,7 +35,7 @@ from .utils.ui import (
 )
 
 
-@Gtk.Template(resource_path="/com/scrlkx/dockery/container_page.ui")
+@Gtk.Template(resource_path="/com/scrlkx/dockery/pages/container_page.ui")
 class ContainerPage(Adw.NavigationPage):
     __gtype_name__ = "ContainerPage"
 
@@ -115,12 +116,7 @@ class ContainerPage(Adw.NavigationPage):
         self.detail_rows.clear()
 
         for key, value in details.items():
-            label = Gtk.Label(label=value)
-            label.set_valign(Gtk.Align.CENTER)
-
-            row = Adw.ActionRow()
-            row.set_title(key)
-            row.add_suffix(label)
+            row = KeyValueRow(key, value)
 
             self.details_group.add(row)
             self.detail_rows.append(row)
@@ -171,12 +167,7 @@ class ContainerPage(Adw.NavigationPage):
         self.environment_rows.clear()
 
         for key, value in variables.items():
-            label = Gtk.Label(label=value)
-            label.set_valign(Gtk.Align.CENTER)
-
-            row = Adw.ActionRow()
-            row.set_title(key)
-            row.add_suffix(label)
+            row = KeyValueRow(key, value)
 
             self.environment_group.add(row)
             self.environment_rows.append(row)
@@ -192,12 +183,7 @@ class ContainerPage(Adw.NavigationPage):
         self.volumes_rows.clear()
 
         for key, value in volumes.items():
-            label = Gtk.Label(label=humanize_mount_mode(value))
-            label.set_valign(Gtk.Align.CENTER)
-
-            row = Adw.ActionRow()
-            row.set_title(key)
-            row.add_suffix(label)
+            row = KeyValueRow(key, humanize_mount_mode(value))
 
             self.volumes_group.add(row)
             self.volumes_rows.append(row)
@@ -213,12 +199,7 @@ class ContainerPage(Adw.NavigationPage):
         self.networks_rows.clear()
 
         for key, value in networks.items():
-            label = Gtk.Label(label=value)
-            label.set_valign(Gtk.Align.CENTER)
-
-            row = Adw.ActionRow()
-            row.set_title(key)
-            row.add_suffix(label)
+            row = KeyValueRow(key, value)
 
             self.networks_group.add(row)
             self.networks_rows.append(row)
@@ -234,12 +215,7 @@ class ContainerPage(Adw.NavigationPage):
         self.ports_rows.clear()
 
         for key, value in ports.items():
-            label = Gtk.Label(label=value)
-            label.set_valign(Gtk.Align.CENTER)
-
-            row = Adw.ActionRow()
-            row.set_title(key)
-            row.add_suffix(label)
+            row = KeyValueRow(key, value)
 
             self.ports_group.add(row)
             self.ports_rows.append(row)
