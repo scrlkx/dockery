@@ -6,7 +6,7 @@ authors = ["Daniel Freitas <me@scrlkx.com>"]
 
 [tool.black]
 line-length = 88
-target-version = ['py313']
+target-version = ["py312"]
 skip-string-normalization = false
 
 [tool.isort]
