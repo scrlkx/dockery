@@ -61,6 +61,13 @@ class ContainerPage(Adw.NavigationPage):
 
         self.container = get_container(container.name)
 
+        self.detail_rows = []
+        self.quick_action_rows = []
+        self.environment_rows = []
+        self.volumes_rows = []
+        self.networks_rows = []
+        self.ports_rows = []
+
         self.register_events()
         self.build_ui()
 
@@ -80,8 +87,6 @@ class ContainerPage(Adw.NavigationPage):
         self.build_ui()
 
     def load_details(self) -> None:
-        self.detail_rows = []
-
         self.set_title(self.container.name)
         self.name_label.set_text(self.container.name)
 
@@ -122,8 +127,6 @@ class ContainerPage(Adw.NavigationPage):
             self.detail_rows.append(row)
 
     def load_quick_actions(self) -> None:
-        self.quick_action_rows = []
-
         callbacks = {
             "start": self.on_start_clicked,
             "stop": self.on_stop_clicked,
@@ -157,8 +160,6 @@ class ContainerPage(Adw.NavigationPage):
                 self.quick_action_rows.append(button)
 
     def load_environment_variables(self) -> None:
-        self.environment_rows = []
-
         variables = get_container_environment_variables(self.container)
 
         for row in self.environment_rows:
@@ -173,8 +174,6 @@ class ContainerPage(Adw.NavigationPage):
             self.environment_rows.append(row)
 
     def load_volumes(self) -> None:
-        self.volumes_rows = []
-
         volumes = get_container_volumes(self.container)
 
         for row in self.volumes_rows:
@@ -189,8 +188,6 @@ class ContainerPage(Adw.NavigationPage):
             self.volumes_rows.append(row)
 
     def load_networks(self) -> None:
-        self.networks_rows = []
-
         networks = get_container_networks(self.container)
 
         for row in self.networks_rows:
@@ -205,8 +202,6 @@ class ContainerPage(Adw.NavigationPage):
             self.networks_rows.append(row)
 
     def load_ports(self) -> None:
-        self.ports_rows = []
-
         ports = get_container_ports(self.container)
 
         for row in self.ports_rows:
