@@ -1,10 +1,10 @@
 [Desktop Entry]
-Name=dockery
+Name=Dockery
 Exec=dockery
 Icon=com.scrlkx.dockery
 Terminal=false
 Type=Application
-Categories=Utility;
-Keywords=GTK;
+Categories=Development;Utility;
+Keywords=Docker;Containers;DevOps;
 StartupNotify=true
 DBusActivatable=true
