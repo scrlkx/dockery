@@ -25,15 +25,18 @@ class NetworksPage(Adw.NavigationPage):
     def __init__(self, **kwargs: Any) -> None:
         super().__init__(**kwargs)
 
-        # self.register_events()
+        self.register_events()
         self.build_ui()
+
+    def register_events(self) -> None:
+        self.search_entry.connect("search-changed", self.on_search_changed)
 
     def build_ui(self) -> None:
         networks = get_networks()
 
         for network in networks:
             row = NetworkRow(title=network.name or network.short_id)
-            row.name = network.id or network.short_id
+            row.name = network.name or network.short_id
             row.driver = get_network_driver(network)
 
             row.set_activatable(True)
@@ -55,3 +58,10 @@ class NetworksPage(Adw.NavigationPage):
             row.add_suffix(info)
 
             self.networks_group.add(row)
+
+    def on_search_changed(self, entry: Gtk.SearchEntry) -> None:
+        text = entry.get_text().lower()
+
+        for row in self.network_rows:
+            visible = text in row.name
+            row.set_visible(visible)
