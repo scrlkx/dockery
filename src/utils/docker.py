@@ -13,6 +13,9 @@ from typing import (
 
 from docker import from_env
 from docker.models.containers import Container
+from docker.models.images import Image, ImageCollection
+from docker.models.networks import Network
+from docker.models.volumes import Volume
 
 
 class ContainerCollectionProto(Protocol):
@@ -27,9 +30,34 @@ class ContainerCollectionProto(Protocol):
     def get(self, container_id: str) -> Container: ...
 
 
+class VolumeCollectionProto(Protocol):
+    def list(
+        self,
+        filters: Optional[Dict[str, Any]] = None,
+    ) -> List[Volume]: ...
+    def get(self, volume_id: str) -> Volume: ...
+
+
+class NetworkCollectionProto(Protocol):
+    def list(
+        self,
+        filters: Optional[Dict[str, Any]] = None,
+    ) -> List[Network]: ...
+    def get(self, volume_id: str) -> Network: ...
+
+
 class DockerClientProto(Protocol):
     @property
     def containers(self) -> ContainerCollectionProto: ...
+
+    @property
+    def images(self) -> ImageCollection: ...
+
+    @property
+    def volumes(self) -> VolumeCollectionProto: ...
+
+    @property
+    def networks(self) -> NetworkCollectionProto: ...
 
     def events(
         self,
@@ -38,6 +66,11 @@ class DockerClientProto(Protocol):
         filters: Optional[Dict[str, Any]] = None,
         decode: bool = False,
     ) -> Iterator[Dict[str, Any]]: ...
+
+
+class DockerObject(Protocol):
+    @property
+    def attrs(self) -> dict[str, Any]: ...
 
 
 class DockerNetworkInfo(TypedDict, total=False):
@@ -57,15 +90,13 @@ class DockerPortBinding(TypedDict, total=False):
 
 @lru_cache(maxsize=1)
 def get_docker_client() -> DockerClientProto:
-    return from_env()
+    return cast(DockerClientProto, from_env())
 
 
-def get_container_attribute(
-    container: Container, attribute: str, default: Any | None = None
-) -> Any:
+def get_attribute(obj: DockerObject, attribute: str, default: Any | None = None) -> Any:
     keys = attribute.split(".")
 
-    attrs = container.attrs
+    attrs = obj.attrs
     current = attrs
 
     try:
@@ -78,11 +109,11 @@ def get_container_attribute(
 
 
 def get_container_created_at(container: Container) -> str:
-    return get_container_attribute(container, "Created")
+    return get_attribute(container, "Created")
 
 
 def get_container_started_at(container: Container) -> str | None:
-    return get_container_attribute(container, "State.StartedAt")
+    return get_attribute(container, "State.StartedAt")
 
 
 def get_container_image(container: Container) -> str | None:
@@ -93,7 +124,7 @@ def get_container_image(container: Container) -> str | None:
 
 
 def get_container_cmd(container: Container) -> str | None:
-    cmd = get_container_attribute(container, "Config.Cmd")
+    cmd = get_attribute(container, "Config.Cmd")
 
     if cmd and isinstance(cmd, str):
         return cmd
@@ -105,7 +136,7 @@ def get_container_cmd(container: Container) -> str | None:
 
 
 def get_container_entrypoint(container: Container) -> str | None:
-    entrypoint = get_container_attribute(container, "Config.Entrypoint")
+    entrypoint = get_attribute(container, "Config.Entrypoint")
 
     if entrypoint and isinstance(entrypoint, str):
         return entrypoint
@@ -117,7 +148,7 @@ def get_container_entrypoint(container: Container) -> str | None:
 
 
 def get_container_restart_policy(container: Container) -> str:
-    policy = get_container_attribute(container, "HostConfig.RestartPolicy", {})
+    policy = get_attribute(container, "HostConfig.RestartPolicy", {})
 
     return policy.get("Name", "no")
 
@@ -125,7 +156,7 @@ def get_container_restart_policy(container: Container) -> str:
 def get_container_environment_variables(
     container: Container,
 ) -> dict[str, str]:
-    env = get_container_attribute(container, "Config.Env", [])
+    env = get_attribute(container, "Config.Env", [])
 
     if not isinstance(env, Iterable):
         return {}
@@ -147,7 +178,7 @@ def get_container_environment_variables(
 def get_container_networks(
     container: Container,
 ) -> dict[str, str]:
-    raw = get_container_attribute(container, "NetworkSettings.Networks")
+    raw = get_attribute(container, "NetworkSettings.Networks")
 
     if not isinstance(raw, dict):
         return {}
@@ -167,7 +198,7 @@ def get_container_networks(
 def get_container_volumes(
     container: Container,
 ) -> dict[str, str]:
-    raw = get_container_attribute(container, "Mounts", [])
+    raw = get_attribute(container, "Mounts", [])
 
     if not isinstance(raw, Iterable):
         return {}
@@ -188,7 +219,7 @@ def get_container_volumes(
 def get_container_ports(
     container: Container,
 ) -> dict[str, str]:
-    raw = get_container_attribute(container, "HostConfig.PortBindings", [])
+    raw = get_attribute(container, "HostConfig.PortBindings", [])
 
     if not isinstance(raw, dict):
         return {}
@@ -268,3 +299,29 @@ def get_container_next_action(container: Container) -> str:
     actions = get_container_actions(container)
 
     return actions[0]
+
+
+def get_images() -> list[Image]:
+    images = get_docker_client().images.list()
+
+    return [image for image in images if image.tags]
+
+
+def get_image_architecture(image: Image) -> str:
+    return get_attribute(image, "Architecture", "unknown")
+
+
+def get_image_size(image: Image) -> int:
+    return get_attribute(image, "Size", 0)
+
+
+def get_volumes() -> list[Volume]:
+    return get_docker_client().volumes.list()
+
+
+def get_networks() -> list[Network]:
+    return get_docker_client().networks.list()
+
+
+def get_network_driver(network: Network) -> str:
+    return get_attribute(network, "Driver", "unknown")

@@ -4,27 +4,154 @@
   <requires lib="Adw" version="1.0"/>
   <template class="DockeryWindow" parent="AdwApplicationWindow">
     <property name="title">Dockery</property>
-    <property name="default-width">800</property>
+    <property name="default-width">1000</property>
     <property name="default-height">600</property>
     <property name="content">
-      <object class="AdwToolbarView">
-        <child type="top">
-          <object class="AdwHeaderBar" id="header_bar">
-            <child type="start">
-              <object class="GtkButton" id="back_button">
-                <property name="icon-name">go-previous-symbolic</property>
-                <property name="visible">false</property>
-                <style>
-                  <class name="flat"/>
-                </style>
+      <object class="AdwNavigationSplitView" id="split_view">
+        <property name="sidebar">
+          <object class="AdwNavigationPage">
+            <property name="title">Dockery</property>
+            <property name="child">
+              <object class="AdwToolbarView">
+                <child type="top">
+                  <object class="AdwHeaderBar"/>
+                </child>
+                <property name="content">
+                  <object class="GtkListBox" id="sidebar_list">
+                    <style>
+                      <class name="navigation-sidebar"/>
+                    </style>
+                    <property name="selection-mode">browse</property>
+                    <child>
+                      <object class="GtkListBoxRow" id="containers_row">
+                        <property name="child">
+                          <object class="GtkBox">
+                            <property name="spacing">12</property>
+                            <property name="margin-top">10</property>
+                            <property name="margin-bottom">10</property>
+                            <property name="margin-start">12</property>
+                            <property name="margin-end">12</property>
+                            <child>
+                              <object class="GtkImage">
+                                <property name="icon-name">package-x-generic-symbolic</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkLabel">
+                                <property name="label">Containers</property>
+                              </object>
+                            </child>
+                          </object>
+                        </property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkListBoxRow" id="images_row">
+                        <property name="child">
+                          <object class="GtkBox">
+                            <property name="spacing">12</property>
+                            <property name="margin-top">10</property>
+                            <property name="margin-bottom">10</property>
+                            <property name="margin-start">12</property>
+                            <property name="margin-end">12</property>
+                            <child>
+                              <object class="GtkImage">
+                                <property name="icon-name">media-optical-symbolic</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkLabel">
+                                <property name="label">Images</property>
+                              </object>
+                            </child>
+                          </object>
+                        </property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkListBoxRow" id="volumes_row">
+                        <property name="child">
+                          <object class="GtkBox">
+                            <property name="spacing">12</property>
+                            <property name="margin-top">10</property>
+                            <property name="margin-bottom">10</property>
+                            <property name="margin-start">12</property>
+                            <property name="margin-end">12</property>
+                            <child>
+                              <object class="GtkImage">
+                                <property name="icon-name">drive-harddisk-symbolic</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkLabel">
+                                <property name="label">Volumes</property>
+                              </object>
+                            </child>
+                          </object>
+                        </property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkListBoxRow" id="networks_row">
+                        <property name="child">
+                          <object class="GtkBox">
+                            <property name="spacing">12</property>
+                            <property name="margin-top">10</property>
+                            <property name="margin-bottom">10</property>
+                            <property name="margin-start">12</property>
+                            <property name="margin-end">12</property>
+                            <child>
+                              <object class="GtkImage">
+                                <property name="icon-name">network-workgroup-symbolic</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkLabel">
+                                <property name="label">Networks</property>
+                              </object>
+                            </child>
+                          </object>
+                        </property>
+                      </object>
+                    </child>
+                  </object>
+                </property>
               </object>
-            </child>
+            </property>
           </object>
-        </child>
+        </property>
         <property name="content">
-          <object class="AdwNavigationView" id="nav_view"/>
+          <object class="AdwNavigationPage" id="content_page">
+            <property name="title">Containers</property>
+            <property name="child">
+              <object class="AdwToolbarView">
+                <child type="top">
+                  <object class="AdwHeaderBar" id="header_bar">
+                    <child type="start">
+                      <object class="GtkButton" id="back_button">
+                        <property name="icon-name">go-previous-symbolic</property>
+                        <property name="visible">false</property>
+                        <style>
+                          <class name="flat"/>
+                        </style>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <property name="content">
+                  <object class="AdwNavigationView" id="nav_view"/>
+                </property>
+              </object>
+            </property>
+          </object>
         </property>
       </object>
     </property>
+    <child>
+      <object class="AdwBreakpoint">
+        <condition>max-width: 600px</condition>
+        <setter object="split_view" property="collapsed">true</setter>
+      </object>
+    </child>
   </template>
 </interface>

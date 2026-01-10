@@ -2,8 +2,8 @@
 <interface>
     <requires lib="gtk" version="4.0"/>
     <requires lib="Adw" version="1.0"/>
-    <template class="ContainersPage" parent="AdwNavigationPage">
-        <property name="title">Containers</property>
+    <template class="VolumesPage" parent="AdwNavigationPage">
+        <property name="title">Volumes</property>
         <property name="child">
             <object class="GtkScrolledWindow">
                 <property name="vexpand">true</property>
@@ -25,7 +25,7 @@
                                     </object>
                                 </child>
                                 <child>
-                                    <object class="AdwPreferencesGroup" id="containers_group">
+                                    <object class="AdwPreferencesGroup" id="volumes_group">
                                     </object>
                                 </child>
                             </object>
@@ -36,4 +36,3 @@
         </property>
     </template>
 </interface>
-

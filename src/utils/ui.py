@@ -93,3 +93,18 @@ def humanize_mount_mode(mode: str | None) -> str:
         return f"{access} ({', '.join(extras)})"
 
     return access
+
+
+def humanize_size(size: int | None) -> str:
+    if size is None:
+        return "-"
+
+    value = float(size)
+
+    for unit in ["B", "KB", "MB", "GB", "TB"]:
+        if value < 1024:
+            return f"{int(value)} {unit}" if unit == "B" else f"{value:.2f} {unit}"
+
+        value /= 1024
+
+    return f"{value:.2f} PB"
