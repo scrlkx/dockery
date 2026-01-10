@@ -84,7 +84,7 @@ class DockeryWindow(Adw.ApplicationWindow):
             self.nav_view.replace([volumes_page])
             self.back_button.set_visible(False)
         elif index == 3:
-            self.content_page.set_title("Volumes")
+            self.content_page.set_title("Networks")
 
             networks_page = NetworksPage()
             self.nav_view.replace([networks_page])
