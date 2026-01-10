@@ -23,8 +23,11 @@ class VolumesPage(Adw.NavigationPage):
     def __init__(self, **kwargs: Any) -> None:
         super().__init__(**kwargs)
 
-        # self.register_events()
+        self.register_events()
         self.build_ui()
+
+    def register_events(self) -> None:
+        self.search_entry.connect("search-changed", self.on_search_changed)
 
     def build_ui(self) -> None:
         volumes = get_volumes()
@@ -45,3 +48,10 @@ class VolumesPage(Adw.NavigationPage):
             row.add_suffix(info)
 
             self.volumes_group.add(row)
+
+    def on_search_changed(self, entry: Gtk.SearchEntry) -> None:
+        text = entry.get_text().lower()
+
+        for row in self.volume_rows:
+            visible = text in row.name
+            row.set_visible(visible)

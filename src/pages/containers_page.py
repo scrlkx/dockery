@@ -5,7 +5,6 @@ from gi.repository import Adw, GObject, Gtk
 
 from ..components.badge import Badge
 from ..utils.docker import (
-    get_container_image,
     get_container_next_action,
     get_containers,
     start_container,
@@ -22,7 +21,6 @@ class ContainerRow(Adw.ActionRow):
     __gtype_name__ = "ContainerRow"
 
     name = GObject.Property(type=str)
-    image = GObject.Property(type=str)
     status_label = GObject.Property(type=str)
     status_class = GObject.Property(type=str)
 
@@ -57,7 +55,6 @@ class ContainersPage(Adw.NavigationPage):
         for container in containers:
             row = ContainerRow(title=container.name)
             row.name = container.name.lower()
-            row.image = get_container_image(container)
             row.status_label = get_container_status_label(container)
             row.status_class = get_container_status_class(container)
 
@@ -65,14 +62,6 @@ class ContainersPage(Adw.NavigationPage):
             row.connect("activated", self.on_container_row_clicked, container)
 
             self.container_rows.append(row)
-
-            if row.image:
-                image = Badge(
-                    text=row.image,
-                    margin_end=12,
-                )
-
-                row.add_suffix(image)
 
             if row.status_label and row.status_class:
                 status = Badge(
