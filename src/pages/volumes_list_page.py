@@ -1,8 +1,9 @@
 from typing import Any, List
 
+from docker.models.volumes import Volume
 from gi.repository import Adw, GObject, Gtk
 
-from ..utils.docker import get_volumes
+from ..utils.docker import get_volume_short_name, get_volumes
 
 
 class VolumeRow(Adw.ActionRow):
@@ -14,6 +15,10 @@ class VolumeRow(Adw.ActionRow):
 @Gtk.Template(resource_path="/com/scrlkx/dockery/pages/volumes_list_page.ui")
 class VolumesPage(Adw.NavigationPage):
     __gtype_name__ = "VolumesPage"
+
+    __gsignals__ = {
+        "volume-activated": (GObject.SignalFlags.RUN_FIRST, None, (object,))
+    }
 
     search_entry = Gtk.Template.Child()
     volumes_group = Gtk.Template.Child()
@@ -33,10 +38,11 @@ class VolumesPage(Adw.NavigationPage):
         volumes = get_volumes()
 
         for volume in volumes:
-            row = VolumeRow(title=volume.name)
+            row = VolumeRow(title=get_volume_short_name(volume))
             row.name = volume.name
 
             row.set_activatable(True)
+            row.connect("activated", self.on_volume_row_clicked, volume)
 
             self.volume_rows.append(row)
 
@@ -55,3 +61,6 @@ class VolumesPage(Adw.NavigationPage):
         for row in self.volume_rows:
             visible = text in row.name
             row.set_visible(visible)
+
+    def on_volume_row_clicked(self, _: Gtk.ListBoxRow, volume: Volume) -> None:
+        self.emit("volume-activated", volume)

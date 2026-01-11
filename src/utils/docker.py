@@ -333,7 +333,33 @@ def get_image(identifier: str) -> Image:
 
 
 def get_volumes() -> list[Volume]:
-    return get_docker_client().volumes.list()
+    volumes = get_docker_client().volumes.list()
+    volumes.sort(key=lambda volume: volume.name)
+
+    return volumes
+
+
+def get_volume(identifier: str) -> Volume:
+    return get_docker_client().volumes.get(identifier)
+
+
+def get_volume_short_name(volume: Volume) -> str:
+    if len(volume.name) > 50:
+        return volume.name[:20]
+
+    return volume.name
+
+
+def get_volume_driver(volume: Volume) -> str:
+    return get_attribute(volume, "Driver")
+
+
+def get_volume_mount_path(volume: Volume) -> str:
+    return get_attribute(volume, "Mountpoint")
+
+
+def get_volume_created_at(volume: Volume) -> str:
+    return get_attribute(volume, "CreatedAt")
 
 
 def get_networks() -> list[Network]:

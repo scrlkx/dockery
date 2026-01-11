@@ -4,7 +4,7 @@
   <requires lib="Adw" version="1.0"/>
   <template class="DockeryWindow" parent="AdwApplicationWindow">
     <property name="title">Dockery</property>
-    <property name="default-width">1000</property>
+    <property name="default-width">1100</property>
     <property name="default-height">600</property>
     <property name="content">
       <object class="AdwNavigationSplitView" id="split_view">
