@@ -16,14 +16,5 @@
     <file preprocess="xml-stripblanks">pages/networks_list_page.ui</file>
     <!-- Styles -->
     <file>style.css</file>
-    <!-- Icons -->
-    <file>icons/arrow-pointing-away.svg</file>
-    <file>icons/chevron-right.svg</file>
-    <file>icons/circle-crossed.svg</file>
-    <file>icons/cross.svg</file>
-    <file>icons/pause.svg</file>
-    <file>icons/play.svg</file>
-    <file>icons/reload.svg</file>
-    <file>icons/trash.svg</file>
   </gresource>
 </gresources>

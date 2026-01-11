@@ -226,7 +226,7 @@ class ContainerDetailsPage(Adw.NavigationPage):
             valign=Gtk.Align.CENTER,
         )
 
-        image = Gtk.Image.new_from_resource(f"/com/scrlkx/dockery/icons/{icon_name}")
+        image = Gtk.Image.new_from_icon_name(icon_name)
         box.append(image)
 
         label = Gtk.Label(label=label_text)

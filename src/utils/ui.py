@@ -47,13 +47,13 @@ def get_container_action_label(action: str) -> str | None:
 
 def get_container_action_icon(action: str) -> str | None:
     actions = {
-        "start": "play.svg",
-        "stop": "circle-crossed.svg",
-        "pause": "pause.svg",
-        "resume": "arrow-pointing-away.svg",
-        "restart": "reload.svg",
-        "kill": "cross.svg",
-        "remove": "trash.svg",
+        "start": "media-playback-start-symbolic",
+        "stop": "media-playback-stop-symbolic",
+        "pause": "media-playback-pause-symbolic",
+        "resume": "media-playback-start-symbolic",
+        "restart": "system-reboot-symbolic",
+        "kill": "process-stop-symbolic",
+        "remove": "user-trash-symbolic",
     }
 
     return actions.get(action)
