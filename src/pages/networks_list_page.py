@@ -1,5 +1,6 @@
 from typing import Any, List
 
+from docker.models.networks import Network
 from gi.repository import Adw, GObject, Gtk
 
 from ..components.badge import Badge
@@ -9,6 +10,7 @@ from ..utils.docker import get_network_driver, get_networks
 class NetworkRow(Adw.ActionRow):
     __gtype_name__ = "NetworkRow"
 
+    id = GObject.Property(type=str)
     name = GObject.Property(type=str)
     driver = GObject.Property(type=str)
 
@@ -16,6 +18,10 @@ class NetworkRow(Adw.ActionRow):
 @Gtk.Template(resource_path="/com/scrlkx/dockery/pages/networks_list_page.ui")
 class NetworksListPage(Adw.NavigationPage):
     __gtype_name__ = "NetworksListPage"
+
+    __gsignals__ = {
+        "network-activated": (GObject.SignalFlags.RUN_FIRST, None, (object,))
+    }
 
     search_entry = Gtk.Template.Child()
     networks_group = Gtk.Template.Child()
@@ -36,10 +42,12 @@ class NetworksListPage(Adw.NavigationPage):
 
         for network in networks:
             row = NetworkRow(title=network.name or network.short_id)
+            row.id = network.id
             row.name = network.name or network.short_id
             row.driver = get_network_driver(network)
 
             row.set_activatable(True)
+            row.connect("activated", self.on_network_row_clicked, network)
 
             self.network_rows.append(row)
 
@@ -63,5 +71,8 @@ class NetworksListPage(Adw.NavigationPage):
         text = entry.get_text().lower()
 
         for row in self.network_rows:
-            visible = text in row.name
+            visible = text in row.id or text in row.name
             row.set_visible(visible)
+
+    def on_network_row_clicked(self, _: Gtk.ListBoxRow, network: Network) -> None:
+        self.emit("network-activated", network)

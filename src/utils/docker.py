@@ -363,8 +363,19 @@ def get_volume_created_at(volume: Volume) -> str:
 
 
 def get_networks() -> list[Network]:
-    return get_docker_client().networks.list()
+    networks = get_docker_client().networks.list()
+    networks.sort(key=lambda network: network.name or network.short_id)
+
+    return networks
 
 
 def get_network_driver(network: Network) -> str:
     return get_attribute(network, "Driver", "unknown")
+
+
+def get_network_created_at(network: Network) -> str:
+    return get_attribute(network, "Created")
+
+
+def get_network(identifier: str) -> Network:
+    return get_docker_client().networks.get(identifier)
