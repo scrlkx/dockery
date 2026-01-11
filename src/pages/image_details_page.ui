@@ -2,8 +2,7 @@
 <interface>
     <requires lib="gtk" version="4.0"/>
     <requires lib="Adw" version="1.0"/>
-    <template class="ImagesListPage" parent="AdwNavigationPage">
-        <property name="title">Images</property>
+    <template class="ImageDetailsPage" parent="AdwNavigationPage">
         <property name="child">
             <object class="GtkScrolledWindow">
                 <property name="vexpand">true</property>
@@ -20,12 +19,21 @@
                                 <property name="margin-start">12</property>
                                 <property name="margin-end">12</property>
                                 <child>
-                                    <object class="GtkSearchEntry" id="search_entry">
-                                        <property name="placeholder-text">Search by short ID or tag</property>
+                                    <object class="GtkLabel" id="name_label">
+                                        <style>
+                                            <class name="title-1"/>
+                                        </style>
+                                        <property name="justify">0</property>
                                     </object>
                                 </child>
                                 <child>
-                                    <object class="AdwPreferencesGroup" id="images_group">
+                                    <object class="AdwPreferencesGroup" id="details_group">
+                                        <property name="title">Details</property>
+                                    </object>
+                                </child>
+                                <child>
+                                    <object class="AdwPreferencesGroup" id="tags_group">
+                                        <property name="title">Tags</property>
                                     </object>
                                 </child>
                             </object>

@@ -59,14 +59,14 @@ class ContainerDetailsPage(Adw.NavigationPage):
     def __init__(self, container: Container):
         super().__init__()
 
-        self.container = get_container(container.name)
-
         self.detail_rows = []
         self.quick_action_rows = []
         self.environment_rows = []
         self.volumes_rows = []
         self.networks_rows = []
         self.ports_rows = []
+
+        self.container = get_container(container.name)
 
         self.register_events()
         self.build_ui()
