@@ -7,6 +7,7 @@ from ..utils.docker import (
     get_network_created_at,
     get_network_driver,
 )
+from ..utils.i18n import _
 from ..utils.ui import iso_to_local
 
 
@@ -39,10 +40,10 @@ class NetworkDetailsPage(Adw.NavigationPage):
         self.name_label.set_text(self.network.name or self.network.short_id)
 
         details = {
-            "ID": self.network.id or self.network.short_id,
-            "Name": self.network.name or "-",
-            "Driver": get_network_driver(self.network),
-            "Created at": iso_to_local(get_network_created_at(self.network)),
+            _("ID"): self.network.id or self.network.short_id,
+            _("Name"): self.network.name or "-",
+            _("Driver"): get_network_driver(self.network),
+            _("Created at"): iso_to_local(get_network_created_at(self.network)),
         }
 
         for row in self.detail_rows:

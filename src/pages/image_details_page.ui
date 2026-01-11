@@ -28,12 +28,12 @@
                                 </child>
                                 <child>
                                     <object class="AdwPreferencesGroup" id="details_group">
-                                        <property name="title">Details</property>
+                                        <property name="title" translatable="yes">Details</property>
                                     </object>
                                 </child>
                                 <child>
                                     <object class="AdwPreferencesGroup" id="tags_group">
-                                        <property name="title">Tags</property>
+                                        <property name="title" translatable="yes">Tags</property>
                                     </object>
                                 </child>
                             </object>

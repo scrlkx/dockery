@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 
-glib-compile-resources src/dockery.gresource.xml \
-    --target=src/dockery.gresource \
-    --sourcedir=src
+meson compile -C _build dockery-pot
 
 flatpak-builder flatpak-build-dir com.scrlkx.dockery.json \
     --force-clean \

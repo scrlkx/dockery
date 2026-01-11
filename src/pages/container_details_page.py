@@ -26,6 +26,7 @@ from ..utils.docker import (
     unpause_container,
 )
 from ..utils.events import on_container_change
+from ..utils.i18n import _
 from ..utils.ui import (
     get_container_action_icon,
     get_container_action_label,
@@ -91,29 +92,29 @@ class ContainerDetailsPage(Adw.NavigationPage):
         self.name_label.set_text(self.container.name)
 
         details = {
-            "ID": self.container.id,
-            "Name": self.container.name,
-            "Image": get_container_image(self.container) or "-",
-            "Status": get_container_status_label(self.container) or "-",
-            "Created at": iso_to_local(get_container_created_at(self.container)),
+            _("ID"): self.container.id,
+            _("Name"): self.container.name,
+            _("Image"): get_container_image(self.container) or "-",
+            _("Status"): get_container_status_label(self.container),
+            _("Created at"): iso_to_local(get_container_created_at(self.container)),
         }
 
         started_at = get_container_started_at(self.container)
 
         if started_at:
-            details["Started at"] = iso_to_local(started_at)
+            details[_("Started at")] = iso_to_local(started_at)
 
         cmd = get_container_cmd(self.container)
 
         if cmd:
-            details["CMD"] = cmd
+            details[_("CMD")] = cmd
 
         entrypoint = get_container_entrypoint(self.container)
 
         if entrypoint:
-            details["Entrypoint"] = entrypoint
+            details[_("Entrypoint")] = entrypoint
 
-        details["Restart Policy"] = get_container_restart_policy(self.container)
+        details[_("Restart Policy")] = get_container_restart_policy(self.container)
 
         for row in self.detail_rows:
             self.details_group.remove(row)

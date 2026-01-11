@@ -3,7 +3,7 @@
     <requires lib="gtk" version="4.0"/>
     <requires lib="Adw" version="1.0"/>
     <template class="NetworksListPage" parent="AdwNavigationPage">
-        <property name="title">Networks</property>
+        <property name="title" translatable="yes">Networks</property>
         <property name="child">
             <object class="GtkScrolledWindow">
                 <property name="vexpand">true</property>
@@ -21,7 +21,7 @@
                                 <property name="margin-end">12</property>
                                 <child>
                                     <object class="GtkSearchEntry" id="search_entry">
-                                        <property name="placeholder-text">Search by ID or name</property>
+                                        <property name="placeholder-text" translatable="yes">Search by ID or name</property>
                                     </object>
                                 </child>
                                 <child>

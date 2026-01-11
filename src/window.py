@@ -14,6 +14,7 @@ from .pages.network_details_page import NetworkDetailsPage
 from .pages.networks_list_page import NetworksListPage
 from .pages.volume_details_page import VolumeDetailsPage
 from .pages.volumes_list_page import VolumesPage
+from .utils.i18n import _
 
 
 @Gtk.Template(resource_path="/com/scrlkx/dockery/window.ui")
@@ -51,41 +52,41 @@ class DockeryWindow(Adw.ApplicationWindow):
 
         self.nav_view.push(containers_list_page)
 
-    def on_back_button_clicked(self, _: Gtk.Button) -> None:
+    def on_back_button_clicked(self, __: Gtk.Button) -> None:
         self.nav_view.pop()
 
         if self.nav_view.get_visible_page() is not None:
             self.back_button.set_visible(False)
 
-    def on_container_activated(self, _: Gtk.Widget, container: Container) -> None:
+    def on_container_activated(self, __: Gtk.Widget, container: Container) -> None:
         self.back_button.set_visible(True)
 
         container_details_page = ContainerDetailsPage(container)
         self.nav_view.push(container_details_page)
 
-    def on_image_activated(self, _: Gtk.Widget, image: Image) -> None:
+    def on_image_activated(self, __: Gtk.Widget, image: Image) -> None:
         self.back_button.set_visible(True)
 
         image_details_page = ImageDetailsPage(image)
         self.nav_view.push(image_details_page)
 
-    def on_volume_activated(self, _: Gtk.Widget, volume: Volume) -> None:
+    def on_volume_activated(self, __: Gtk.Widget, volume: Volume) -> None:
         self.back_button.set_visible(True)
 
         volume_details_page = VolumeDetailsPage(volume)
         self.nav_view.push(volume_details_page)
 
-    def on_network_activated(self, _: Gtk.Widget, network: Network) -> None:
+    def on_network_activated(self, __: Gtk.Widget, network: Network) -> None:
         self.back_button.set_visible(True)
 
         network_details_page = NetworkDetailsPage(network)
         self.nav_view.push(network_details_page)
 
-    def on_sidebar_row_activated(self, _: Gtk.ListBox, row: Gtk.ListBoxRow) -> None:
+    def on_sidebar_row_activated(self, __: Gtk.ListBox, row: Gtk.ListBoxRow) -> None:
         index = row.get_index()
 
         if index == 0:
-            self.content_page.set_title("Containers")
+            self.content_page.set_title(_("Containers"))
 
             containers_list_page = ContainersListPage()
             containers_list_page.connect(
@@ -96,7 +97,7 @@ class DockeryWindow(Adw.ApplicationWindow):
             self.nav_view.replace([containers_list_page])
             self.back_button.set_visible(False)
         elif index == 1:
-            self.content_page.set_title("Images")
+            self.content_page.set_title(_("Images"))
 
             images_list_page = ImagesListPage()
             images_list_page.connect(
@@ -107,7 +108,7 @@ class DockeryWindow(Adw.ApplicationWindow):
             self.nav_view.replace([images_list_page])
             self.back_button.set_visible(False)
         elif index == 2:
-            self.content_page.set_title("Volumes")
+            self.content_page.set_title(_("Volumes"))
 
             volumes_list_page = VolumesPage()
             volumes_list_page.connect(
@@ -118,7 +119,7 @@ class DockeryWindow(Adw.ApplicationWindow):
             self.nav_view.replace([volumes_list_page])
             self.back_button.set_visible(False)
         elif index == 3:
-            self.content_page.set_title("Networks")
+            self.content_page.set_title(_("Networks"))
 
             networks_list_page = NetworksListPage()
             networks_list_page.connect(

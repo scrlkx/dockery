@@ -38,7 +38,7 @@
                             </child>
                             <child>
                               <object class="GtkLabel">
-                                <property name="label">Containers</property>
+                                <property name="label" translatable="yes">Containers</property>
                               </object>
                             </child>
                           </object>
@@ -61,7 +61,7 @@
                             </child>
                             <child>
                               <object class="GtkLabel">
-                                <property name="label">Images</property>
+                                <property name="label" translatable="yes">Images</property>
                               </object>
                             </child>
                           </object>
@@ -84,7 +84,7 @@
                             </child>
                             <child>
                               <object class="GtkLabel">
-                                <property name="label">Volumes</property>
+                                <property name="label" translatable="yes">Volumes</property>
                               </object>
                             </child>
                           </object>
@@ -107,7 +107,7 @@
                             </child>
                             <child>
                               <object class="GtkLabel">
-                                <property name="label">Networks</property>
+                                <property name="label" translatable="yes">Networks</property>
                               </object>
                             </child>
                           </object>
@@ -122,7 +122,6 @@
         </property>
         <property name="content">
           <object class="AdwNavigationPage" id="content_page">
-            <property name="title">Containers</property>
             <property name="child">
               <object class="AdwToolbarView">
                 <child type="top">
