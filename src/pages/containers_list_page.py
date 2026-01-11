@@ -5,6 +5,7 @@ from gi.repository import Adw, GObject, Gtk
 
 from ..components.badge import Badge
 from ..utils.docker import (
+    get_container_image,
     get_container_next_action,
     get_containers,
     start_container,
@@ -20,7 +21,9 @@ from ..utils.ui import (
 class ContainerRow(Adw.ActionRow):
     __gtype_name__ = "ContainerRow"
 
+    id = GObject.Property(type=str)
     name = GObject.Property(type=str)
+    image = GObject.Property(type=str)
     status_label = GObject.Property(type=str)
     status_class = GObject.Property(type=str)
 
@@ -54,7 +57,9 @@ class ContainersListPage(Adw.NavigationPage):
 
         for container in containers:
             row = ContainerRow(title=container.name)
+            row.id = container.id
             row.name = container.name.lower()
+            row.image = get_container_image(container)
             row.status_label = get_container_status_label(container)
             row.status_class = get_container_status_class(container)
 
@@ -139,7 +144,12 @@ class ContainersListPage(Adw.NavigationPage):
         text = entry.get_text().lower()
 
         for row in self.container_rows:
-            visible = text in row.name
+            visible = (
+                text in row.id
+                or text in row.name
+                or (row.image is not None and text in row.image)
+            )
+
             row.set_visible(visible)
 
     def on_container_row_clicked(self, _: Gtk.ListBoxRow, container: Container) -> None:

@@ -21,7 +21,7 @@
                                 <property name="margin-end">12</property>
                                 <child>
                                     <object class="GtkSearchEntry" id="search_entry">
-                                        <property name="placeholder-text">Search by name</property>
+                                        <property name="placeholder-text">Search by ID, name or image</property>
                                     </object>
                                 </child>
                                 <child>
