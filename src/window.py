@@ -2,6 +2,7 @@ from typing import Any
 
 from docker.models.containers import Container
 from docker.models.images import Image
+from docker.models.networks import Network
 from docker.models.volumes import Volume
 from gi.repository import Adw, Gtk
 
@@ -9,6 +10,7 @@ from .pages.container_details_page import ContainerDetailsPage
 from .pages.containers_list_page import ContainersListPage
 from .pages.image_details_page import ImageDetailsPage
 from .pages.images_list_page import ImagesListPage
+from .pages.network_details_page import NetworkDetailsPage
 from .pages.networks_list_page import NetworksListPage
 from .pages.volume_details_page import VolumeDetailsPage
 from .pages.volumes_list_page import VolumesPage
@@ -73,6 +75,12 @@ class DockeryWindow(Adw.ApplicationWindow):
         volume_details_page = VolumeDetailsPage(volume)
         self.nav_view.push(volume_details_page)
 
+    def on_network_activated(self, _: Gtk.Widget, network: Network) -> None:
+        self.back_button.set_visible(True)
+
+        network_details_page = NetworkDetailsPage(network)
+        self.nav_view.push(network_details_page)
+
     def on_sidebar_row_activated(self, _: Gtk.ListBox, row: Gtk.ListBoxRow) -> None:
         index = row.get_index()
 
@@ -113,5 +121,10 @@ class DockeryWindow(Adw.ApplicationWindow):
             self.content_page.set_title("Networks")
 
             networks_list_page = NetworksListPage()
+            networks_list_page.connect(
+                "network-activated",
+                self.on_network_activated,
+            )
+
             self.nav_view.replace([networks_list_page])
             self.back_button.set_visible(False)
