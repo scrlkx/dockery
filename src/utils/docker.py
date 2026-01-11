@@ -248,7 +248,7 @@ def get_containers() -> list[Container]:
     }
 
     containers = get_docker_client().containers.list(all=True)
-    containers.sort(key=lambda item: status_order.get(item.status, 99))
+    containers.sort(key=lambda item: (status_order.get(item.status, 99), item.name))
 
     return containers
 
