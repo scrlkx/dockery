@@ -8,8 +8,8 @@
         "--device=dri",
         "--socket=fallback-x11",
         "--socket=wayland",
-        "--socket=system-bus",
-        "--filesystem=/run/docker.sock"
+        "--filesystem=/run/docker.sock",
+        "--filesystem=xdg-run/docker.sock"
     ],
     "cleanup": [
         "/include",
