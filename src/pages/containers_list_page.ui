@@ -3,7 +3,7 @@
     <requires lib="gtk" version="4.0"/>
     <requires lib="Adw" version="1.0"/>
     <template class="ContainersListPage" parent="AdwNavigationPage">
-        <property name="title">Containers</property>
+        <property name="title" translatable="yes">Containers</property>
         <property name="child">
             <object class="GtkScrolledWindow">
                 <property name="vexpand">true</property>
@@ -21,7 +21,7 @@
                                 <property name="margin-end">12</property>
                                 <child>
                                     <object class="GtkSearchEntry" id="search_entry">
-                                        <property name="placeholder-text">Search by ID, name or image</property>
+                                        <property name="placeholder-text" translatable="yes">Search by ID, name or image</property>
                                     </object>
                                 </child>
                                 <child>
@@ -36,4 +36,3 @@
         </property>
     </template>
 </interface>
-

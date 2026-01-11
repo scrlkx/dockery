@@ -1,0 +1,206 @@
+#: data/com.scrlkx.dockery.desktop.in:2
+#: data/com.scrlkx.dockery.metainfo.xml.in:7
+msgid "Dockery"
+msgstr "Dockery"
+
+#: data/com.scrlkx.dockery.desktop.in:8
+msgid "Docker;Containers;DevOps;"
+msgstr "Docker;Containers;DevOps;"
+
+#: data/com.scrlkx.dockery.metainfo.xml.in:8
+msgid "Adwaita-based Docker management UI"
+msgstr "Adwaita-based Docker management UI"
+
+#: data/com.scrlkx.dockery.metainfo.xml.in:10
+msgid ""
+"Dockery is a modern and intuitive Docker management application designed "
+"using Adwaita components."
+msgstr ""
+"Dockery is a modern and intuitive Docker management application designed "
+"using Adwaita components."
+
+#: data/com.scrlkx.dockery.metainfo.xml.in:11
+msgid ""
+"It allows you to easily manage your local Docker resources through a clean "
+"and native graphical interface."
+msgstr ""
+"It allows you to easily manage your local Docker resources through a clean "
+"and native graphical interface."
+
+#: data/com.scrlkx.dockery.metainfo.xml.in:15
+msgid "Daniel Freitas"
+msgstr "Daniel Freitas"
+
+#: src/pages/container_details_page.py:95 src/pages/image_details_page.py:48
+#: src/pages/network_details_page.py:43
+msgid "ID"
+msgstr "ID"
+
+#: src/pages/container_details_page.py:96 src/pages/network_details_page.py:44
+#: src/pages/volume_details_page.py:45
+msgid "Name"
+msgstr "Name"
+
+#: src/pages/container_details_page.py:97
+msgid "Image"
+msgstr "Image"
+
+#: src/pages/container_details_page.py:98
+msgid "Status"
+msgstr "Status"
+
+#: src/pages/container_details_page.py:99 src/pages/image_details_page.py:52
+#: src/pages/network_details_page.py:46 src/pages/volume_details_page.py:48
+msgid "Created at"
+msgstr "Created at"
+
+#: src/pages/container_details_page.py:105
+msgid "Started at"
+msgstr "Started at"
+
+#: src/pages/container_details_page.py:110
+msgid "CMD"
+msgstr "CMD"
+
+#: src/pages/container_details_page.py:115
+msgid "Entrypoint"
+msgstr "Entrypoint"
+
+#: src/pages/container_details_page.py:117
+msgid "Restart Policy"
+msgstr "Restart Policy"
+
+#: src/pages/container_details_page.ui:31
+msgid "Quick actions"
+msgstr "Quick actions"
+
+#: src/pages/container_details_page.ui:42 src/pages/image_details_page.ui:31
+#: src/pages/network_details_page.ui:31 src/pages/volume_details_page.ui:31
+msgid "Details"
+msgstr "Details"
+
+#: src/pages/container_details_page.ui:47
+msgid "Environment variables"
+msgstr "Environment variables"
+
+#: src/pages/container_details_page.ui:52 src/pages/volumes_list_page.ui:6
+#: src/window.py:111 src/window.ui:87
+msgid "Volumes"
+msgstr "Volumes"
+
+#: src/pages/container_details_page.ui:57 src/pages/networks_list_page.ui:6
+#: src/window.py:122 src/window.ui:110
+msgid "Networks"
+msgstr "Networks"
+
+#: src/pages/container_details_page.ui:62
+msgid "Port bindings"
+msgstr "Port bindings"
+
+#: src/pages/containers_list_page.ui:6 src/window.py:89 src/window.ui:41
+msgid "Containers"
+msgstr "Containers"
+
+#: src/pages/containers_list_page.ui:24
+msgid "Search by ID, name or image"
+msgstr "Search by ID, name or image"
+
+#: src/pages/image_details_page.py:49
+msgid "Size"
+msgstr "Size"
+
+#: src/pages/image_details_page.py:50
+msgid "Architecture"
+msgstr "Architecture"
+
+#: src/pages/image_details_page.py:51
+msgid "OS"
+msgstr "OS"
+
+#: src/pages/image_details_page.ui:36
+msgid "Tags"
+msgstr "Tags"
+
+#: src/pages/images_list_page.ui:6 src/window.py:100 src/window.ui:64
+msgid "Images"
+msgstr "Images"
+
+#: src/pages/images_list_page.ui:24
+msgid "Search by short ID or tag"
+msgstr "Search by short ID or tag"
+
+#: src/pages/network_details_page.py:45 src/pages/volume_details_page.py:46
+msgid "Driver"
+msgstr "Driver"
+
+#: src/pages/networks_list_page.ui:24
+msgid "Search by ID or name"
+msgstr "Search by ID or name"
+
+#: src/pages/volume_details_page.py:47
+msgid "Mount path"
+msgstr "Mount path"
+
+#: src/pages/volumes_list_page.ui:24
+msgid "Search by name"
+msgstr "Search by name"
+
+#: src/utils/docker.py:308 src/utils/ui.py:10
+msgid "Running"
+msgstr "Running"
+
+#: src/utils/docker.py:309 src/utils/ui.py:11
+msgid "Paused"
+msgstr "Paused"
+
+#: src/utils/docker.py:310 src/utils/ui.py:12
+msgid "Restarting"
+msgstr "Restarting"
+
+#: src/utils/docker.py:311 src/utils/ui.py:13
+msgid "Created"
+msgstr "Created"
+
+#: src/utils/docker.py:312 src/utils/ui.py:14
+msgid "Exited"
+msgstr "Exited"
+
+#: src/utils/docker.py:313 src/utils/ui.py:15 src/utils/ui.py:18
+msgid "Dead"
+msgstr "Dead"
+
+#: src/utils/ui.py:36
+msgid "Start"
+msgstr "Start"
+
+#: src/utils/ui.py:37
+msgid "Stop"
+msgstr "Stop"
+
+#: src/utils/ui.py:38
+msgid "Pause"
+msgstr "Pause"
+
+#: src/utils/ui.py:39
+msgid "Resume"
+msgstr "Resume"
+
+#: src/utils/ui.py:40
+msgid "Restart"
+msgstr "Restart"
+
+#: src/utils/ui.py:41
+msgid "Kill"
+msgstr "Kill"
+
+#: src/utils/ui.py:42
+msgid "Remove"
+msgstr "Remove"
+
+#: src/utils/ui.py:71 src/utils/ui.py:78
+msgid "Read-write"
+msgstr "Read-write"
+
+#: src/utils/ui.py:76
+msgid "Read-only"
+msgstr "Read-only"

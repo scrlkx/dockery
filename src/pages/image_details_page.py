@@ -9,6 +9,7 @@ from ..utils.docker import (
     get_image_os,
     get_image_size,
 )
+from ..utils.i18n import _
 from ..utils.ui import humanize_size, iso_to_local
 
 
@@ -44,11 +45,11 @@ class ImageDetailsPage(Adw.NavigationPage):
         self.name_label.set_text(self.image.short_id)
 
         details = {
-            "ID": self.image.id or "-",
-            "Size": humanize_size(get_image_size(self.image)),
-            "Architecture": get_image_architecture(self.image),
-            "OS": get_image_os(self.image),
-            "Created at": iso_to_local(get_image_created_at(self.image)),
+            _("ID"): self.image.id or "-",
+            _("Size"): humanize_size(get_image_size(self.image)),
+            _("Architecture"): get_image_architecture(self.image),
+            _("OS"): get_image_os(self.image),
+            _("Created at"): iso_to_local(get_image_created_at(self.image)),
         }
 
         for row in self.detail_rows:

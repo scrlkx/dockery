@@ -17,6 +17,9 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+import gettext
+import locale
+import os
 import sys
 from typing import Any, Callable
 
@@ -27,6 +30,36 @@ gi.require_version("Adw", "1")
 
 # pylint: disable=wrong-import-position
 from gi.repository import Adw, Gio, GLib
+
+try:
+    locale.setlocale(locale.LC_ALL, "")
+except locale.Error:
+    pass
+
+# 1. Calculate path relative to this script (Standard Meson Install / Flatpak)
+#    Installs to: .../share/dockery/dockery/main.py
+#    Locale at:   .../share/locale
+#    Relative:    ../../locale
+base_dir = os.path.abspath(os.path.dirname(__file__))
+localedir = os.path.abspath(os.path.join(base_dir, "../../locale"))
+
+# 2. If the standard path doesn't exist or is empty (Running from source), check dev paths
+if not os.path.exists(localedir) or not os.listdir(localedir):
+    project_root = os.path.dirname(base_dir)
+    for dev_path in ["build/mo", "_build/po"]:
+        path = os.path.join(project_root, dev_path)
+        if os.path.exists(path):
+            localedir = path
+            break
+
+try:
+    locale.bindtextdomain("dockery", localedir)
+    locale.textdomain("dockery")
+except AttributeError:
+    pass
+
+gettext.bindtextdomain("dockery", localedir)
+gettext.textdomain("dockery")
 
 from .window import DockeryWindow
 

@@ -2,18 +2,20 @@ from datetime import datetime
 
 from docker.models.containers import Container
 
+from .i18n import _
 
-def get_container_status_label(container: Container) -> str | None:
+
+def get_container_status_label(container: Container) -> str:
     labels = {
-        "running": "Running",
-        "paused": "Paused",
-        "restarting": "Restarting",
-        "created": "Created",
-        "exited": "Exited",
-        "dead": "Dead",
+        "running": _("Running"),
+        "paused": _("Paused"),
+        "restarting": _("Restarting"),
+        "created": _("Created"),
+        "exited": _("Exited"),
+        "dead": _("Dead"),
     }
 
-    return labels.get(container.status)
+    return labels.get(container.status, _("Dead"))
 
 
 def get_container_status_class(container: Container) -> str | None:
@@ -31,13 +33,13 @@ def get_container_status_class(container: Container) -> str | None:
 
 def get_container_action_label(action: str) -> str | None:
     actions = {
-        "start": "Start",
-        "stop": "Stop",
-        "pause": "Pause",
-        "resume": "Resume",
-        "restart": "Restart",
-        "kill": "Kill",
-        "remove": "Remove",
+        "start": _("Start"),
+        "stop": _("Stop"),
+        "pause": _("Pause"),
+        "resume": _("Resume"),
+        "restart": _("Restart"),
+        "kill": _("Kill"),
+        "remove": _("Remove"),
     }
 
     return actions.get(action)
@@ -66,14 +68,14 @@ def iso_to_local(original: str) -> str:
 
 def humanize_mount_mode(mode: str | None) -> str:
     if not mode:
-        return "Read-write"
+        return _("Read-write")
 
     flags = set(mode.split(","))
 
     if "ro" in flags:
-        access = "Read-only"
+        access = _("Read-only")
     else:
-        access = "Read-write"
+        access = _("Read-write")
 
     extras: list[str] = []
 

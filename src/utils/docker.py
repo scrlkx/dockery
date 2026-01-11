@@ -150,7 +150,7 @@ def get_container_entrypoint(container: Container) -> str | None:
 def get_container_restart_policy(container: Container) -> str:
     policy = get_attribute(container, "HostConfig.RestartPolicy", {})
 
-    return policy.get("Name", "no")
+    return policy.get("Name")
 
 
 def get_container_environment_variables(
@@ -313,11 +313,11 @@ def get_image_last_tag(image: Image) -> str | None:
 
 
 def get_image_architecture(image: Image) -> str:
-    return get_attribute(image, "Architecture", "unknown")
+    return get_attribute(image, "Architecture")
 
 
 def get_image_os(image: Image) -> str:
-    return get_attribute(image, "Os", "unknown")
+    return get_attribute(image, "Os")
 
 
 def get_image_size(image: Image) -> int:
@@ -370,7 +370,7 @@ def get_networks() -> list[Network]:
 
 
 def get_network_driver(network: Network) -> str:
-    return get_attribute(network, "Driver", "unknown")
+    return get_attribute(network, "Driver")
 
 
 def get_network_created_at(network: Network) -> str:

@@ -9,6 +9,7 @@ from ..utils.docker import (
     get_volume_mount_path,
     get_volume_short_name,
 )
+from ..utils.i18n import _
 from ..utils.ui import iso_to_local
 
 
@@ -41,10 +42,10 @@ class VolumeDetailsPage(Adw.NavigationPage):
         self.name_label.set_text(get_volume_short_name(self.volume))
 
         details = {
-            "Name": self.volume.name,
-            "Driver": get_volume_driver(self.volume),
-            "Mount path": get_volume_mount_path(self.volume),
-            "Created at": iso_to_local(get_volume_created_at(self.volume)),
+            _("Name"): self.volume.name,
+            _("Driver"): get_volume_driver(self.volume),
+            _("Mount path"): get_volume_mount_path(self.volume),
+            _("Created at"): iso_to_local(get_volume_created_at(self.volume)),
         }
 
         for row in self.detail_rows:

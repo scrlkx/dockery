@@ -54,5 +54,6 @@ install_data([
   'utils/__init__.py',
   'utils/events.py',
   'utils/docker.py',
+  'utils/i18n.py',
   'utils/ui.py',
 ], install_dir: moduledir / 'utils')
