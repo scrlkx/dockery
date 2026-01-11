@@ -13,9 +13,9 @@ class NetworkRow(Adw.ActionRow):
     driver = GObject.Property(type=str)
 
 
-@Gtk.Template(resource_path="/com/scrlkx/dockery/pages/networks_page.ui")
-class NetworksPage(Adw.NavigationPage):
-    __gtype_name__ = "NetworksPage"
+@Gtk.Template(resource_path="/com/scrlkx/dockery/pages/networks_list_page.ui")
+class NetworksListPage(Adw.NavigationPage):
+    __gtype_name__ = "NetworksListPage"
 
     search_entry = Gtk.Template.Child()
     networks_group = Gtk.Template.Child()

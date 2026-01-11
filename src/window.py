@@ -3,11 +3,11 @@ from typing import Any
 from docker.models.containers import Container
 from gi.repository import Adw, Gtk
 
-from .pages.container_page import ContainerPage
-from .pages.containers_page import ContainersPage
-from .pages.images_page import ImagesPage
-from .pages.networks_page import NetworksPage
-from .pages.volumes_page import VolumesPage
+from .pages.container_details_page import ContainerDetailsPage
+from .pages.containers_list_page import ContainersListPage
+from .pages.images_list_page import ImagesListPage
+from .pages.networks_list_page import NetworksListPage
+from .pages.volumes_list_page import VolumesPage
 
 
 @Gtk.Template(resource_path="/com/scrlkx/dockery/window.ui")
@@ -37,13 +37,13 @@ class DockeryWindow(Adw.ApplicationWindow):
         self.sidebar_list.set_activate_on_single_click(True)
         self.sidebar_list.select_row(self.containers_row)
 
-        containers_page = ContainersPage()
-        containers_page.connect(
+        containers_list_page = ContainersListPage()
+        containers_list_page.connect(
             "container-activated",
             self._on_container_activated,
         )
 
-        self.nav_view.push(containers_page)
+        self.nav_view.push(containers_list_page)
 
     def _on_back_clicked(self, _: Gtk.Button) -> None:
         self.nav_view.pop()
@@ -54,8 +54,8 @@ class DockeryWindow(Adw.ApplicationWindow):
     def _on_container_activated(self, _: Gtk.Widget, container: Container) -> None:
         self.back_button.set_visible(True)
 
-        details_page = ContainerPage(container)
-        self.nav_view.push(details_page)
+        container_details_page = ContainerDetailsPage(container)
+        self.nav_view.push(container_details_page)
 
     def _on_sidebar_row_activated(self, _: Gtk.ListBox, row: Gtk.ListBoxRow) -> None:
         index = row.get_index()
@@ -63,29 +63,29 @@ class DockeryWindow(Adw.ApplicationWindow):
         if index == 0:
             self.content_page.set_title("Containers")
 
-            containers_page = ContainersPage()
-            containers_page.connect(
+            containers_list_page = ContainersListPage()
+            containers_list_page.connect(
                 "container-activated",
                 self._on_container_activated,
             )
 
-            self.nav_view.replace([containers_page])
+            self.nav_view.replace([containers_list_page])
             self.back_button.set_visible(False)
         elif index == 1:
             self.content_page.set_title("Images")
 
-            images_page = ImagesPage()
-            self.nav_view.replace([images_page])
+            images_list_page = ImagesListPage()
+            self.nav_view.replace([images_list_page])
             self.back_button.set_visible(False)
         elif index == 2:
             self.content_page.set_title("Volumes")
 
-            volumes_page = VolumesPage()
-            self.nav_view.replace([volumes_page])
+            volumes_list_page = VolumesPage()
+            self.nav_view.replace([volumes_list_page])
             self.back_button.set_visible(False)
         elif index == 3:
             self.content_page.set_title("Networks")
 
-            networks_page = NetworksPage()
-            self.nav_view.replace([networks_page])
+            networks_list_page = NetworksListPage()
+            self.nav_view.replace([networks_list_page])
             self.back_button.set_visible(False)

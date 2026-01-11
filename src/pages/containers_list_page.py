@@ -25,9 +25,9 @@ class ContainerRow(Adw.ActionRow):
     status_class = GObject.Property(type=str)
 
 
-@Gtk.Template(resource_path="/com/scrlkx/dockery/pages/containers_page.ui")
-class ContainersPage(Adw.NavigationPage):
-    __gtype_name__ = "ContainersPage"
+@Gtk.Template(resource_path="/com/scrlkx/dockery/pages/containers_list_page.ui")
+class ContainersListPage(Adw.NavigationPage):
+    __gtype_name__ = "ContainersListPage"
 
     __gsignals__ = {
         "container-activated": (GObject.SignalFlags.RUN_FIRST, None, (object,))

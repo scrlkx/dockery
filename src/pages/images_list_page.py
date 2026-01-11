@@ -15,9 +15,9 @@ class ImageRow(Adw.ActionRow):
     size = GObject.Property(type=str)
 
 
-@Gtk.Template(resource_path="/com/scrlkx/dockery/pages/images_page.ui")
-class ImagesPage(Adw.NavigationPage):
-    __gtype_name__ = "ImagesPage"
+@Gtk.Template(resource_path="/com/scrlkx/dockery/pages/images_list_page.ui")
+class ImagesListPage(Adw.NavigationPage):
+    __gtype_name__ = "ImagesListPage"
 
     search_entry = Gtk.Template.Child()
     images_group = Gtk.Template.Child()
