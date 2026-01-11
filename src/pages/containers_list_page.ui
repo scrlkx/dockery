@@ -2,7 +2,7 @@
 <interface>
     <requires lib="gtk" version="4.0"/>
     <requires lib="Adw" version="1.0"/>
-    <template class="ContainersPage" parent="AdwNavigationPage">
+    <template class="ContainersListPage" parent="AdwNavigationPage">
         <property name="title">Containers</property>
         <property name="child">
             <object class="GtkScrolledWindow">

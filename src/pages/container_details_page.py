@@ -35,9 +35,9 @@ from ..utils.ui import (
 )
 
 
-@Gtk.Template(resource_path="/com/scrlkx/dockery/pages/container_page.ui")
-class ContainerPage(Adw.NavigationPage):
-    __gtype_name__ = "ContainerPage"
+@Gtk.Template(resource_path="/com/scrlkx/dockery/pages/container_details_page.ui")
+class ContainerDetailsPage(Adw.NavigationPage):
+    __gtype_name__ = "ContainerDetailsPage"
 
     name_label = Gtk.Template.Child()
     details_group = Gtk.Template.Child()

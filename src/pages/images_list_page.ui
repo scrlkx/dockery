@@ -2,7 +2,7 @@
 <interface>
     <requires lib="gtk" version="4.0"/>
     <requires lib="Adw" version="1.0"/>
-    <template class="ImagesPage" parent="AdwNavigationPage">
+    <template class="ImagesListPage" parent="AdwNavigationPage">
         <property name="title">Images</property>
         <property name="child">
             <object class="GtkScrolledWindow">

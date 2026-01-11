@@ -3,11 +3,11 @@
   <gresource prefix="/com/scrlkx/dockery">
     <file preprocess="xml-stripblanks">window.ui</file>
     <!-- Pages -->
-    <file preprocess="xml-stripblanks">pages/container_page.ui</file>
-    <file preprocess="xml-stripblanks">pages/containers_page.ui</file>
-    <file preprocess="xml-stripblanks">pages/images_page.ui</file>
-    <file preprocess="xml-stripblanks">pages/networks_page.ui</file>
-    <file preprocess="xml-stripblanks">pages/volumes_page.ui</file>
+    <file preprocess="xml-stripblanks">pages/container_details_page.ui</file>
+    <file preprocess="xml-stripblanks">pages/containers_list_page.ui</file>
+    <file preprocess="xml-stripblanks">pages/images_list_page.ui</file>
+    <file preprocess="xml-stripblanks">pages/networks_list_page.ui</file>
+    <file preprocess="xml-stripblanks">pages/volumes_list_page.ui</file>
     <!-- Styles -->
     <file>style.css</file>
     <!-- Icons -->

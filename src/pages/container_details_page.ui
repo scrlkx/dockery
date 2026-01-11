@@ -2,7 +2,7 @@
 <interface>
     <requires lib="gtk" version="4.0"/>
     <requires lib="Adw" version="1.0"/>
-    <template class="ContainerPage" parent="AdwNavigationPage">
+    <template class="ContainerDetailsPage" parent="AdwNavigationPage">
         <property name="child">
             <object class="GtkScrolledWindow">
                 <property name="vexpand">true</property>

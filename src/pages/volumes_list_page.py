@@ -11,7 +11,7 @@ class VolumeRow(Adw.ActionRow):
     name = GObject.Property(type=str)
 
 
-@Gtk.Template(resource_path="/com/scrlkx/dockery/pages/volumes_page.ui")
+@Gtk.Template(resource_path="/com/scrlkx/dockery/pages/volumes_list_page.ui")
 class VolumesPage(Adw.NavigationPage):
     __gtype_name__ = "VolumesPage"
 

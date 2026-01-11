@@ -40,11 +40,11 @@ install_data([
 
 install_data([
   'pages/__init__.py',
-  'pages/container_page.py',
-  'pages/containers_page.py',
-  'pages/images_page.py',
-  'pages/networks_page.py',
-  'pages/volumes_page.py',
+  'pages/container_details_page.py',
+  'pages/containers_list_page.py',
+  'pages/images_list_page.py',
+  'pages/networks_list_page.py',
+  'pages/volumes_list_page.py',
 ], install_dir: moduledir / 'pages')
 
 install_data([
