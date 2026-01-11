@@ -1,10 +1,12 @@
 from typing import Any
 
 from docker.models.containers import Container
+from docker.models.images import Image
 from gi.repository import Adw, Gtk
 
 from .pages.container_details_page import ContainerDetailsPage
 from .pages.containers_list_page import ContainersListPage
+from .pages.image_details_page import ImageDetailsPage
 from .pages.images_list_page import ImagesListPage
 from .pages.networks_list_page import NetworksListPage
 from .pages.volumes_list_page import VolumesPage
@@ -29,9 +31,9 @@ class DockeryWindow(Adw.ApplicationWindow):
         self.build_ui()
 
     def register_events(self) -> None:
-        self.sidebar_list.connect("row-activated", self._on_sidebar_row_activated)
+        self.sidebar_list.connect("row-activated", self.on_sidebar_row_activated)
 
-        self.back_button.connect("clicked", self._on_back_clicked)
+        self.back_button.connect("clicked", self.on_back_button_clicked)
 
     def build_ui(self):
         self.sidebar_list.set_activate_on_single_click(True)
@@ -40,24 +42,30 @@ class DockeryWindow(Adw.ApplicationWindow):
         containers_list_page = ContainersListPage()
         containers_list_page.connect(
             "container-activated",
-            self._on_container_activated,
+            self.on_container_activated,
         )
 
         self.nav_view.push(containers_list_page)
 
-    def _on_back_clicked(self, _: Gtk.Button) -> None:
+    def on_back_button_clicked(self, _: Gtk.Button) -> None:
         self.nav_view.pop()
 
         if self.nav_view.get_visible_page() is not None:
             self.back_button.set_visible(False)
 
-    def _on_container_activated(self, _: Gtk.Widget, container: Container) -> None:
+    def on_container_activated(self, _: Gtk.Widget, container: Container) -> None:
         self.back_button.set_visible(True)
 
         container_details_page = ContainerDetailsPage(container)
         self.nav_view.push(container_details_page)
 
-    def _on_sidebar_row_activated(self, _: Gtk.ListBox, row: Gtk.ListBoxRow) -> None:
+    def on_image_activated(self, _: Gtk.Widget, image: Image) -> None:
+        self.back_button.set_visible(True)
+
+        image_details_page = ImageDetailsPage(image)
+        self.nav_view.push(image_details_page)
+
+    def on_sidebar_row_activated(self, _: Gtk.ListBox, row: Gtk.ListBoxRow) -> None:
         index = row.get_index()
 
         if index == 0:
@@ -66,7 +74,7 @@ class DockeryWindow(Adw.ApplicationWindow):
             containers_list_page = ContainersListPage()
             containers_list_page.connect(
                 "container-activated",
-                self._on_container_activated,
+                self.on_container_activated,
             )
 
             self.nav_view.replace([containers_list_page])
@@ -75,6 +83,11 @@ class DockeryWindow(Adw.ApplicationWindow):
             self.content_page.set_title("Images")
 
             images_list_page = ImagesListPage()
+            images_list_page.connect(
+                "image-activated",
+                self.on_image_activated,
+            )
+
             self.nav_view.replace([images_list_page])
             self.back_button.set_visible(False)
         elif index == 2:

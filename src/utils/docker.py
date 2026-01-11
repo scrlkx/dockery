@@ -303,16 +303,33 @@ def get_container_next_action(container: Container) -> str:
 
 def get_images() -> list[Image]:
     images = get_docker_client().images.list()
+    images.sort(key=lambda image: image.short_id)
 
-    return [image for image in images if image.tags]
+    return images
+
+
+def get_image_last_tag(image: Image) -> str | None:
+    return image.tags[0] if len(image.tags) > 0 else None
 
 
 def get_image_architecture(image: Image) -> str:
     return get_attribute(image, "Architecture", "unknown")
 
 
+def get_image_os(image: Image) -> str:
+    return get_attribute(image, "Os", "unknown")
+
+
 def get_image_size(image: Image) -> int:
     return get_attribute(image, "Size", 0)
+
+
+def get_image_created_at(image: Image) -> str:
+    return get_attribute(image, "Created")
+
+
+def get_image(identifier: str) -> Image:
+    return get_docker_client().images.get(identifier)
 
 
 def get_volumes() -> list[Volume]:
