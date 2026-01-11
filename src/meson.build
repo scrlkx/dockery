@@ -36,6 +36,7 @@ install_data([
   'components/__init__.py',
   'components/badge.py',
   'components/key_value_row.py',
+  'components/sidebar_row.py',
 ], install_dir: moduledir / 'components')
 
 install_data([
@@ -48,6 +49,7 @@ install_data([
   'pages/networks_list_page.py',
   'pages/volume_details_page.py',
   'pages/volumes_list_page.py',
+  'pages/system_page.py',
 ], install_dir: moduledir / 'pages')
 
 install_data([

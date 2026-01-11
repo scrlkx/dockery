@@ -37,7 +37,7 @@ msgid "ID"
 msgstr "ID"
 
 #: src/pages/container_details_page.py:96 src/pages/network_details_page.py:44
-#: src/pages/volume_details_page.py:45
+#: src/pages/volume_details_page.py:45 src/pages/system_page.py:34
 msgid "Name"
 msgstr "Name"
 
@@ -84,12 +84,12 @@ msgid "Environment variables"
 msgstr "Environment variables"
 
 #: src/pages/container_details_page.ui:52 src/pages/volumes_list_page.ui:6
-#: src/window.py:111 src/window.ui:87
+#: src/window.py:73
 msgid "Volumes"
 msgstr "Volumes"
 
 #: src/pages/container_details_page.ui:57 src/pages/networks_list_page.ui:6
-#: src/window.py:122 src/window.ui:110
+#: src/window.py:80
 msgid "Networks"
 msgstr "Networks"
 
@@ -97,7 +97,7 @@ msgstr "Networks"
 msgid "Port bindings"
 msgstr "Port bindings"
 
-#: src/pages/containers_list_page.ui:6 src/window.py:89 src/window.ui:41
+#: src/pages/containers_list_page.ui:6 src/window.py:59
 msgid "Containers"
 msgstr "Containers"
 
@@ -109,11 +109,11 @@ msgstr "Search by ID, name or image"
 msgid "Size"
 msgstr "Size"
 
-#: src/pages/image_details_page.py:50
+#: src/pages/image_details_page.py:50 src/pages/system_page.py:38
 msgid "Architecture"
 msgstr "Architecture"
 
-#: src/pages/image_details_page.py:51
+#: src/pages/image_details_page.py:51 src/pages/system_page.py:36
 msgid "OS"
 msgstr "OS"
 
@@ -121,7 +121,7 @@ msgstr "OS"
 msgid "Tags"
 msgstr "Tags"
 
-#: src/pages/images_list_page.ui:6 src/window.py:100 src/window.ui:64
+#: src/pages/images_list_page.ui:6 src/window.py:66
 msgid "Images"
 msgstr "Images"
 
@@ -145,27 +145,83 @@ msgstr "Mount path"
 msgid "Search by name"
 msgstr "Search by name"
 
-#: src/utils/docker.py:308 src/utils/ui.py:10
+#: src/pages/system_page.py:35
+msgid "Type"
+msgstr "Type"
+
+#: src/pages/system_page.py:37
+msgid "Kernel"
+msgstr "Kernel"
+
+#: src/pages/system_page.py:39
+msgid "Time"
+msgstr "Time"
+
+#: src/pages/system_page.py:52
+msgid "Version"
+msgstr "Version"
+
+#: src/pages/system_page.py:53
+msgid "Root directory"
+msgstr "Root directory"
+
+#: src/pages/system_page.py:54
+msgid "Storage driver"
+msgstr "Storage driver"
+
+#: src/pages/system_page.py:67
+msgid "Authorization"
+msgstr "Authorization"
+
+#: src/pages/system_page.py:68
+msgid "Log"
+msgstr "Log"
+
+#: src/pages/system_page.py:69
+msgid "Network"
+msgstr "Network"
+
+#: src/pages/system_page.py:70
+msgid "Volume"
+msgstr "Volume"
+
+#: src/pages/system_page.ui:6 src/window.py:87
+msgid "System"
+msgstr "System"
+
+#: src/pages/system_page.ui:24
+msgid "Host"
+msgstr "Host"
+
+#: src/pages/system_page.ui:29
+msgid "Engine"
+msgstr "Engine"
+
+#: src/pages/system_page.ui:34
+msgid "Plugins"
+msgstr "Plugins"
+
+#: src/utils/ui.py:10
 msgid "Running"
 msgstr "Running"
 
-#: src/utils/docker.py:309 src/utils/ui.py:11
+#: src/utils/ui.py:11
 msgid "Paused"
 msgstr "Paused"
 
-#: src/utils/docker.py:310 src/utils/ui.py:12
+#: src/utils/ui.py:12
 msgid "Restarting"
 msgstr "Restarting"
 
-#: src/utils/docker.py:311 src/utils/ui.py:13
+#: src/utils/ui.py:13
 msgid "Created"
 msgstr "Created"
 
-#: src/utils/docker.py:312 src/utils/ui.py:14
+#: src/utils/ui.py:14
 msgid "Exited"
 msgstr "Exited"
 
-#: src/utils/docker.py:313 src/utils/ui.py:15 src/utils/ui.py:18
+#: src/utils/ui.py:15 src/utils/ui.py:18
 msgid "Dead"
 msgstr "Dead"
 

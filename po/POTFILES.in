@@ -14,6 +14,8 @@ src/pages/networks_list_page.ui
 src/pages/volume_details_page.py
 src/pages/volume_details_page.ui
 src/pages/volumes_list_page.ui
+src/pages/system_page.py
+src/pages/system_page.ui
 src/utils/docker.py
 src/utils/ui.py
 src/window.py
