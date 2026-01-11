@@ -58,10 +58,10 @@ def get_container_action_icon(action: str) -> str | None:
 
 
 def iso_to_local(original: str) -> str:
-    date_time = datetime.fromisoformat(original.replace("Z", "+00:00"))
+    date_time = datetime.fromisoformat(original)
     local_date_time = date_time.astimezone()
 
-    return local_date_time.strftime("%c")
+    return local_date_time.strftime("%x %H:%M")
 
 
 def humanize_mount_mode(mode: str | None) -> str:

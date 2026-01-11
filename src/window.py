@@ -2,6 +2,7 @@ from typing import Any
 
 from docker.models.containers import Container
 from docker.models.images import Image
+from docker.models.volumes import Volume
 from gi.repository import Adw, Gtk
 
 from .pages.container_details_page import ContainerDetailsPage
@@ -9,6 +10,7 @@ from .pages.containers_list_page import ContainersListPage
 from .pages.image_details_page import ImageDetailsPage
 from .pages.images_list_page import ImagesListPage
 from .pages.networks_list_page import NetworksListPage
+from .pages.volume_details_page import VolumeDetailsPage
 from .pages.volumes_list_page import VolumesPage
 
 
@@ -65,6 +67,12 @@ class DockeryWindow(Adw.ApplicationWindow):
         image_details_page = ImageDetailsPage(image)
         self.nav_view.push(image_details_page)
 
+    def on_volume_activated(self, _: Gtk.Widget, volume: Volume) -> None:
+        self.back_button.set_visible(True)
+
+        volume_details_page = VolumeDetailsPage(volume)
+        self.nav_view.push(volume_details_page)
+
     def on_sidebar_row_activated(self, _: Gtk.ListBox, row: Gtk.ListBoxRow) -> None:
         index = row.get_index()
 
@@ -94,6 +102,11 @@ class DockeryWindow(Adw.ApplicationWindow):
             self.content_page.set_title("Volumes")
 
             volumes_list_page = VolumesPage()
+            volumes_list_page.connect(
+                "volume-activated",
+                self.on_volume_activated,
+            )
+
             self.nav_view.replace([volumes_list_page])
             self.back_button.set_visible(False)
         elif index == 3:

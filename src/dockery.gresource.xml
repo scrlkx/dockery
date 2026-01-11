@@ -8,9 +8,11 @@
     <!-- Images -->
     <file preprocess="xml-stripblanks">pages/image_details_page.ui</file>
     <file preprocess="xml-stripblanks">pages/images_list_page.ui</file>
+    <!-- Volumes -->
+    <file preprocess="xml-stripblanks">pages/volume_details_page.ui</file>
+    <file preprocess="xml-stripblanks">pages/volumes_list_page.ui</file>
     <!-- Networks -->
     <file preprocess="xml-stripblanks">pages/networks_list_page.ui</file>
-    <file preprocess="xml-stripblanks">pages/volumes_list_page.ui</file>
     <!-- Styles -->
     <file>style.css</file>
     <!-- Icons -->

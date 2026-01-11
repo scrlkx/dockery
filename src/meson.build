@@ -45,6 +45,7 @@ install_data([
   'pages/images_list_page.py',
   'pages/image_details_page.py',
   'pages/networks_list_page.py',
+  'pages/volume_details_page.py',
   'pages/volumes_list_page.py',
 ], install_dir: moduledir / 'pages')
 
