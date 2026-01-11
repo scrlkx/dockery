@@ -238,17 +238,8 @@ def get_container(name: str) -> Container:
 
 
 def get_containers() -> list[Container]:
-    status_order = {
-        "running": 0,
-        "paused": 1,
-        "restarting": 2,
-        "created": 3,
-        "exited": 4,
-        "dead": 5,
-    }
-
     containers = get_docker_client().containers.list(all=True)
-    containers.sort(key=lambda item: (status_order.get(item.status, 99), item.name))
+    containers.sort(key=lambda item: item.name)
 
     return containers
 

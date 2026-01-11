@@ -72,9 +72,7 @@ class ImagesListPage(Adw.NavigationPage):
 
             row.add_suffix(size)
 
-            info = Gtk.Image.new_from_resource(
-                "/com/scrlkx/dockery/icons/chevron-right.svg"
-            )
+            info = Gtk.Image.new_from_icon_name("go-next-symbolic")
             info.add_css_class("flat")
 
             row.add_suffix(info)

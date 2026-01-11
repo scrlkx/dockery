@@ -83,7 +83,7 @@ class ContainersListPage(Adw.NavigationPage):
                 button = self.build_next_action_button(
                     container,
                     self.row_start_container,
-                    "play.svg",
+                    "media-playback-start-symbolic",
                 )
 
                 row.add_suffix(button)
@@ -91,14 +91,12 @@ class ContainersListPage(Adw.NavigationPage):
                 button = self.build_next_action_button(
                     container,
                     self.row_stop_container,
-                    "circle-crossed.svg",
+                    "media-playback-stop-symbolic",
                 )
 
                 row.add_suffix(button)
 
-            info = Gtk.Image.new_from_resource(
-                "/com/scrlkx/dockery/icons/chevron-right.svg"
-            )
+            info = Gtk.Image.new_from_icon_name("go-next-symbolic")
             info.add_css_class("flat")
 
             row.add_suffix(info)
@@ -123,7 +121,7 @@ class ContainersListPage(Adw.NavigationPage):
         button.set_valign(Gtk.Align.CENTER)
         button.set_margin_end(12)
 
-        image = Gtk.Image.new_from_resource(f"/com/scrlkx/dockery/icons/{icon_name}")
+        image = Gtk.Image.new_from_icon_name(icon_name)
 
         box = Gtk.Box(
             orientation=Gtk.Orientation.HORIZONTAL,
