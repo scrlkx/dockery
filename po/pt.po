@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-11 14:05-0300\n"
+"POT-Creation-Date: 2026-01-11 18:52-0300\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 
 #: data/com.scrlkx.dockery.desktop.in:2
@@ -43,7 +43,7 @@ msgid "ID"
 msgstr "ID"
 
 #: src/pages/container_details_page.py:96 src/pages/network_details_page.py:44
-#: src/pages/volume_details_page.py:45
+#: src/pages/volume_details_page.py:45 src/pages/system_page.py:34
 msgid "Name"
 msgstr "Nome"
 
@@ -90,12 +90,12 @@ msgid "Environment variables"
 msgstr "Variáveis de ambiente"
 
 #: src/pages/container_details_page.ui:52 src/pages/volumes_list_page.ui:6
-#: src/window.py:111 src/window.ui:87
+#: src/window.py:73
 msgid "Volumes"
 msgstr "Volumes"
 
 #: src/pages/container_details_page.ui:57 src/pages/networks_list_page.ui:6
-#: src/window.py:122 src/window.ui:110
+#: src/window.py:80
 msgid "Networks"
 msgstr "Redes"
 
@@ -103,7 +103,7 @@ msgstr "Redes"
 msgid "Port bindings"
 msgstr "Portas vinculadas"
 
-#: src/pages/containers_list_page.ui:6 src/window.py:89 src/window.ui:41
+#: src/pages/containers_list_page.ui:6 src/window.py:59
 msgid "Containers"
 msgstr "Containers"
 
@@ -115,11 +115,11 @@ msgstr "Busque por ID, nome ou imagem"
 msgid "Size"
 msgstr "Tamanho"
 
-#: src/pages/image_details_page.py:50
+#: src/pages/image_details_page.py:50 src/pages/system_page.py:38
 msgid "Architecture"
 msgstr "Arquitetura"
 
-#: src/pages/image_details_page.py:51
+#: src/pages/image_details_page.py:51 src/pages/system_page.py:36
 msgid "OS"
 msgstr "SO"
 
@@ -127,7 +127,7 @@ msgstr "SO"
 msgid "Tags"
 msgstr "Etiquetas"
 
-#: src/pages/images_list_page.ui:6 src/window.py:100 src/window.ui:64
+#: src/pages/images_list_page.ui:6 src/window.py:66
 msgid "Images"
 msgstr "Imagens"
 
@@ -151,27 +151,83 @@ msgstr "Ponto de montagem"
 msgid "Search by name"
 msgstr "Busque por nome"
 
-#: src/utils/docker.py:308 src/utils/ui.py:10
+#: src/pages/system_page.py:35
+msgid "Type"
+msgstr "Tipo"
+
+#: src/pages/system_page.py:37
+msgid "Kernel"
+msgstr "Kernel"
+
+#: src/pages/system_page.py:39
+msgid "Time"
+msgstr "Horário"
+
+#: src/pages/system_page.py:52
+msgid "Version"
+msgstr "Versão"
+
+#: src/pages/system_page.py:53
+msgid "Root directory"
+msgstr "Diretório raiz"
+
+#: src/pages/system_page.py:54
+msgid "Storage driver"
+msgstr "Driver de armazenamento"
+
+#: src/pages/system_page.py:67
+msgid "Authorization"
+msgstr "Autorização"
+
+#: src/pages/system_page.py:68
+msgid "Log"
+msgstr "Log"
+
+#: src/pages/system_page.py:69
+msgid "Network"
+msgstr "Rede"
+
+#: src/pages/system_page.py:70
+msgid "Volume"
+msgstr "Volume"
+
+#: src/pages/system_page.ui:6 src/window.py:87
+msgid "System"
+msgstr "Sistema"
+
+#: src/pages/system_page.ui:24
+msgid "Host"
+msgstr "Host"
+
+#: src/pages/system_page.ui:29
+msgid "Engine"
+msgstr "Motor"
+
+#: src/pages/system_page.ui:34
+msgid "Plugins"
+msgstr "Plugins"
+
+#: src/utils/ui.py:10
 msgid "Running"
 msgstr "Em execução"
 
-#: src/utils/docker.py:309 src/utils/ui.py:11
+#: src/utils/ui.py:11
 msgid "Paused"
 msgstr "Pausado"
 
-#: src/utils/docker.py:310 src/utils/ui.py:12
+#: src/utils/ui.py:12
 msgid "Restarting"
 msgstr "Reiniciando"
 
-#: src/utils/docker.py:311 src/utils/ui.py:13
+#: src/utils/ui.py:13
 msgid "Created"
 msgstr "Criado"
 
-#: src/utils/docker.py:312 src/utils/ui.py:14
+#: src/utils/ui.py:14
 msgid "Exited"
 msgstr "Parado"
 
-#: src/utils/docker.py:313 src/utils/ui.py:15 src/utils/ui.py:18
+#: src/utils/ui.py:15 src/utils/ui.py:18
 msgid "Dead"
 msgstr "Morto"
 

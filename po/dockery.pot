@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dockery\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-11 17:29-0300\n"
+"POT-Creation-Date: 2026-01-11 18:56-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -52,7 +52,7 @@ msgid "ID"
 msgstr ""
 
 #: src/pages/container_details_page.py:96 src/pages/network_details_page.py:44
-#: src/pages/volume_details_page.py:45
+#: src/pages/volume_details_page.py:45 src/pages/system_page.py:35
 msgid "Name"
 msgstr ""
 
@@ -99,12 +99,12 @@ msgid "Environment variables"
 msgstr ""
 
 #: src/pages/container_details_page.ui:52 src/pages/volumes_list_page.ui:6
-#: src/window.py:111 src/window.ui:87
+#: src/window.py:73
 msgid "Volumes"
 msgstr ""
 
 #: src/pages/container_details_page.ui:57 src/pages/networks_list_page.ui:6
-#: src/window.py:122 src/window.ui:110
+#: src/window.py:80
 msgid "Networks"
 msgstr ""
 
@@ -112,7 +112,7 @@ msgstr ""
 msgid "Port bindings"
 msgstr ""
 
-#: src/pages/containers_list_page.ui:6 src/window.py:89 src/window.ui:41
+#: src/pages/containers_list_page.ui:6 src/window.py:59
 msgid "Containers"
 msgstr ""
 
@@ -124,11 +124,11 @@ msgstr ""
 msgid "Size"
 msgstr ""
 
-#: src/pages/image_details_page.py:50
+#: src/pages/image_details_page.py:50 src/pages/system_page.py:39
 msgid "Architecture"
 msgstr ""
 
-#: src/pages/image_details_page.py:51
+#: src/pages/image_details_page.py:51 src/pages/system_page.py:37
 msgid "OS"
 msgstr ""
 
@@ -136,7 +136,7 @@ msgstr ""
 msgid "Tags"
 msgstr ""
 
-#: src/pages/images_list_page.ui:6 src/window.py:100 src/window.ui:64
+#: src/pages/images_list_page.ui:6 src/window.py:66
 msgid "Images"
 msgstr ""
 
@@ -158,6 +158,62 @@ msgstr ""
 
 #: src/pages/volumes_list_page.ui:24
 msgid "Search by name"
+msgstr ""
+
+#: src/pages/system_page.py:36
+msgid "Type"
+msgstr ""
+
+#: src/pages/system_page.py:38
+msgid "Kernel"
+msgstr ""
+
+#: src/pages/system_page.py:40
+msgid "Time"
+msgstr ""
+
+#: src/pages/system_page.py:53
+msgid "Version"
+msgstr ""
+
+#: src/pages/system_page.py:54
+msgid "Root directory"
+msgstr ""
+
+#: src/pages/system_page.py:55
+msgid "Storage driver"
+msgstr ""
+
+#: src/pages/system_page.py:68
+msgid "Authorization"
+msgstr ""
+
+#: src/pages/system_page.py:69
+msgid "Log"
+msgstr ""
+
+#: src/pages/system_page.py:70
+msgid "Network"
+msgstr ""
+
+#: src/pages/system_page.py:71
+msgid "Volume"
+msgstr ""
+
+#: src/pages/system_page.ui:6 src/window.py:87
+msgid "System"
+msgstr ""
+
+#: src/pages/system_page.ui:24
+msgid "Host"
+msgstr ""
+
+#: src/pages/system_page.ui:29
+msgid "Engine"
+msgstr ""
+
+#: src/pages/system_page.ui:34
+msgid "Plugins"
 msgstr ""
 
 #: src/utils/ui.py:10

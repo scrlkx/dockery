@@ -67,6 +67,8 @@ class DockerClientProto(Protocol):
         decode: bool = False,
     ) -> Iterator[Dict[str, Any]]: ...
 
+    def info(self) -> Dict[str, Any]: ...
+
 
 class DockerObject(Protocol):
     @property
@@ -370,3 +372,7 @@ def get_network_created_at(network: Network) -> str:
 
 def get_network(identifier: str) -> Network:
     return get_docker_client().networks.get(identifier)
+
+
+def get_system_info() -> dict[str, Any]:
+    return get_docker_client().info()
