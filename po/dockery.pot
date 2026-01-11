@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dockery\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-11 14:05-0300\n"
+"POT-Creation-Date: 2026-01-11 14:16-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -160,27 +160,27 @@ msgstr ""
 msgid "Search by name"
 msgstr ""
 
-#: src/utils/docker.py:308 src/utils/ui.py:10
+#: src/utils/ui.py:10
 msgid "Running"
 msgstr ""
 
-#: src/utils/docker.py:309 src/utils/ui.py:11
+#: src/utils/ui.py:11
 msgid "Paused"
 msgstr ""
 
-#: src/utils/docker.py:310 src/utils/ui.py:12
+#: src/utils/ui.py:12
 msgid "Restarting"
 msgstr ""
 
-#: src/utils/docker.py:311 src/utils/ui.py:13
+#: src/utils/ui.py:13
 msgid "Created"
 msgstr ""
 
-#: src/utils/docker.py:312 src/utils/ui.py:14
+#: src/utils/ui.py:14
 msgid "Exited"
 msgstr ""
 
-#: src/utils/docker.py:313 src/utils/ui.py:15 src/utils/ui.py:18
+#: src/utils/ui.py:15 src/utils/ui.py:18
 msgid "Dead"
 msgstr ""
 
