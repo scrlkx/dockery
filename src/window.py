@@ -4,8 +4,9 @@ from docker.models.containers import Container
 from docker.models.images import Image
 from docker.models.networks import Network
 from docker.models.volumes import Volume
-from gi.repository import Adw, Gtk
+from gi.repository import Adw, Gio, Gtk
 
+from .components.help_overlay import HelpOverlay
 from .components.sidebar_row import SidebarRow
 from .pages.container_details_page import ContainerDetailsPage
 from .pages.containers_list_page import ContainersListPage
@@ -40,7 +41,10 @@ class DockeryWindow(Adw.ApplicationWindow):
 
         self.back_button.connect("clicked", self.on_back_button_clicked)
 
-    def build_ui(self):
+    def build_ui(self) -> None:
+        self.build_primary_menu()
+        self.build_help_overlay()
+
         self.build_sidebar()
 
         containers_list_page = ContainersListPage()
@@ -51,7 +55,25 @@ class DockeryWindow(Adw.ApplicationWindow):
 
         self.nav_view.push(containers_list_page)
 
-    def build_sidebar(self):
+    def build_primary_menu(self) -> None:
+        menu = Gio.Menu()
+
+        # menu.append(_("Preferences"), "app.preferences")
+        menu.append(_("Keyboard Shortcuts"), "win.show-help-overlay")
+        menu.append(_("Help"), "app.help")
+        menu.append(_("About"), "app.about")
+
+        menu_button = Gtk.MenuButton()
+        menu_button.set_icon_name("open-menu-symbolic")
+        menu_button.set_menu_model(menu)
+        menu_button.set_tooltip_text(_("Main Menu"))
+
+        self.header_bar.pack_end(menu_button)
+
+    def build_help_overlay(self) -> None:
+        self.set_help_overlay(HelpOverlay())
+
+    def build_sidebar(self) -> None:
         self.sidebar_list.set_activate_on_single_click(True)
 
         rows = [

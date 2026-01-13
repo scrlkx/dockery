@@ -21,6 +21,7 @@ import gettext
 import locale
 import os
 import sys
+from datetime import date
 from typing import Any, Callable
 
 import gi
@@ -29,7 +30,7 @@ gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
 
 # pylint: disable=wrong-import-position
-from gi.repository import Adw, Gio, GLib
+from gi.repository import Adw, Gio, GLib, Gtk
 
 try:
     locale.setlocale(locale.LC_ALL, "")
@@ -74,7 +75,8 @@ class DockeryApplication(Adw.Application):
 
         self.create_action("quit", lambda _, __: self.quit(), ["<control>q"])
         self.create_action("about", self.on_about_action)
-        self.create_action("preferences", self.on_preferences_action)
+        # self.create_action("preferences", self.on_preferences_action)
+        self.create_action("help", self.on_help_action)
 
     def do_activate(self) -> None:
         win = self.props.active_window
@@ -85,14 +87,16 @@ class DockeryApplication(Adw.Application):
         win.present()
 
     def on_about_action(self, _: Gio.SimpleAction, __: GLib.Variant | None) -> None:
-        about = Adw.AboutDialog(
-            application_name="dockery",
-            application_icon="com.scrlkx.dockery",
-            developer_name="Daniel Freitas",
-            version="0.1.0",
-            developers=["Daniel Freitas"],
-            copyright="© 2025 Daniel Freitas",
-        )
+        about = Adw.AboutDialog()
+
+        about.set_application_name("Dockery")
+        about.set_application_icon("com.scrlkx.dockery")
+        about.set_version("0.1.0")
+        about.set_developer_name("Daniel Freitas")
+        about.set_developers(["Daniel Freitas"])
+        about.set_copyright(f"© 2025-{date.today().year} Daniel Freitas")
+        about.set_license_type(Gtk.License.GPL_3_0_ONLY)
+        about.set_issue_url("https://github.com/scrlkx/dockery/issues")
 
         about.set_translator_credits("")
         about.present(self.props.active_window)
@@ -101,6 +105,13 @@ class DockeryApplication(Adw.Application):
         self, _: Gio.SimpleAction, __: GLib.Variant | None
     ) -> None:
         print("app.preferences action activated")
+
+    def on_help_action(self, _: Gio.SimpleAction, __: GLib.Variant | None) -> None:
+        Gtk.show_uri(
+            self.props.active_window,
+            "https://github.com/scrlkx/dockery/issues",
+            0,
+        )
 
     def create_action(
         self,
