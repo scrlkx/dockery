@@ -9,7 +9,8 @@
         "--socket=fallback-x11",
         "--socket=wayland",
         "--filesystem=/run/docker.sock",
-        "--filesystem=xdg-run/docker.sock"
+        "--filesystem=xdg-run/docker.sock",
+        "--talk-name=org.freedesktop.Flatpak"
     ],
     "cleanup": [
         "/include",
@@ -24,6 +25,51 @@
     ],
     "modules": [
         "com.scrlkx.dockery.py-deps.yml",
+        {
+            "name": "simdutf",
+            "buildsystem": "cmake",
+            "config-opts": [
+                "-DSIMDUTF_BENCHMARKS=OFF",
+                "-DSIMDUTF_TESTS=OFF",
+                "-DBUILD_SHARED_LIBS=ON"
+            ],
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/simdutf/simdutf.git",
+                    "tag": "v6.2.0"
+                }
+            ]
+        },
+        {
+            "name": "fast_float",
+            "buildsystem": "cmake",
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/fastfloat/fast_float.git",
+                    "tag": "v6.1.6"
+                }
+            ]
+        },
+        {
+            "name": "vte",
+            "buildsystem": "meson",
+            "config-opts": [
+                "-Dgtk3=false",
+                "-Dgtk4=true",
+                "-Ddocs=false",
+                "-Dgir=true",
+                "-Dvapi=false"
+            ],
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://gitlab.gnome.org/GNOME/vte.git",
+                    "tag": "0.78.2"
+                }
+            ]
+        },
         {
             "name": "dockery",
             "builddir": true,

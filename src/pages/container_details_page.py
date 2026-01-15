@@ -1,9 +1,9 @@
 import threading
-from typing import cast
+from typing import Any, cast
 
 from docker.errors import NotFound
 from docker.models.containers import Container
-from gi.repository import Adw, GLib, Gtk
+from gi.repository import Adw, GLib, Gtk, Vte
 
 from ..components.confirmation_dialog import ConfirmationDialog
 from ..components.key_value_row import KeyValueRow
@@ -169,6 +169,13 @@ class ContainerDetailsPage(Adw.NavigationPage):
                     callback=self.on_remove_clicked,
                     threaded=False,
                 )
+            elif action == "console":
+                button = QuickActionButton(
+                    label=label,
+                    icon_name=icon,
+                    callback=self.open_console,
+                    threaded=False,
+                )
             elif callback := actions_callback.get(action):
                 button = QuickActionButton(
                     label=label,
@@ -266,6 +273,42 @@ class ContainerDetailsPage(Adw.NavigationPage):
             GLib.idle_add(finish)
 
         threading.Thread(target=task).start()
+
+    def open_console(self) -> None:
+        window = Gtk.Window(title=f"{self.container.name} {(self.container.id)}")
+        window.set_default_size(800, 600)
+
+        terminal = Vte.Terminal()
+        terminal.set_vexpand(True)
+        terminal.set_hexpand(True)
+
+        window.set_child(terminal)
+
+        command = [
+            "flatpak-spawn",
+            "--host",
+            "docker",
+            "exec",
+            "-it",
+            self.container.id,
+            "/bin/sh",
+        ]
+
+        terminal.spawn_async(
+            Vte.PtyFlags.DEFAULT,
+            None,
+            command,
+            None,
+            GLib.SpawnFlags.SEARCH_PATH,
+            None,
+            cast(int, None),
+            cast(Any, -1),
+            None,
+            None,
+        )
+
+        terminal.grab_focus()
+        window.present()
 
     def navigate_back(self) -> None:
         navigation_view = cast(

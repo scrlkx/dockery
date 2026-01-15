@@ -40,6 +40,7 @@ def get_container_action_label(action: str) -> str | None:
         "restart": _("Restart"),
         "kill": _("Kill"),
         "remove": _("Remove"),
+        "console": _("Console"),
     }
 
     return actions.get(action)
@@ -54,6 +55,7 @@ def get_container_action_icon(action: str) -> str | None:
         "restart": "system-reboot-symbolic",
         "kill": "process-stop-symbolic",
         "remove": "user-trash-symbolic",
+        "console": "utilities-terminal-symbolic",
     }
 
     return actions.get(action)

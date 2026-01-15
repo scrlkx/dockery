@@ -64,54 +64,54 @@ msgstr "Quit"
 msgid "Keyboard Shortcuts"
 msgstr "Keyboard Shortcuts"
 
-#: src/pages/container_details_page.py:97 src/pages/image_details_page.py:48
+#: src/pages/container_details_page.py:106 src/pages/image_details_page.py:48
 #: src/pages/network_details_page.py:43
 msgid "ID"
 msgstr "ID"
 
-#: src/pages/container_details_page.py:98 src/pages/network_details_page.py:44
+#: src/pages/container_details_page.py:107 src/pages/network_details_page.py:44
 #: src/pages/volume_details_page.py:45 src/pages/system_page.py:35
 msgid "Name"
 msgstr "Name"
 
-#: src/pages/container_details_page.py:99
+#: src/pages/container_details_page.py:108
 msgid "Image"
 msgstr "Image"
 
-#: src/pages/container_details_page.py:100
+#: src/pages/container_details_page.py:109
 msgid "Status"
 msgstr "Status"
 
-#: src/pages/container_details_page.py:101 src/pages/image_details_page.py:52
+#: src/pages/container_details_page.py:110 src/pages/image_details_page.py:52
 #: src/pages/network_details_page.py:46 src/pages/volume_details_page.py:48
 msgid "Created at"
 msgstr "Created at"
 
-#: src/pages/container_details_page.py:107
+#: src/pages/container_details_page.py:116
 msgid "Started at"
 msgstr "Started at"
 
-#: src/pages/container_details_page.py:112
+#: src/pages/container_details_page.py:121
 msgid "CMD"
 msgstr "CMD"
 
-#: src/pages/container_details_page.py:117
+#: src/pages/container_details_page.py:126
 msgid "Entrypoint"
 msgstr "Entrypoint"
 
-#: src/pages/container_details_page.py:119
+#: src/pages/container_details_page.py:128
 msgid "Restart Policy"
 msgstr "Restart Policy"
 
-#: src/pages/container_details_page.py:261
+#: src/pages/container_details_page.py:250
 msgid "Remove Container?"
 msgstr "Remove Container?"
 
-#: src/pages/container_details_page.py:262
+#: src/pages/container_details_page.py:251
 msgid "Are you sure you want to remove this container?"
 msgstr "Are you sure you want to remove this container?"
 
-#: src/pages/container_details_page.py:263 src/utils/ui.py:42
+#: src/pages/container_details_page.py:252 src/utils/ui.py:42
 msgid "Remove"
 msgstr "Remove"
 
@@ -294,11 +294,15 @@ msgstr "Restart"
 msgid "Kill"
 msgstr "Kill"
 
-#: src/utils/ui.py:71 src/utils/ui.py:78
+#: src/utils/ui.py:43
+msgid "Console"
+msgstr "Console"
+
+#: src/utils/ui.py:73 src/utils/ui.py:80
 msgid "Read-write"
 msgstr "Read-write"
 
-#: src/utils/ui.py:76
+#: src/utils/ui.py:78
 msgid "Read-only"
 msgstr "Read-only"
 

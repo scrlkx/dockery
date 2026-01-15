@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dockery\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-14 22:36-0300\n"
+"POT-Creation-Date: 2026-01-15 01:07-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -118,15 +118,15 @@ msgstr ""
 msgid "Restart Policy"
 msgstr ""
 
-#: src/pages/container_details_page.py:243
+#: src/pages/container_details_page.py:250
 msgid "Remove Container?"
 msgstr ""
 
-#: src/pages/container_details_page.py:244
+#: src/pages/container_details_page.py:251
 msgid "Are you sure you want to remove this container?"
 msgstr ""
 
-#: src/pages/container_details_page.py:245 src/utils/ui.py:42
+#: src/pages/container_details_page.py:252 src/utils/ui.py:42
 msgid "Remove"
 msgstr ""
 
@@ -309,11 +309,15 @@ msgstr ""
 msgid "Kill"
 msgstr ""
 
-#: src/utils/ui.py:71 src/utils/ui.py:78
+#: src/utils/ui.py:43
+msgid "Console"
+msgstr ""
+
+#: src/utils/ui.py:73 src/utils/ui.py:80
 msgid "Read-write"
 msgstr ""
 
-#: src/utils/ui.py:76
+#: src/utils/ui.py:78
 msgid "Read-only"
 msgstr ""
 
