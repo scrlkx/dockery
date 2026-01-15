@@ -1,11 +1,13 @@
-from collections.abc import Callable
+import threading
 from typing import cast
 
+from docker.errors import NotFound
 from docker.models.containers import Container
-from gi.repository import Adw, Gtk
+from gi.repository import Adw, GLib, Gtk
 
 from ..components.confirmation_dialog import ConfirmationDialog
 from ..components.key_value_row import KeyValueRow
+from ..components.quick_action_button import QuickActionButton
 from ..utils.docker import (
     get_container,
     get_container_actions,
@@ -69,7 +71,7 @@ class ContainerDetailsPage(Adw.NavigationPage):
         self.ports_rows = []
         self.environment_rows = []
 
-        self.container = get_container(container.name)
+        self.container = container
 
         self.register_events()
         self.build_ui()
@@ -86,7 +88,14 @@ class ContainerDetailsPage(Adw.NavigationPage):
         self.load_environment_variables()
 
     def reload_ui(self) -> None:
-        self.container = get_container(self.container.name)
+        try:
+            self.container = get_container(self.container.name)
+        except NotFound:
+            if self.get_sensitive():
+                self.navigate_back()
+
+            return
+
         self.build_ui()
 
     def load_details(self) -> None:
@@ -130,14 +139,13 @@ class ContainerDetailsPage(Adw.NavigationPage):
             self.detail_rows.append(row)
 
     def load_quick_actions(self) -> None:
-        callbacks = {
-            "start": self.on_start_clicked,
-            "stop": self.on_stop_clicked,
-            "pause": self.on_pause_clicked,
-            "resume": self.on_resume_clicked,
-            "restart": self.on_restart_clicked,
-            "kill": self.on_kill_clicked,
-            "remove": self.on_remove_clicked,
+        actions_callback = {
+            "start": start_container,
+            "stop": stop_container,
+            "pause": pause_container,
+            "resume": unpause_container,
+            "restart": restart_container,
+            "kill": kill_container,
         }
 
         for row in self.quick_action_rows:
@@ -150,17 +158,29 @@ class ContainerDetailsPage(Adw.NavigationPage):
         for action in actions:
             label = get_container_action_label(action)
             icon = get_container_action_icon(action)
-            callback = callbacks.get(action)
 
-            if label and icon and callback:
-                button = self.build_quick_action_button(
-                    label,
-                    icon,
-                    callback,
+            if not label or not icon:
+                continue
+
+            if action == "remove":
+                button = QuickActionButton(
+                    label=label,
+                    icon_name=icon,
+                    callback=self.on_remove_clicked,
+                    threaded=False,
                 )
+            elif callback := actions_callback.get(action):
+                button = QuickActionButton(
+                    label=label,
+                    icon_name=icon,
+                    callback=lambda f=callback: f(self.container.name),
+                    on_finish=self.reload_ui,
+                )
+            else:
+                continue
 
-                self.quick_actions_group.append(button)
-                self.quick_action_rows.append(button)
+            self.quick_actions_group.append(button)
+            self.quick_action_rows.append(button)
 
     def load_volumes(self) -> None:
         volumes = get_container_volumes(self.container)
@@ -218,45 +238,7 @@ class ContainerDetailsPage(Adw.NavigationPage):
             self.environment_group.add(row)
             self.environment_rows.append(row)
 
-    def build_quick_action_button(
-        self, label_text: str, icon_name: str, callback: Callable[[Gtk.Button], None]
-    ) -> Gtk.Button:
-        content = Adw.ButtonContent(
-            icon_name=icon_name,
-            label=label_text,
-        )
-
-        button = Gtk.Button(hexpand=True)
-        button.set_child(content)
-        button.connect("clicked", callback)
-
-        return button
-
-    def on_start_clicked(self, _: Gtk.Button) -> None:
-        start_container(self.container.name)
-        self.reload_ui()
-
-    def on_pause_clicked(self, _: Gtk.Button) -> None:
-        pause_container(self.container.name)
-        self.reload_ui()
-
-    def on_resume_clicked(self, _: Gtk.Button) -> None:
-        unpause_container(self.container.name)
-        self.reload_ui()
-
-    def on_stop_clicked(self, _: Gtk.Button) -> None:
-        stop_container(self.container.name)
-        self.reload_ui()
-
-    def on_restart_clicked(self, _: Gtk.Button) -> None:
-        restart_container(self.container.name)
-        self.reload_ui()
-
-    def on_kill_clicked(self, _: Gtk.Button) -> None:
-        kill_container(self.container.name)
-        self.reload_ui()
-
-    def on_remove_clicked(self, __: Gtk.Button) -> None:
+    def on_remove_clicked(self) -> None:
         dialog = ConfirmationDialog(
             heading=_("Remove Container?"),
             body=_("Are you sure you want to remove this container?"),
@@ -268,19 +250,27 @@ class ContainerDetailsPage(Adw.NavigationPage):
         dialog.present()
 
     def on_remove_response(self, dialog: Adw.MessageDialog, response: str) -> None:
-        if response == "continue":
+        dialog.close()
+
+        if response != "continue":
+            return
+
+        self.set_sensitive(False)
+
+        def task() -> None:
             remove_container(self.container.name)
 
-            navigation_view = cast(
-                Adw.NavigationView, self.get_ancestor(Adw.NavigationView)
-            )
+            def finish() -> None:
+                self.navigate_back()
 
-            if navigation_view:
-                navigation_view.pop()
+            GLib.idle_add(finish)
 
-        # TODO
-        # it's throwing an error
-        # we should probably close the modal, add a loading,
-        # remove the container and then navigate back
+        threading.Thread(target=task).start()
 
-        dialog.close()
+    def navigate_back(self) -> None:
+        navigation_view = cast(
+            Adw.NavigationView, self.get_ancestor(Adw.NavigationView)
+        )
+
+        if navigation_view:
+            navigation_view.pop()

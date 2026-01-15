@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dockery\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-14 22:00-0300\n"
+"POT-Creation-Date: 2026-01-14 22:36-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -79,54 +79,54 @@ msgstr ""
 msgid "Keyboard Shortcuts"
 msgstr ""
 
-#: src/pages/container_details_page.py:97 src/pages/image_details_page.py:48
+#: src/pages/container_details_page.py:106 src/pages/image_details_page.py:48
 #: src/pages/network_details_page.py:43
 msgid "ID"
 msgstr ""
 
-#: src/pages/container_details_page.py:98 src/pages/network_details_page.py:44
+#: src/pages/container_details_page.py:107 src/pages/network_details_page.py:44
 #: src/pages/volume_details_page.py:45 src/pages/system_page.py:35
 msgid "Name"
 msgstr ""
 
-#: src/pages/container_details_page.py:99
+#: src/pages/container_details_page.py:108
 msgid "Image"
 msgstr ""
 
-#: src/pages/container_details_page.py:100
+#: src/pages/container_details_page.py:109
 msgid "Status"
 msgstr ""
 
-#: src/pages/container_details_page.py:101 src/pages/image_details_page.py:52
+#: src/pages/container_details_page.py:110 src/pages/image_details_page.py:52
 #: src/pages/network_details_page.py:46 src/pages/volume_details_page.py:48
 msgid "Created at"
 msgstr ""
 
-#: src/pages/container_details_page.py:107
+#: src/pages/container_details_page.py:116
 msgid "Started at"
 msgstr ""
 
-#: src/pages/container_details_page.py:112
+#: src/pages/container_details_page.py:121
 msgid "CMD"
 msgstr ""
 
-#: src/pages/container_details_page.py:117
+#: src/pages/container_details_page.py:126
 msgid "Entrypoint"
 msgstr ""
 
-#: src/pages/container_details_page.py:119
+#: src/pages/container_details_page.py:128
 msgid "Restart Policy"
 msgstr ""
 
-#: src/pages/container_details_page.py:261
+#: src/pages/container_details_page.py:243
 msgid "Remove Container?"
 msgstr ""
 
-#: src/pages/container_details_page.py:262
+#: src/pages/container_details_page.py:244
 msgid "Are you sure you want to remove this container?"
 msgstr ""
 
-#: src/pages/container_details_page.py:263 src/utils/ui.py:42
+#: src/pages/container_details_page.py:245 src/utils/ui.py:42
 msgid "Remove"
 msgstr ""
 

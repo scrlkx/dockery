@@ -38,6 +38,7 @@ install_data([
   'components/confirmation_dialog.py',
   'components/help_overlay.py',
   'components/key_value_row.py',
+  'components/quick_action_button.py',
   'components/sidebar_row.py',
 ], install_dir: moduledir / 'components')
 
