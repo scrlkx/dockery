@@ -279,7 +279,7 @@ def get_container_actions(container: Container) -> list[str]:
     actions = {
         "running": ["stop", "pause", "restart", "kill"],
         "restarting": ["stop", "kill"],
-        "paused": ["resume", "stop", "kill"],
+        "paused": ["resume", "kill"],
         "stopped": ["start", "remove"],
         "exited": ["start", "remove"],
         "created": ["start", "remove"],
