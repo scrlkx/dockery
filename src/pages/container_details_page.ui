@@ -43,11 +43,6 @@
                                     </object>
                                 </child>
                                 <child>
-                                    <object class="AdwPreferencesGroup" id="environment_group">
-                                        <property name="title" translatable="yes">Environment variables</property>
-                                    </object>
-                                </child>
-                                <child>
                                     <object class="AdwPreferencesGroup" id="volumes_group">
                                         <property name="title" translatable="yes">Volumes</property>
                                     </object>
@@ -60,6 +55,11 @@
                                 <child>
                                     <object class="AdwPreferencesGroup" id="ports_group">
                                         <property name="title" translatable="yes">Port bindings</property>
+                                    </object>
+                                </child>
+                                <child>
+                                    <object class="AdwPreferencesGroup" id="environment_group">
+                                        <property name="title" translatable="yes">Environment variables</property>
                                     </object>
                                 </child>
                             </object>
