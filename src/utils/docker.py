@@ -277,7 +277,7 @@ def remove_container(name: str) -> None:
 
 def get_container_actions(container: Container) -> list[str]:
     actions = {
-        "running": ["stop", "pause", "restart", "kill"],
+        "running": ["stop", "pause", "restart", "kill", "console"],
         "restarting": ["stop", "kill"],
         "paused": ["resume", "kill"],
         "stopped": ["start", "remove"],
