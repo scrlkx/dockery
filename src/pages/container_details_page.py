@@ -1,8 +1,10 @@
 from collections.abc import Callable
+from typing import cast
 
 from docker.models.containers import Container
 from gi.repository import Adw, Gtk
 
+from ..components.confirmation_dialog import ConfirmationDialog
 from ..components.key_value_row import KeyValueRow
 from ..utils.docker import (
     get_container,
@@ -262,6 +264,31 @@ class ContainerDetailsPage(Adw.NavigationPage):
         kill_container(self.container.name)
         self.reload_ui()
 
-    def on_remove_clicked(self, _: Gtk.Button) -> None:
-        remove_container(self.container.name)
-        self.reload_ui()
+    def on_remove_clicked(self, __: Gtk.Button) -> None:
+        dialog = ConfirmationDialog(
+            heading=_("Remove Container?"),
+            body=_("Are you sure you want to remove this container?"),
+            action_label=_("Remove"),
+        )
+
+        dialog.connect("response", self.on_remove_response)
+        dialog.set_transient_for(cast(Gtk.Window, self.get_root()))
+        dialog.present()
+
+    def on_remove_response(self, dialog: Adw.MessageDialog, response: str) -> None:
+        if response == "continue":
+            remove_container(self.container.name)
+
+            navigation_view = cast(
+                Adw.NavigationView, self.get_ancestor(Adw.NavigationView)
+            )
+
+            if navigation_view:
+                navigation_view.pop()
+
+        # TODO
+        # it's throwing an error
+        # we should probably close the modal, add a loading,
+        # remove the container and then navigate back
+
+        dialog.close()
