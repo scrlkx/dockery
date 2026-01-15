@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dockery\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-14 21:41-0300\n"
+"POT-Creation-Date: 2026-01-14 22:00-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -46,19 +46,19 @@ msgstr ""
 msgid "Daniel Freitas"
 msgstr ""
 
-#: src/components/confirmation_dialog.py:10
+#: src/components/confirmation_dialog.py:11
 msgid "Are you sure?"
 msgstr ""
 
-#: src/components/confirmation_dialog.py:11
+#: src/components/confirmation_dialog.py:12
 msgid "Do you really want to continue?"
 msgstr ""
 
-#: src/components/confirmation_dialog.py:12
+#: src/components/confirmation_dialog.py:13
 msgid "Continue"
 msgstr ""
 
-#: src/components/confirmation_dialog.py:20
+#: src/components/confirmation_dialog.py:21
 msgid "Cancel"
 msgstr ""
 
@@ -118,15 +118,15 @@ msgstr ""
 msgid "Restart Policy"
 msgstr ""
 
-#: src/pages/container_details_page.py:269
+#: src/pages/container_details_page.py:261
 msgid "Remove Container?"
 msgstr ""
 
-#: src/pages/container_details_page.py:270
+#: src/pages/container_details_page.py:262
 msgid "Are you sure you want to remove this container?"
 msgstr ""
 
-#: src/pages/container_details_page.py:271 src/utils/ui.py:42
+#: src/pages/container_details_page.py:263 src/utils/ui.py:42
 msgid "Remove"
 msgstr ""
 
@@ -139,22 +139,22 @@ msgstr ""
 msgid "Details"
 msgstr ""
 
-#: src/pages/container_details_page.ui:47
-msgid "Environment variables"
-msgstr ""
-
-#: src/pages/container_details_page.ui:52 src/pages/volumes_list_page.ui:6
+#: src/pages/container_details_page.ui:47 src/pages/volumes_list_page.ui:6
 #: src/window.py:95
 msgid "Volumes"
 msgstr ""
 
-#: src/pages/container_details_page.ui:57 src/pages/networks_list_page.ui:6
+#: src/pages/container_details_page.ui:52 src/pages/networks_list_page.ui:6
 #: src/window.py:102
 msgid "Networks"
 msgstr ""
 
-#: src/pages/container_details_page.ui:62
+#: src/pages/container_details_page.ui:57
 msgid "Port bindings"
+msgstr ""
+
+#: src/pages/container_details_page.ui:62
+msgid "Environment variables"
 msgstr ""
 
 #: src/pages/containers_list_page.ui:6 src/window.py:81

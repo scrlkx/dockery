@@ -45,17 +45,17 @@ class ContainerDetailsPage(Adw.NavigationPage):
     name_label = Gtk.Template.Child()
     details_group = Gtk.Template.Child()
     quick_actions_group = Gtk.Template.Child()
-    environment_group = Gtk.Template.Child()
     volumes_group = Gtk.Template.Child()
     networks_group = Gtk.Template.Child()
     ports_group = Gtk.Template.Child()
+    environment_group = Gtk.Template.Child()
 
     detail_rows: list[Adw.ActionRow] = []
     quick_action_rows: list[Gtk.Button] = []
-    environment_rows: list[Adw.ActionRow] = []
     volumes_rows: list[Adw.ActionRow] = []
     networks_rows: list[Adw.ActionRow] = []
     ports_rows: list[Adw.ActionRow] = []
+    environment_rows: list[Adw.ActionRow] = []
 
     container: Container
 
@@ -64,10 +64,10 @@ class ContainerDetailsPage(Adw.NavigationPage):
 
         self.detail_rows = []
         self.quick_action_rows = []
-        self.environment_rows = []
         self.volumes_rows = []
         self.networks_rows = []
         self.ports_rows = []
+        self.environment_rows = []
 
         self.container = get_container(container.name)
 
@@ -80,10 +80,10 @@ class ContainerDetailsPage(Adw.NavigationPage):
     def build_ui(self) -> None:
         self.load_details()
         self.load_quick_actions()
-        self.load_environment_variables()
         self.load_volumes()
         self.load_networks()
         self.load_ports()
+        self.load_environment_variables()
 
     def reload_ui(self) -> None:
         self.container = get_container(self.container.name)
@@ -162,20 +162,6 @@ class ContainerDetailsPage(Adw.NavigationPage):
                 self.quick_actions_group.append(button)
                 self.quick_action_rows.append(button)
 
-    def load_environment_variables(self) -> None:
-        variables = get_container_environment_variables(self.container)
-
-        for row in self.environment_rows:
-            self.environment_group.remove(row)
-
-        self.environment_rows.clear()
-
-        for key, value in variables.items():
-            row = KeyValueRow(key, value)
-
-            self.environment_group.add(row)
-            self.environment_rows.append(row)
-
     def load_volumes(self) -> None:
         volumes = get_container_volumes(self.container)
 
@@ -218,24 +204,30 @@ class ContainerDetailsPage(Adw.NavigationPage):
             self.ports_group.add(row)
             self.ports_rows.append(row)
 
+    def load_environment_variables(self) -> None:
+        variables = get_container_environment_variables(self.container)
+
+        for row in self.environment_rows:
+            self.environment_group.remove(row)
+
+        self.environment_rows.clear()
+
+        for key, value in variables.items():
+            row = KeyValueRow(key, value)
+
+            self.environment_group.add(row)
+            self.environment_rows.append(row)
+
     def build_quick_action_button(
         self, label_text: str, icon_name: str, callback: Callable[[Gtk.Button], None]
     ) -> Gtk.Button:
-        box = Gtk.Box(
-            orientation=Gtk.Orientation.HORIZONTAL,
-            spacing=6,
-            halign=Gtk.Align.CENTER,
-            valign=Gtk.Align.CENTER,
+        content = Adw.ButtonContent(
+            icon_name=icon_name,
+            label=label_text,
         )
 
-        image = Gtk.Image.new_from_icon_name(icon_name)
-        box.append(image)
-
-        label = Gtk.Label(label=label_text)
-        box.append(label)
-
         button = Gtk.Button(hexpand=True)
-        button.set_child(box)
+        button.set_child(content)
         button.connect("clicked", callback)
 
         return button

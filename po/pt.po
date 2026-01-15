@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-14 21:41-0300\n"
+"POT-Creation-Date: 2026-01-14 22:00-0300\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 
 #: data/com.scrlkx.dockery.desktop.in:2
@@ -37,19 +37,19 @@ msgstr ""
 msgid "Daniel Freitas"
 msgstr "Daniel Freitas"
 
-#: src/components/confirmation_dialog.py:10
+#: src/components/confirmation_dialog.py:11
 msgid "Are you sure?"
 msgstr "Tem certeza?"
 
-#: src/components/confirmation_dialog.py:11
+#: src/components/confirmation_dialog.py:12
 msgid "Do you really want to continue?"
 msgstr "Você realmente deseja continuar?"
 
-#: src/components/confirmation_dialog.py:12
+#: src/components/confirmation_dialog.py:13
 msgid "Continue"
 msgstr "Continuar"
 
-#: src/components/confirmation_dialog.py:20
+#: src/components/confirmation_dialog.py:21
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -109,15 +109,15 @@ msgstr "Ponto de entrada"
 msgid "Restart Policy"
 msgstr "Política de reinício"
 
-#: src/pages/container_details_page.py:269
+#: src/pages/container_details_page.py:261
 msgid "Remove Container?"
 msgstr "Remover Container?"
 
-#: src/pages/container_details_page.py:270
+#: src/pages/container_details_page.py:262
 msgid "Are you sure you want to remove this container?"
 msgstr "Você quer realmente remover este container?"
 
-#: src/pages/container_details_page.py:271 src/utils/ui.py:42
+#: src/pages/container_details_page.py:263 src/utils/ui.py:42
 msgid "Remove"
 msgstr "Remover"
 
@@ -130,23 +130,23 @@ msgstr "Ações rápidas"
 msgid "Details"
 msgstr "Detalhes"
 
-#: src/pages/container_details_page.ui:47
-msgid "Environment variables"
-msgstr "Variáveis de ambiente"
-
-#: src/pages/container_details_page.ui:52 src/pages/volumes_list_page.ui:6
+#: src/pages/container_details_page.ui:47 src/pages/volumes_list_page.ui:6
 #: src/window.py:95
 msgid "Volumes"
 msgstr "Volumes"
 
-#: src/pages/container_details_page.ui:57 src/pages/networks_list_page.ui:6
+#: src/pages/container_details_page.ui:52 src/pages/networks_list_page.ui:6
 #: src/window.py:102
 msgid "Networks"
 msgstr "Redes"
 
-#: src/pages/container_details_page.ui:62
+#: src/pages/container_details_page.ui:57
 msgid "Port bindings"
 msgstr "Portas vinculadas"
+
+#: src/pages/container_details_page.ui:62
+msgid "Environment variables"
+msgstr "Variáveis de ambiente"
 
 #: src/pages/containers_list_page.ui:6 src/window.py:81
 msgid "Containers"
