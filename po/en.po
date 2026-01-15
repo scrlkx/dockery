@@ -31,61 +31,89 @@ msgstr ""
 msgid "Daniel Freitas"
 msgstr "Daniel Freitas"
 
-#: src/components/help_overlay.py:13
+#: src/components/confirmation_dialog.py:10
+msgid "Are you sure?"
+msgstr "Are you sure?"
+
+#: src/components/confirmation_dialog.py:11
+msgid "Do you really want to continue?"
+msgstr "Do you really want to continue?"
+
+#: src/components/confirmation_dialog.py:12
+msgid "Continue"
+msgstr "Continue"
+
+#: src/components/confirmation_dialog.py:20
+msgid "Cancel"
+msgstr "Cancel"
+
+#: src/components/help_overlay.py:14
 msgid "General"
 msgstr "General"
 
-#: src/components/help_overlay.py:16
+#: src/components/help_overlay.py:17
 msgid "Application"
 msgstr "Application"
 
-#: src/components/help_overlay.py:19
+#: src/components/help_overlay.py:20
 msgid "Quit"
 msgstr "Quit"
 
 #. menu.append(_("Preferences"), "app.preferences")
-#: src/components/help_overlay.py:23 src/window.py:62
+#: src/components/help_overlay.py:24 src/window.py:62
 msgid "Keyboard Shortcuts"
 msgstr "Keyboard Shortcuts"
 
-#: src/pages/container_details_page.py:95 src/pages/image_details_page.py:48
+#: src/pages/container_details_page.py:97 src/pages/image_details_page.py:48
 #: src/pages/network_details_page.py:43
 msgid "ID"
 msgstr "ID"
 
-#: src/pages/container_details_page.py:96 src/pages/network_details_page.py:44
+#: src/pages/container_details_page.py:98 src/pages/network_details_page.py:44
 #: src/pages/volume_details_page.py:45 src/pages/system_page.py:35
 msgid "Name"
 msgstr "Name"
 
-#: src/pages/container_details_page.py:97
+#: src/pages/container_details_page.py:99
 msgid "Image"
 msgstr "Image"
 
-#: src/pages/container_details_page.py:98
+#: src/pages/container_details_page.py:100
 msgid "Status"
 msgstr "Status"
 
-#: src/pages/container_details_page.py:99 src/pages/image_details_page.py:52
+#: src/pages/container_details_page.py:101 src/pages/image_details_page.py:52
 #: src/pages/network_details_page.py:46 src/pages/volume_details_page.py:48
 msgid "Created at"
 msgstr "Created at"
 
-#: src/pages/container_details_page.py:105
+#: src/pages/container_details_page.py:107
 msgid "Started at"
 msgstr "Started at"
 
-#: src/pages/container_details_page.py:110
+#: src/pages/container_details_page.py:112
 msgid "CMD"
 msgstr "CMD"
 
-#: src/pages/container_details_page.py:115
+#: src/pages/container_details_page.py:117
 msgid "Entrypoint"
 msgstr "Entrypoint"
 
-#: src/pages/container_details_page.py:117
+#: src/pages/container_details_page.py:119
 msgid "Restart Policy"
 msgstr "Restart Policy"
+
+#: src/pages/container_details_page.py:269
+msgid "Remove Container?"
+msgstr "Remove Container?"
+
+#: src/pages/container_details_page.py:270
+msgid "Are you sure you want to remove this container?"
+msgstr "Are you sure you want to remove this container?"
+
+#: src/pages/container_details_page.py:271 src/utils/ui.py:42
+msgid "Remove"
+msgstr "Remove"
 
 #: src/pages/container_details_page.ui:31
 msgid "Quick actions"
@@ -265,10 +293,6 @@ msgstr "Restart"
 #: src/utils/ui.py:41
 msgid "Kill"
 msgstr "Kill"
-
-#: src/utils/ui.py:42
-msgid "Remove"
-msgstr "Remove"
 
 #: src/utils/ui.py:71 src/utils/ui.py:78
 msgid "Read-write"

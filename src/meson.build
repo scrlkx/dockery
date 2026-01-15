@@ -35,6 +35,7 @@ install_data([
 install_data([
   'components/__init__.py',
   'components/badge.py',
+  'components/confirmation_dialog.py',
   'components/help_overlay.py',
   'components/key_value_row.py',
   'components/sidebar_row.py',

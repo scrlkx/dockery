@@ -272,7 +272,7 @@ def kill_container(name: str) -> None:
 
 def remove_container(name: str) -> None:
     container = get_docker_client().containers.get(name)
-    container.kill()
+    container.remove()
 
 
 def get_container_actions(container: Container) -> list[str]:
