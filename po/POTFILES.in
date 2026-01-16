@@ -3,6 +3,7 @@ data/com.scrlkx.dockery.gschema.xml
 data/com.scrlkx.dockery.metainfo.xml.in
 src/main.py
 src/components/confirmation_dialog.py
+src/components/error_dialog.py
 src/components/help_overlay.py
 src/pages/container_details_page.py
 src/pages/container_details_page.ui

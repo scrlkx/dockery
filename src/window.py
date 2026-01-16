@@ -17,6 +17,7 @@ from .pages.networks_list_page import NetworksListPage
 from .pages.system_page import SystemPage
 from .pages.volume_details_page import VolumeDetailsPage
 from .pages.volumes_list_page import VolumesPage
+from .utils import ui
 from .utils.i18n import _
 
 
@@ -35,6 +36,8 @@ class DockeryWindow(Adw.ApplicationWindow):
 
         self.register_events()
         self.build_ui()
+
+        ui.set_main_window(self)
 
     def register_events(self) -> None:
         self.sidebar_list.connect("row-activated", self.on_sidebar_row_activated)

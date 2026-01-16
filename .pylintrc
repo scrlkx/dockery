@@ -9,6 +9,8 @@ disable=missing-module-docstring,
     too-few-public-methods,
     too-many-arguments,
     too-many-positional-arguments,
+    broad-exception-caught,
+    global-statement,
     duplicate-code,
     fixme
 
