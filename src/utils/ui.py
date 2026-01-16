@@ -1,8 +1,29 @@
 from datetime import datetime
 
 from docker.models.containers import Container
+from gi.repository import Adw
 
+from ..components.error_dialog import ErrorDialog
 from .i18n import _
+
+_window: Adw.ApplicationWindow | None = None  # pylint: disable=invalid-name
+
+
+def set_main_window(window: Adw.ApplicationWindow) -> None:
+    global _window
+    _window = window
+
+
+def show_error_dialog(message: str) -> None:
+    if not _window:
+        print(f"Error dialog not shown because main window is not set: {message}")
+        return
+
+    dialog = ErrorDialog(
+        message=message,
+        transient_for=_window,
+    )
+    dialog.present()
 
 
 def get_container_status_label(container: Container) -> str:

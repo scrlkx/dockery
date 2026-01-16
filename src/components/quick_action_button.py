@@ -4,6 +4,8 @@ from typing import Any
 
 from gi.repository import Adw, GLib, Gtk
 
+from ..utils import ui
+
 
 class QuickActionButton(Gtk.Button):
     def __init__(
@@ -39,9 +41,14 @@ class QuickActionButton(Gtk.Button):
         self.set_sensitive(False)
 
         def task() -> None:
-            self.callback()
-
-            if self.on_finish:
-                GLib.idle_add(self.on_finish)
+            try:
+                self.callback()
+            except Exception as exception:
+                GLib.idle_add(ui.show_error_dialog, str(exception))
+            finally:
+                if self.on_finish:
+                    GLib.idle_add(self.on_finish)
+                else:
+                    GLib.idle_add(self.set_sensitive, True)
 
         threading.Thread(target=task).start()

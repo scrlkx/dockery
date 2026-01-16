@@ -47,6 +47,18 @@ msgstr "Continue"
 msgid "Cancel"
 msgstr "Cancel"
 
+#: src/components/error_dialog.py:12
+msgid "Something went wrong!"
+msgstr "Something went wrong!"
+
+#: src/components/error_dialog.py:14
+msgid "The operation could not be completed."
+msgstr "The operation could not be completed."
+
+#: src/components/error_dialog.py:21
+msgid "Close"
+msgstr "Close"
+
 #: src/components/help_overlay.py:14
 msgid "General"
 msgstr "General"
@@ -60,7 +72,7 @@ msgid "Quit"
 msgstr "Quit"
 
 #. menu.append(_("Preferences"), "app.preferences")
-#: src/components/help_overlay.py:24 src/window.py:62
+#: src/components/help_overlay.py:24 src/window.py:65
 msgid "Keyboard Shortcuts"
 msgstr "Keyboard Shortcuts"
 
@@ -111,7 +123,7 @@ msgstr "Remove Container?"
 msgid "Are you sure you want to remove this container?"
 msgstr "Are you sure you want to remove this container?"
 
-#: src/pages/container_details_page.py:252 src/utils/ui.py:42
+#: src/pages/container_details_page.py:252 src/utils/ui.py:63
 msgid "Remove"
 msgstr "Remove"
 
@@ -125,12 +137,12 @@ msgid "Details"
 msgstr "Details"
 
 #: src/pages/container_details_page.ui:47 src/pages/volumes_list_page.ui:6
-#: src/window.py:95
+#: src/window.py:98
 msgid "Volumes"
 msgstr "Volumes"
 
 #: src/pages/container_details_page.ui:52 src/pages/networks_list_page.ui:6
-#: src/window.py:102
+#: src/window.py:105
 msgid "Networks"
 msgstr "Networks"
 
@@ -142,7 +154,7 @@ msgstr "Port bindings"
 msgid "Environment variables"
 msgstr "Environment variables"
 
-#: src/pages/containers_list_page.ui:6 src/window.py:81
+#: src/pages/containers_list_page.ui:6 src/window.py:84
 msgid "Containers"
 msgstr "Containers"
 
@@ -166,7 +178,7 @@ msgstr "OS"
 msgid "Tags"
 msgstr "Tags"
 
-#: src/pages/images_list_page.ui:6 src/window.py:88
+#: src/pages/images_list_page.ui:6 src/window.py:91
 msgid "Images"
 msgstr "Images"
 
@@ -230,7 +242,7 @@ msgstr "Network"
 msgid "Volume"
 msgstr "Volume"
 
-#: src/pages/system_page.ui:6 src/window.py:109
+#: src/pages/system_page.ui:6 src/window.py:112
 msgid "System"
 msgstr "System"
 
@@ -246,74 +258,74 @@ msgstr "Engine"
 msgid "Plugins"
 msgstr "Plugins"
 
-#: src/utils/ui.py:10
+#: src/utils/ui.py:31
 msgid "Running"
 msgstr "Running"
 
-#: src/utils/ui.py:11
+#: src/utils/ui.py:32
 msgid "Paused"
 msgstr "Paused"
 
-#: src/utils/ui.py:12
+#: src/utils/ui.py:33
 msgid "Restarting"
 msgstr "Restarting"
 
-#: src/utils/ui.py:13
+#: src/utils/ui.py:34
 msgid "Created"
 msgstr "Created"
 
-#: src/utils/ui.py:14
+#: src/utils/ui.py:35
 msgid "Exited"
 msgstr "Exited"
 
-#: src/utils/ui.py:15 src/utils/ui.py:18
+#: src/utils/ui.py:36 src/utils/ui.py:39
 msgid "Dead"
 msgstr "Dead"
 
-#: src/utils/ui.py:36
+#: src/utils/ui.py:57
 msgid "Start"
 msgstr "Start"
 
-#: src/utils/ui.py:37
+#: src/utils/ui.py:58
 msgid "Stop"
 msgstr "Stop"
 
-#: src/utils/ui.py:38
+#: src/utils/ui.py:59
 msgid "Pause"
 msgstr "Pause"
 
-#: src/utils/ui.py:39
+#: src/utils/ui.py:60
 msgid "Resume"
 msgstr "Resume"
 
-#: src/utils/ui.py:40
+#: src/utils/ui.py:61
 msgid "Restart"
 msgstr "Restart"
 
-#: src/utils/ui.py:41
+#: src/utils/ui.py:62
 msgid "Kill"
 msgstr "Kill"
 
-#: src/utils/ui.py:43
+#: src/utils/ui.py:64
 msgid "Console"
 msgstr "Console"
 
-#: src/utils/ui.py:73 src/utils/ui.py:80
+#: src/utils/ui.py:94 src/utils/ui.py:101
 msgid "Read-write"
 msgstr "Read-write"
 
-#: src/utils/ui.py:78
+#: src/utils/ui.py:99
 msgid "Read-only"
 msgstr "Read-only"
 
-#: src/window.py:63
+#: src/window.py:66
 msgid "Help"
 msgstr "Help"
 
-#: src/window.py:64
+#: src/window.py:67
 msgid "About"
 msgstr "About"
 
-#: src/window.py:69
+#: src/window.py:72
 msgid "Main Menu"
 msgstr "Main Menu"
