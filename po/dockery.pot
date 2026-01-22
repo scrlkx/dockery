@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dockery\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-15 21:22-0300\n"
+"POT-Creation-Date: 2026-01-21 21:06-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -331,6 +331,18 @@ msgstr ""
 
 #: src/utils/ui.py:99
 msgid "Read-only"
+msgstr ""
+
+#: src/utils/ui.py:106 src/utils/ui.py:111
+msgid "shared"
+msgstr ""
+
+#: src/utils/ui.py:108 src/utils/ui.py:115
+msgid "private"
+msgstr ""
+
+#: src/utils/ui.py:113
+msgid "slave"
 msgstr ""
 
 #: src/window.py:66

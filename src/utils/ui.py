@@ -103,16 +103,16 @@ def humanize_mount_mode(mode: str | None) -> str:
     extras: list[str] = []
 
     if "z" in flags:
-        extras.append("shared (SELinux)")
+        extras.append(f"{_('shared')} (SELinux)")
     elif "Z" in flags:
-        extras.append("private (SELinux)")
+        extras.append(f"{_('private')} (SELinux)")
 
     if "rshared" in flags:
-        extras.append("shared")
+        extras.append(_("shared"))
     elif "rslave" in flags:
-        extras.append("slave")
+        extras.append(_("slave"))
     elif "rprivate" in flags:
-        extras.append("private")
+        extras.append(_("private"))
 
     if extras:
         return f"{access} ({', '.join(extras)})"
