@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-15 21:22-0300\n"
+"POT-Creation-Date: 2026-01-21 21:06-0300\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 
 #: data/com.scrlkx.dockery.desktop.in:2
@@ -323,6 +323,18 @@ msgstr "Leitura e escrita"
 #: src/utils/ui.py:99
 msgid "Read-only"
 msgstr "Apenas leitura"
+
+#: src/utils/ui.py:106 src/utils/ui.py:111
+msgid "shared"
+msgstr "compartilhado"
+
+#: src/utils/ui.py:108 src/utils/ui.py:115
+msgid "private"
+msgstr "privado"
+
+#: src/utils/ui.py:113
+msgid "slave"
+msgstr "servo"
 
 #: src/window.py:66
 msgid "Help"

@@ -318,6 +318,18 @@ msgstr "Read-write"
 msgid "Read-only"
 msgstr "Read-only"
 
+#: src/utils/ui.py:106 src/utils/ui.py:111
+msgid "shared"
+msgstr "shared"
+
+#: src/utils/ui.py:108 src/utils/ui.py:115
+msgid "private"
+msgstr "private"
+
+#: src/utils/ui.py:113
+msgid "slave"
+msgstr "slave"
+
 #: src/window.py:66
 msgid "Help"
 msgstr "Help"
