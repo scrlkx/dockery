@@ -1,17 +1,27 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-21 21:06-0300\n"
+"POT-Creation-Date: 2026-01-25 21:48-0300\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 
 #: data/com.scrlkx.dockery.desktop.in:2
-#: data/com.scrlkx.dockery.metainfo.xml.in:7
+#: data/com.scrlkx.dockery.metainfo.xml.in:7 src/window.py:39
 msgid "Dockery"
 msgstr "Dockery"
 
 #: data/com.scrlkx.dockery.desktop.in:8
 msgid "Docker;Containers;DevOps;"
 msgstr "Docker;Containers;DevOps;"
+
+#: data/com.scrlkx.dockery.gschema.xml:6
+msgid "List of Docker connections"
+msgstr ""
+
+#: data/com.scrlkx.dockery.gschema.xml:7
+msgid ""
+"Stores a list of configured Docker connections, where each connection is a "
+"tuple of (name, uri)."
+msgstr ""
 
 #: data/com.scrlkx.dockery.metainfo.xml.in:8
 msgid "Adwaita-based Docker management UI"
@@ -53,32 +63,32 @@ msgstr "Continuar"
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: src/components/error_dialog.py:12
+#: src/components/error_dialog.py:14
 msgid "Something went wrong!"
 msgstr "Algo deu errado!"
 
-#: src/components/error_dialog.py:14
+#: src/components/error_dialog.py:16
 msgid "The operation could not be completed."
 msgstr "A operação não pôde ser concluída."
 
-#: src/components/error_dialog.py:21
+#: src/components/error_dialog.py:23
 msgid "Close"
 msgstr "Fechar"
 
-#: src/components/help_overlay.py:14
+#: src/components/help_overlay.py:16
 msgid "General"
 msgstr "Geral"
 
-#: src/components/help_overlay.py:17
+#: src/components/help_overlay.py:19
 msgid "Application"
 msgstr "Aplicação"
 
-#: src/components/help_overlay.py:20
+#: src/components/help_overlay.py:22
 msgid "Quit"
 msgstr "Sair"
 
 #. menu.append(_("Preferences"), "app.preferences")
-#: src/components/help_overlay.py:24 src/window.py:65
+#: src/components/help_overlay.py:26 src/window.py:88
 msgid "Keyboard Shortcuts"
 msgstr "Atalhos do Teclado"
 
@@ -88,7 +98,7 @@ msgid "ID"
 msgstr "ID"
 
 #: src/pages/container_details_page.py:107 src/pages/network_details_page.py:44
-#: src/pages/volume_details_page.py:45 src/pages/system_page.py:35
+#: src/pages/volume_details_page.py:45 src/pages/system_page.py:58
 msgid "Name"
 msgstr "Nome"
 
@@ -143,12 +153,12 @@ msgid "Details"
 msgstr "Detalhes"
 
 #: src/pages/container_details_page.ui:47 src/pages/volumes_list_page.ui:6
-#: src/window.py:98
+#: src/window.py:121
 msgid "Volumes"
 msgstr "Volumes"
 
 #: src/pages/container_details_page.ui:52 src/pages/networks_list_page.ui:6
-#: src/window.py:105
+#: src/window.py:128
 msgid "Networks"
 msgstr "Redes"
 
@@ -160,23 +170,19 @@ msgstr "Portas vinculadas"
 msgid "Environment variables"
 msgstr "Variáveis de ambiente"
 
-#: src/pages/containers_list_page.ui:6 src/window.py:84
+#: src/pages/containers_list_page.ui:6 src/window.py:107
 msgid "Containers"
 msgstr "Containers"
-
-#: src/pages/containers_list_page.ui:24
-msgid "Search by ID, name or image"
-msgstr "Busque por ID, nome ou imagem"
 
 #: src/pages/image_details_page.py:49
 msgid "Size"
 msgstr "Tamanho"
 
-#: src/pages/image_details_page.py:50 src/pages/system_page.py:39
+#: src/pages/image_details_page.py:50 src/pages/system_page.py:62
 msgid "Architecture"
 msgstr "Arquitetura"
 
-#: src/pages/image_details_page.py:51 src/pages/system_page.py:37
+#: src/pages/image_details_page.py:51 src/pages/system_page.py:60
 msgid "OS"
 msgstr "SO"
 
@@ -184,85 +190,81 @@ msgstr "SO"
 msgid "Tags"
 msgstr "Etiquetas"
 
-#: src/pages/images_list_page.ui:6 src/window.py:91
+#: src/pages/images_list_page.ui:6 src/window.py:114
 msgid "Images"
 msgstr "Imagens"
 
-#: src/pages/images_list_page.ui:24
-msgid "Search by short ID or tag"
-msgstr "Busque por ID curto ou etiqueta"
+#: src/pages/loading_page.ui:31
+msgid "Connecting..."
+msgstr ""
 
 #: src/pages/network_details_page.py:45 src/pages/volume_details_page.py:46
 msgid "Driver"
 msgstr "Driver"
 
-#: src/pages/networks_list_page.ui:24
-msgid "Search by ID or name"
-msgstr "Busque por ID ou nome"
-
 #: src/pages/volume_details_page.py:47
 msgid "Mount path"
 msgstr "Ponto de montagem"
 
-#: src/pages/volumes_list_page.ui:24
-msgid "Search by name"
-msgstr "Busque por nome"
-
-#: src/pages/system_page.py:36
-msgid "Type"
-msgstr "Tipo"
-
-#: src/pages/system_page.py:38
-msgid "Kernel"
-msgstr "Kernel"
-
-#: src/pages/system_page.py:40
-msgid "Time"
-msgstr "Horário"
-
-#: src/pages/system_page.py:53
-msgid "Version"
-msgstr "Versão"
-
-#: src/pages/system_page.py:54
-msgid "Root directory"
-msgstr "Diretório raiz"
-
-#: src/pages/system_page.py:55
-msgid "Storage driver"
-msgstr "Driver de armazenamento"
-
-#: src/pages/system_page.py:68
-msgid "Authorization"
-msgstr "Autorização"
-
-#: src/pages/system_page.py:69
-msgid "Log"
-msgstr "Log"
-
-#: src/pages/system_page.py:70
-msgid "Network"
-msgstr "Rede"
-
-#: src/pages/system_page.py:71
-msgid "Volume"
-msgstr "Volume"
-
-#: src/pages/system_page.ui:6 src/window.py:112
-msgid "System"
-msgstr "Sistema"
-
-#: src/pages/system_page.ui:24
+#: src/pages/system_page.py:29
 msgid "Host"
 msgstr "Host"
 
-#: src/pages/system_page.ui:29
+#: src/pages/system_page.py:39
 msgid "Engine"
 msgstr "Motor"
 
-#: src/pages/system_page.ui:34
+#: src/pages/system_page.py:49
 msgid "Plugins"
 msgstr "Plugins"
+
+#: src/pages/system_page.py:59
+msgid "Type"
+msgstr "Tipo"
+
+#: src/pages/system_page.py:61
+msgid "Kernel"
+msgstr "Kernel"
+
+#: src/pages/system_page.py:63
+msgid "Time"
+msgstr "Horário"
+
+#: src/pages/system_page.py:72
+msgid "Version"
+msgstr "Versão"
+
+#: src/pages/system_page.py:73
+msgid "Root directory"
+msgstr "Diretório raiz"
+
+#: src/pages/system_page.py:74
+msgid "Storage driver"
+msgstr "Driver de armazenamento"
+
+#: src/pages/system_page.py:83
+msgid "Authorization"
+msgstr "Autorização"
+
+#: src/pages/system_page.py:84
+msgid "Log"
+msgstr "Log"
+
+#: src/pages/system_page.py:85
+msgid "Network"
+msgstr "Rede"
+
+#: src/pages/system_page.py:86
+msgid "Volume"
+msgstr "Volume"
+
+#: src/pages/system_page.ui:6 src/window.py:135
+msgid "System"
+msgstr "Sistema"
+
+#: src/utils/docker.py:117
+msgid "No open connection available."
+msgstr ""
 
 #: src/utils/ui.py:31
 msgid "Running"
@@ -336,14 +338,30 @@ msgstr "privado"
 msgid "slave"
 msgstr "servo"
 
-#: src/window.py:66
+#: src/window.py:58
+msgid "Disconnect"
+msgstr ""
+
+#: src/window.py:89
 msgid "Help"
 msgstr "Ajuda"
 
-#: src/window.py:67
+#: src/window.py:90
 msgid "About"
 msgstr "Sobre"
 
-#: src/window.py:72
+#: src/window.py:95
 msgid "Main Menu"
 msgstr "Menu Principal"
+
+#~ msgid "Search by ID, name or image"
+#~ msgstr "Busque por ID, nome ou imagem"
+
+#~ msgid "Search by short ID or tag"
+#~ msgstr "Busque por ID curto ou etiqueta"
+
+#~ msgid "Search by ID or name"
+#~ msgstr "Busque por ID ou nome"
+
+#~ msgid "Search by name"
+#~ msgstr "Busque por nome"

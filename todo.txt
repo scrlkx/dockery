@@ -1,0 +1,11 @@
+
+separar async list e async task, vamos precisar para as telas de detalhes anyways
+
+garantir async em todas as telas de detalhes que precisam
+
+resolver console em conexão ssh
+
+resolver o setup ser uma "window diferente" -- incluindo o hamburger nao aparecer
+
+traduções
+

@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, cast
 
 from docker.models.containers import Container
 from docker.models.images import Image
@@ -12,8 +12,10 @@ from .pages.container_details_page import ContainerDetailsPage
 from .pages.containers_list_page import ContainersListPage
 from .pages.image_details_page import ImageDetailsPage
 from .pages.images_list_page import ImagesListPage
+from .pages.loading_page import LoadingPage
 from .pages.network_details_page import NetworkDetailsPage
 from .pages.networks_list_page import NetworksListPage
+from .pages.setup_page import SetupPage
 from .pages.system_page import SystemPage
 from .pages.volume_details_page import VolumeDetailsPage
 from .pages.volumes_list_page import VolumesPage
@@ -34,6 +36,7 @@ class DockeryWindow(Adw.ApplicationWindow):
     def __init__(self, **kwargs: Any) -> None:
         super().__init__(**kwargs)
 
+        self.set_title(_("Dockery"))
         self.register_events()
         self.build_ui()
 
@@ -48,15 +51,35 @@ class DockeryWindow(Adw.ApplicationWindow):
         self.build_primary_menu()
         self.build_help_overlay()
 
-        self.build_sidebar()
-
-        containers_list_page = ContainersListPage()
-        containers_list_page.connect(
-            "container-activated",
-            self.on_container_activated,
+        self.disconnect_button = Gtk.Button.new_from_icon_name(
+            "network-offline-symbolic"
         )
 
-        self.nav_view.push(containers_list_page)
+        self.disconnect_button.set_tooltip_text(_("Disconnect"))
+        self.disconnect_button.connect("clicked", self.on_disconnect_clicked)
+        self.disconnect_button.set_visible(False)
+        self.header_bar.pack_end(self.disconnect_button)
+
+        self.view_stack = Adw.ViewStack()
+
+        if main_content := self.get_content():
+            self.set_content(None)
+            self.view_stack.add_named(main_content, "main")
+
+        loading_page = LoadingPage()
+        loading_page.connect("loading-done", self.on_loading_done)
+        loading_page.connect("setup-required", self.on_setup_required)
+
+        self.view_stack.add_named(loading_page, "loading")
+
+        setup_page = SetupPage()
+        setup_page.connect("recheck-connections", self.on_recheck_connections)
+        setup_page.connect("connection-successful", self.on_connection_successful)
+        self.view_stack.add_named(setup_page, "setup")
+
+        self.set_content(self.view_stack)
+        self.view_stack.set_visible_child_name("loading")
+        self.set_default_size(800, 600)
 
     def build_primary_menu(self) -> None:
         menu = Gio.Menu()
@@ -125,13 +148,43 @@ class DockeryWindow(Adw.ApplicationWindow):
 
             self.sidebar_list.append(row)
 
-        self.sidebar_list.select_row(self.sidebar_list.get_row_at_index(0))
+        if row := self.sidebar_list.get_row_at_index(0):
+            self.sidebar_list.select_row(row)
+            self.on_sidebar_row_activated(self.sidebar_list, cast(SidebarRow, row))
 
     def on_back_button_clicked(self, __: Gtk.Button) -> None:
         self.nav_view.pop()
 
         if self.nav_view.get_visible_page() is not None:
             self.back_button.set_visible(False)
+
+    def on_disconnect_clicked(self, _: Gtk.Button) -> None:
+        self.disconnect_button.set_visible(False)
+
+        while row := self.sidebar_list.get_row_at_index(0):
+            self.sidebar_list.remove(row)
+
+        self.view_stack.set_visible_child_name("loading")
+        if loading_page := self.view_stack.get_child_by_name("loading"):
+            cast(LoadingPage, loading_page).check_docker()
+
+    def on_loading_done(self, _: Any = None) -> None:
+        self.view_stack.set_visible_child_name("main")
+        self.build_sidebar()
+        self.set_default_size(900, 700)
+        self.disconnect_button.set_visible(True)
+
+    def on_setup_required(self, _: LoadingPage) -> None:
+        self.view_stack.set_visible_child_name("setup")
+        self.disconnect_button.set_visible(False)
+
+    def on_recheck_connections(self, _: SetupPage) -> None:
+        self.view_stack.set_visible_child_name("loading")
+        if loading_page := self.view_stack.get_child_by_name("loading"):
+            cast(LoadingPage, loading_page).check_docker()
+
+    def on_connection_successful(self, _: SetupPage) -> None:
+        self.on_loading_done()
 
     def on_sidebar_row_activated(self, __: Gtk.ListBox, row: SidebarRow) -> None:
         self.content_page.set_title(row.title)

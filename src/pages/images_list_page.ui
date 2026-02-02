@@ -12,22 +12,13 @@
                     <object class="AdwClamp">
                         <property name="maximum-size">700</property>
                         <child>
-                            <object class="GtkBox">
+                            <object class="GtkBox" id="content_group">
                                 <property name="orientation">vertical</property>
                                 <property name="spacing">12</property>
                                 <property name="margin-top">24</property>
                                 <property name="margin-bottom">24</property>
                                 <property name="margin-start">12</property>
                                 <property name="margin-end">12</property>
-                                <child>
-                                    <object class="GtkSearchEntry" id="search_entry">
-                                        <property name="placeholder-text" translatable="yes">Search by short ID or tag</property>
-                                    </object>
-                                </child>
-                                <child>
-                                    <object class="AdwPreferencesGroup" id="images_group">
-                                    </object>
-                                </child>
                             </object>
                         </child>
                     </object>

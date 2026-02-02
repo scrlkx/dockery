@@ -5,9 +5,12 @@
     "sdk": "org.gnome.Sdk",
     "command": "dockery",
     "finish-args": [
+        "--share=network",
         "--device=dri",
         "--socket=fallback-x11",
         "--socket=wayland",
+        "--socket=ssh-auth",
+        "--filesystem=~/.ssh:ro",
         "--filesystem=/run/docker.sock",
         "--filesystem=xdg-run/docker.sock",
         "--talk-name=org.freedesktop.Flatpak"

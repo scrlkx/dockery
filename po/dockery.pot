@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dockery\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-21 21:06-0300\n"
+"POT-Creation-Date: 2026-01-25 22:17-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,12 +18,22 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: data/com.scrlkx.dockery.desktop.in:2
-#: data/com.scrlkx.dockery.metainfo.xml.in:7
+#: data/com.scrlkx.dockery.metainfo.xml.in:7 src/window.py:39
 msgid "Dockery"
 msgstr ""
 
 #: data/com.scrlkx.dockery.desktop.in:8
 msgid "Docker;Containers;DevOps;"
+msgstr ""
+
+#: data/com.scrlkx.dockery.gschema.xml:6
+msgid "List of Docker connections"
+msgstr ""
+
+#: data/com.scrlkx.dockery.gschema.xml:7
+msgid ""
+"Stores a list of configured Docker connections, where each connection is a "
+"tuple of (name, uri)."
 msgstr ""
 
 #: data/com.scrlkx.dockery.metainfo.xml.in:8
@@ -58,47 +68,80 @@ msgstr ""
 msgid "Continue"
 msgstr ""
 
-#: src/components/confirmation_dialog.py:21
+#: src/components/confirmation_dialog.py:21 src/dialogs/connection_dialog.ui:16
 msgid "Cancel"
 msgstr ""
 
-#: src/components/error_dialog.py:12
+#: src/components/error_dialog.py:14
 msgid "Something went wrong!"
 msgstr ""
 
-#: src/components/error_dialog.py:14
+#: src/components/error_dialog.py:16
 msgid "The operation could not be completed."
 msgstr ""
 
-#: src/components/error_dialog.py:21
+#: src/components/error_dialog.py:23
 msgid "Close"
 msgstr ""
 
-#: src/components/help_overlay.py:14
+#: src/components/help_overlay.py:16
 msgid "General"
 msgstr ""
 
-#: src/components/help_overlay.py:17
+#: src/components/help_overlay.py:19
 msgid "Application"
 msgstr ""
 
-#: src/components/help_overlay.py:20
+#: src/components/help_overlay.py:22
 msgid "Quit"
 msgstr ""
 
 #. menu.append(_("Preferences"), "app.preferences")
-#: src/components/help_overlay.py:24 src/window.py:65
+#: src/components/help_overlay.py:26 src/window.py:88
 msgid "Keyboard Shortcuts"
+msgstr ""
+
+#: src/dialogs/connection_dialog.py:36
+msgid "Save"
+msgstr ""
+
+#: src/dialogs/connection_dialog.py:37 src/pages/setup_page.py:79
+msgid "Edit Connection"
+msgstr ""
+
+#: src/dialogs/connection_dialog.py:68 src/pages/setup_page.py:159
+msgid "Connection Failed"
+msgstr ""
+
+#: src/dialogs/connection_dialog.py:69
+msgid "Could not connect to Docker daemon at '{}'."
+msgstr ""
+
+#: src/dialogs/connection_dialog.py:72 src/pages/setup_page.py:165
+msgid "OK"
+msgstr ""
+
+#: src/dialogs/connection_dialog.ui:7
+msgid "Add Connection"
+msgstr ""
+
+#: src/dialogs/connection_dialog.ui:22
+msgid "Add"
+msgstr ""
+
+#: src/dialogs/connection_dialog.ui:36 src/pages/container_details_page.py:107
+#: src/pages/network_details_page.py:44 src/pages/system_page.py:58
+#: src/pages/volume_details_page.py:45
+msgid "Name"
+msgstr ""
+
+#: src/dialogs/connection_dialog.ui:41
+msgid "URI"
 msgstr ""
 
 #: src/pages/container_details_page.py:106 src/pages/image_details_page.py:48
 #: src/pages/network_details_page.py:43
 msgid "ID"
-msgstr ""
-
-#: src/pages/container_details_page.py:107 src/pages/network_details_page.py:44
-#: src/pages/volume_details_page.py:45 src/pages/system_page.py:35
-msgid "Name"
 msgstr ""
 
 #: src/pages/container_details_page.py:108
@@ -152,12 +195,12 @@ msgid "Details"
 msgstr ""
 
 #: src/pages/container_details_page.ui:47 src/pages/volumes_list_page.ui:6
-#: src/window.py:98
+#: src/window.py:121
 msgid "Volumes"
 msgstr ""
 
 #: src/pages/container_details_page.ui:52 src/pages/networks_list_page.ui:6
-#: src/window.py:105
+#: src/window.py:128
 msgid "Networks"
 msgstr ""
 
@@ -169,23 +212,23 @@ msgstr ""
 msgid "Environment variables"
 msgstr ""
 
-#: src/pages/containers_list_page.ui:6 src/window.py:84
-msgid "Containers"
+#: src/pages/containers_list_page.py:55
+msgid "Search by ID, name or image"
 msgstr ""
 
-#: src/pages/containers_list_page.ui:24
-msgid "Search by ID, name or image"
+#: src/pages/containers_list_page.ui:6 src/window.py:107
+msgid "Containers"
 msgstr ""
 
 #: src/pages/image_details_page.py:49
 msgid "Size"
 msgstr ""
 
-#: src/pages/image_details_page.py:50 src/pages/system_page.py:39
+#: src/pages/image_details_page.py:50 src/pages/system_page.py:62
 msgid "Architecture"
 msgstr ""
 
-#: src/pages/image_details_page.py:51 src/pages/system_page.py:37
+#: src/pages/image_details_page.py:51 src/pages/system_page.py:60
 msgid "OS"
 msgstr ""
 
@@ -193,84 +236,104 @@ msgstr ""
 msgid "Tags"
 msgstr ""
 
-#: src/pages/images_list_page.ui:6 src/window.py:91
+#: src/pages/images_list_page.py:44
+msgid "Search by short ID or tag"
+msgstr ""
+
+#: src/pages/images_list_page.ui:6 src/window.py:114
 msgid "Images"
 msgstr ""
 
-#: src/pages/images_list_page.ui:24
-msgid "Search by short ID or tag"
+#: src/pages/loading_page.ui:31
+msgid "Connecting..."
 msgstr ""
 
 #: src/pages/network_details_page.py:45 src/pages/volume_details_page.py:46
 msgid "Driver"
 msgstr ""
 
-#: src/pages/networks_list_page.ui:24
-msgid "Search by ID or name"
+#: src/pages/networks_list_page.py:40
+msgid "Search by name or ID"
+msgstr ""
+
+#: src/pages/setup_page.py:45
+msgid "Setup Connection"
+msgstr ""
+
+#: src/pages/setup_page.py:46
+msgid "Configure how to connect to the Docker"
+msgstr ""
+
+#: src/pages/setup_page.py:61
+msgid "New Connection"
+msgstr ""
+
+#: src/pages/system_page.py:29
+msgid "Host"
+msgstr ""
+
+#: src/pages/system_page.py:39
+msgid "Engine"
+msgstr ""
+
+#: src/pages/system_page.py:49
+msgid "Plugins"
+msgstr ""
+
+#: src/pages/system_page.py:59
+msgid "Type"
+msgstr ""
+
+#: src/pages/system_page.py:61
+msgid "Kernel"
+msgstr ""
+
+#: src/pages/system_page.py:63
+msgid "Time"
+msgstr ""
+
+#: src/pages/system_page.py:72
+msgid "Version"
+msgstr ""
+
+#: src/pages/system_page.py:73
+msgid "Root directory"
+msgstr ""
+
+#: src/pages/system_page.py:74
+msgid "Storage driver"
+msgstr ""
+
+#: src/pages/system_page.py:83
+msgid "Authorization"
+msgstr ""
+
+#: src/pages/system_page.py:84
+msgid "Log"
+msgstr ""
+
+#: src/pages/system_page.py:85
+msgid "Network"
+msgstr ""
+
+#: src/pages/system_page.py:86
+msgid "Volume"
+msgstr ""
+
+#: src/pages/system_page.ui:6 src/window.py:135
+msgid "System"
 msgstr ""
 
 #: src/pages/volume_details_page.py:47
 msgid "Mount path"
 msgstr ""
 
-#: src/pages/volumes_list_page.ui:24
+#: src/pages/volumes_list_page.py:37
 msgid "Search by name"
 msgstr ""
 
-#: src/pages/system_page.py:36
-msgid "Type"
-msgstr ""
-
-#: src/pages/system_page.py:38
-msgid "Kernel"
-msgstr ""
-
-#: src/pages/system_page.py:40
-msgid "Time"
-msgstr ""
-
-#: src/pages/system_page.py:53
-msgid "Version"
-msgstr ""
-
-#: src/pages/system_page.py:54
-msgid "Root directory"
-msgstr ""
-
-#: src/pages/system_page.py:55
-msgid "Storage driver"
-msgstr ""
-
-#: src/pages/system_page.py:68
-msgid "Authorization"
-msgstr ""
-
-#: src/pages/system_page.py:69
-msgid "Log"
-msgstr ""
-
-#: src/pages/system_page.py:70
-msgid "Network"
-msgstr ""
-
-#: src/pages/system_page.py:71
-msgid "Volume"
-msgstr ""
-
-#: src/pages/system_page.ui:6 src/window.py:112
-msgid "System"
-msgstr ""
-
-#: src/pages/system_page.ui:24
-msgid "Host"
-msgstr ""
-
-#: src/pages/system_page.ui:29
-msgid "Engine"
-msgstr ""
-
-#: src/pages/system_page.ui:34
-msgid "Plugins"
+#: src/utils/docker.py:117
+msgid "No open connection available."
 msgstr ""
 
 #: src/utils/ui.py:31
@@ -345,14 +408,18 @@ msgstr ""
 msgid "slave"
 msgstr ""
 
-#: src/window.py:66
+#: src/window.py:58
+msgid "Disconnect"
+msgstr ""
+
+#: src/window.py:89
 msgid "Help"
 msgstr ""
 
-#: src/window.py:67
+#: src/window.py:90
 msgid "About"
 msgstr ""
 
-#: src/window.py:72
+#: src/window.py:95
 msgid "Main Menu"
 msgstr ""

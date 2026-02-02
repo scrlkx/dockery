@@ -1,10 +1,13 @@
-from typing import Any, List
+from typing import Any
 
 from docker.models.networks import Network
 from gi.repository import Adw, GObject, Gtk
 
+from ..components.async_list import AsyncList
 from ..components.badge import Badge
+from ..components.row_next import RowNext
 from ..utils.docker import get_network_driver, get_networks
+from ..utils.i18n import _
 
 
 class NetworkRow(Adw.ActionRow):
@@ -23,54 +26,43 @@ class NetworksListPage(Adw.NavigationPage):
         "network-activated": (GObject.SignalFlags.RUN_FIRST, None, (object,))
     }
 
-    search_entry = Gtk.Template.Child()
-    networks_group = Gtk.Template.Child()
-
-    network_rows: List[NetworkRow] = []
+    content_group: Gtk.Box = Gtk.Template.Child()
 
     def __init__(self, **kwargs: Any) -> None:
         super().__init__(**kwargs)
 
-        self.register_events()
         self.build_ui()
 
-    def register_events(self) -> None:
-        self.search_entry.connect("search-changed", self.on_search_changed)
-
     def build_ui(self) -> None:
-        networks = get_networks()
+        self.list_widget = AsyncList(
+            provider=get_networks,
+            row_factory=self.render_row,
+            search_placeholder=_("Search by name or ID"),
+            search_callback=self.search,
+        )
 
-        for network in networks:
-            row = NetworkRow(title=network.name or network.short_id)
-            row.id = network.id
-            row.name = network.name or network.short_id
-            row.driver = get_network_driver(network)
+        self.content_group.append(self.list_widget)
 
-            row.set_activatable(True)
-            row.connect("activated", self.on_network_row_clicked, network)
+    def render_row(self, network: Network) -> Gtk.Widget:
+        row = NetworkRow(title=network.name or network.short_id)
+        row.id = network.id
+        row.name = network.name or network.short_id
+        row.driver = get_network_driver(network)
 
-            self.network_rows.append(row)
+        row.set_activatable(True)
+        row.connect("activated", self.on_row_clicked, network)
 
-            driver = Badge(
-                text=row.driver,
-                margin_end=12,
-            )
+        driver = Badge(row.driver)
+        driver.set_margin_end(6)
 
-            row.add_suffix(driver)
+        row.add_suffix(driver)
 
-            info = Gtk.Image.new_from_icon_name("go-next-symbolic")
-            info.add_css_class("flat")
+        row.add_suffix(RowNext())
 
-            row.add_suffix(info)
+        return row
 
-            self.networks_group.add(row)
+    def search(self, row: NetworkRow, text: str) -> bool:
+        return text in row.id or text in row.name
 
-    def on_search_changed(self, entry: Gtk.SearchEntry) -> None:
-        text = entry.get_text().lower()
-
-        for row in self.network_rows:
-            visible = text in row.id or text in row.name
-            row.set_visible(visible)
-
-    def on_network_row_clicked(self, _: Gtk.ListBoxRow, network: Network) -> None:
+    def on_row_clicked(self, _: Gtk.ListBoxRow, network: Network) -> None:
         self.emit("network-activated", network)

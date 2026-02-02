@@ -1,20 +1,24 @@
-from typing import Any, Callable, List
+from typing import Any
 
 from docker.models.containers import Container
 from gi.repository import Adw, GObject, Gtk
 
+from ..components.async_list import AsyncList
 from ..components.badge import Badge
+from ..components.row_button import RowButton
+from ..components.row_next import RowNext
 from ..utils.docker import (
+    get_containers,
     get_container_image,
     get_container_next_action,
-    get_containers,
     start_container,
     stop_container,
 )
 from ..utils.events import on_containers_change
+from ..utils.i18n import _
 from ..utils.ui import (
-    get_container_status_class,
     get_container_status_label,
+    get_container_status_class,
 )
 
 
@@ -36,127 +40,77 @@ class ContainersListPage(Adw.NavigationPage):
         "container-activated": (GObject.SignalFlags.RUN_FIRST, None, (object,))
     }
 
-    search_entry = Gtk.Template.Child()
-    containers_group = Gtk.Template.Child()
-
-    container_rows: List[ContainerRow] = []
+    content_group: Gtk.Box = Gtk.Template.Child()
 
     def __init__(self, **kwargs: Any) -> None:
         super().__init__(**kwargs)
 
-        self.register_events()
         self.build_ui()
-
-    def register_events(self) -> None:
-        self.search_entry.connect("search-changed", self.on_search_changed)
-
-        on_containers_change(self.reload_ui)
+        self.register_events()
 
     def build_ui(self) -> None:
-        containers = get_containers()
-
-        for container in containers:
-            row = ContainerRow(title=container.name)
-            row.id = container.id
-            row.name = container.name.lower()
-            row.image = get_container_image(container)
-            row.status_label = get_container_status_label(container)
-            row.status_class = get_container_status_class(container)
-
-            row.set_activatable(True)
-            row.connect("activated", self.on_container_row_clicked, container)
-
-            self.container_rows.append(row)
-
-            if row.status_label and row.status_class:
-                status = Badge(
-                    text=row.status_label,
-                    style_class=row.status_class,
-                    margin_end=12,
-                )
-
-                row.add_suffix(status)
-
-            next_action = get_container_next_action(container)
-
-            if next_action == "start":
-                button = self.build_next_action_button(
-                    container,
-                    self.row_start_container,
-                    "media-playback-start-symbolic",
-                )
-
-                row.add_suffix(button)
-            elif next_action == "stop":
-                button = self.build_next_action_button(
-                    container,
-                    self.row_stop_container,
-                    "media-playback-stop-symbolic",
-                )
-
-                row.add_suffix(button)
-
-            info = Gtk.Image.new_from_icon_name("go-next-symbolic")
-            info.add_css_class("flat")
-
-            row.add_suffix(info)
-
-            self.containers_group.add(row)
-
-    def reload_ui(self) -> None:
-        for row in self.container_rows:
-            self.containers_group.remove(row)
-
-        self.container_rows.clear()
-        self.build_ui()
-
-    def build_next_action_button(
-        self,
-        container: Container,
-        callback: Callable[[Gtk.Button, Container], None],
-        icon_name: str,
-    ) -> Gtk.Button:
-        button = Gtk.Button()
-        button.add_css_class("flat")
-        button.set_valign(Gtk.Align.CENTER)
-        button.set_margin_end(12)
-
-        image = Gtk.Image.new_from_icon_name(icon_name)
-
-        box = Gtk.Box(
-            orientation=Gtk.Orientation.HORIZONTAL,
-            spacing=6,
-            halign=Gtk.Align.CENTER,
-            valign=Gtk.Align.CENTER,
+        self.list_widget = AsyncList(
+            provider=get_containers,
+            row_factory=self.render_row,
+            search_placeholder=_("Search by ID, name or image"),
+            search_callback=self.search,
         )
 
-        box.append(image)
+        self.content_group.append(self.list_widget)
 
-        button.set_child(box)
+    def register_events(self) -> None:
+        on_containers_change(self.on_containers_change)
 
-        button.connect("clicked", callback, container)
+    def render_row(self, container: Container) -> Gtk.Widget:
+        row = ContainerRow(title=container.name)
+        row.id = container.id
+        row.name = container.name.lower()
+        row.image = get_container_image(container)
+        row.status_label = get_container_status_label(container)
+        row.status_class = get_container_status_class(container)
 
-        return button
+        row.set_activatable(True)
+        row.connect("activated", self.on_row_clicked, container)
 
-    def on_search_changed(self, entry: Gtk.SearchEntry) -> None:
-        text = entry.get_text().lower()
+        if row.status_label and row.status_class:
+            status = Badge(row.status_label)
+            status.add_css_class(row.status_class)
+            status.set_margin_end(6)
 
-        for row in self.container_rows:
-            visible = (
-                text in row.id
-                or text in row.name
-                or (row.image is not None and text in row.image)
+            row.add_suffix(status)
+
+        next_action = get_container_next_action(container)
+
+        if next_action == "start":
+            button = RowButton(
+                icon_name="media-playback-start-symbolic",
+                callback=lambda: start_container(container.name),
             )
+            button.set_margin_end(6)
 
-            row.set_visible(visible)
+            row.add_suffix(button)
+        elif next_action == "stop":
+            button = RowButton(
+                icon_name="media-playback-stop-symbolic",
+                callback=lambda: stop_container(container.name),
+            )
+            button.set_margin_end(6)
 
-    def on_container_row_clicked(self, _: Gtk.ListBoxRow, container: Container) -> None:
+            row.add_suffix(button)
+
+        row.add_suffix(RowNext())
+
+        return row
+
+    def search(self, row: ContainerRow, text: str) -> bool:
+        return (
+            text in row.id
+            or text in row.name
+            or (row.image is not None and text in row.image)
+        )
+
+    def on_row_clicked(self, _: Gtk.ListBoxRow, container: Container) -> None:
         self.emit("container-activated", container)
 
-    def row_start_container(self, _: Any, container: Container) -> None:
-        start_container(container.name)
-        self.reload_ui()
-
-    def row_stop_container(self, _: Any, container: Container) -> None:
-        stop_container(container.name)
-        self.reload_ui()
+    def on_containers_change(self) -> None:
+        self.list_widget.reload_content()

@@ -2,6 +2,8 @@ from gi.repository import Adw, Gtk, Pango
 
 
 class KeyValueRow(Adw.ActionRow):
+    __gtype_name__ = "KeyValueRow"
+
     label: Gtk.Label
 
     def __init__(self, title: str, value: str):

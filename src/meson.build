@@ -32,34 +32,12 @@ install_data([
   'window.py',
 ], install_dir: moduledir)
 
-install_data([
-  'components/__init__.py',
-  'components/badge.py',
-  'components/confirmation_dialog.py',
-  'components/error_dialog.py',
-  'components/help_overlay.py',
-  'components/key_value_row.py',
-  'components/quick_action_button.py',
-  'components/sidebar_row.py',
-], install_dir: moduledir / 'components')
+install_subdir('components', install_dir: moduledir)
+install_subdir('dialogs', install_dir: moduledir)
+install_subdir('pages', install_dir: moduledir)
+install_subdir('utils', install_dir: moduledir)
 
-install_data([
-  'pages/__init__.py',
-  'pages/container_details_page.py',
-  'pages/containers_list_page.py',
-  'pages/images_list_page.py',
-  'pages/image_details_page.py',
-  'pages/network_details_page.py',
-  'pages/networks_list_page.py',
-  'pages/volume_details_page.py',
-  'pages/volumes_list_page.py',
-  'pages/system_page.py',
-], install_dir: moduledir / 'pages')
-
-install_data([
-  'utils/__init__.py',
-  'utils/events.py',
-  'utils/docker.py',
-  'utils/i18n.py',
-  'utils/ui.py',
-], install_dir: moduledir / 'utils')
+install_data(
+  '../data/com.scrlkx.dockery.gschema.xml',
+  install_dir: get_option('datadir') / 'glib-2.0' / 'schemas'
+)

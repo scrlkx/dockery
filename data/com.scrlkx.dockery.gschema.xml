@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schemalist gettext-domain="dockery">
+<schemalist>
 	<schema id="com.scrlkx.dockery" path="/com/scrlkx/dockery/">
+		<key name="connections" type="a(ss)">
+			<default>[]</default>
+			<summary>List of Docker connections</summary>
+			<description>Stores a list of configured Docker connections, where each connection is a tuple of (name, uri).</description>
+		</key>
 	</schema>
 </schemalist>

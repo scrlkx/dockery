@@ -2,6 +2,8 @@ from gi.repository import Gtk
 
 
 class Badge(Gtk.Label):
+    __gtype_name__ = "Badge"
+
     def __init__(
         self,
         text: str,
@@ -12,7 +14,6 @@ class Badge(Gtk.Label):
 
         self.set_valign(Gtk.Align.CENTER)
         self.set_margin_end(margin_end)
-
         self.add_css_class("tag")
         self.add_css_class("caption")
 

@@ -1,4 +1,3 @@
-from functools import lru_cache
 from typing import (
     Any,
     Dict,
@@ -11,11 +10,12 @@ from typing import (
     cast,
 )
 
-from docker import from_env
+from docker import DockerClient
 from docker.models.containers import Container
 from docker.models.images import Image, ImageCollection
 from docker.models.networks import Network
 from docker.models.volumes import Volume
+from ..utils.i18n import _
 
 
 class ContainerCollectionProto(Protocol):
@@ -69,6 +69,8 @@ class DockerClientProto(Protocol):
 
     def info(self) -> Dict[str, Any]: ...
 
+    def ping(self) -> None: ...
+
 
 class DockerObject(Protocol):
     @property
@@ -90,9 +92,39 @@ class DockerPortBinding(TypedDict, total=False):
     HostPort: str
 
 
-@lru_cache(maxsize=1)
-def get_docker_client() -> DockerClientProto:
-    return cast(DockerClientProto, from_env())
+_client: Optional[DockerClientProto] = None
+
+
+def attempt_connect(uri: str, timeout: int = 60) -> DockerClientProto:
+    client = DockerClient(base_url=uri, timeout=timeout, use_ssh_client=True)
+    client = cast(DockerClientProto, client)
+    client.ping()
+
+    return client
+
+
+def validate_connection(uri: str) -> bool:
+    try:
+        attempt_connect(uri, 10)
+
+        return True
+    except Exception:
+        return False
+
+
+def init_client(uri: str) -> None:
+    global _client
+
+    client = attempt_connect(uri)
+
+    _client = client
+
+
+def get_client() -> DockerClientProto:
+    if not _client:
+        raise RuntimeError(_("No open connection available."))
+
+    return _client
 
 
 def get_attribute(obj: DockerObject, attribute: str, default: Any | None = None) -> Any:
@@ -119,10 +151,7 @@ def get_container_started_at(container: Container) -> str | None:
 
 
 def get_container_image(container: Container) -> str | None:
-    if container.image and len(container.image.tags) > 0:
-        return container.image.tags[0]
-
-    return None
+    return get_attribute(container, "Config.Image")
 
 
 def get_container_cmd(container: Container) -> str | None:
@@ -236,11 +265,11 @@ def get_container_ports(
 
 
 def get_container(name: str) -> Container:
-    return get_docker_client().containers.get(name)
+    return get_client().containers.get(name)
 
 
 def get_containers() -> list[Container]:
-    containers = get_docker_client().containers.list(all=True)
+    containers = get_client().containers.list(all=True)
     containers.sort(key=lambda item: item.name)
 
     return containers
@@ -271,7 +300,7 @@ def kill_container(name: str) -> None:
 
 
 def remove_container(name: str) -> None:
-    container = get_docker_client().containers.get(name)
+    container = get_client().containers.get(name)
     container.remove()
 
 
@@ -295,7 +324,7 @@ def get_container_next_action(container: Container) -> str:
 
 
 def get_images() -> list[Image]:
-    images = get_docker_client().images.list()
+    images = get_client().images.list()
     images.sort(key=lambda image: image.short_id)
 
     return images
@@ -322,18 +351,18 @@ def get_image_created_at(image: Image) -> str:
 
 
 def get_image(identifier: str) -> Image:
-    return get_docker_client().images.get(identifier)
+    return get_client().images.get(identifier)
 
 
 def get_volumes() -> list[Volume]:
-    volumes = get_docker_client().volumes.list()
+    volumes = get_client().volumes.list()
     volumes.sort(key=lambda volume: volume.name)
 
     return volumes
 
 
 def get_volume(identifier: str) -> Volume:
-    return get_docker_client().volumes.get(identifier)
+    return get_client().volumes.get(identifier)
 
 
 def get_volume_short_name(volume: Volume) -> str:
@@ -356,7 +385,7 @@ def get_volume_created_at(volume: Volume) -> str:
 
 
 def get_networks() -> list[Network]:
-    networks = get_docker_client().networks.list()
+    networks = get_client().networks.list()
     networks.sort(key=lambda network: network.name or network.short_id)
 
     return networks
@@ -371,8 +400,8 @@ def get_network_created_at(network: Network) -> str:
 
 
 def get_network(identifier: str) -> Network:
-    return get_docker_client().networks.get(identifier)
+    return get_client().networks.get(identifier)
 
 
 def get_system_info() -> dict[str, Any]:
-    return get_docker_client().info()
+    return get_client().info()

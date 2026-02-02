@@ -20,18 +20,7 @@
                                 <property name="margin-start">12</property>
                                 <property name="margin-end">12</property>
                                 <child>
-                                    <object class="AdwPreferencesGroup" id="host_group">
-                                        <property name="title" translatable="yes">Host</property>
-                                    </object>
-                                </child>
-                                <child>
-                                    <object class="AdwPreferencesGroup" id="engine_group">
-                                        <property name="title" translatable="yes">Engine</property>
-                                    </object>
-                                </child>
-                                <child>
-                                    <object class="AdwPreferencesGroup" id="plugins_group">
-                                        <property name="title" translatable="yes">Plugins</property>
+                                    <object class="GtkBox" id="content_group">
                                     </object>
                                 </child>
                             </object>
