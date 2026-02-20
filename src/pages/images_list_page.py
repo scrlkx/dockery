@@ -4,6 +4,7 @@ from docker.models.images import Image
 from gi.repository import Adw, GObject, Gtk
 
 from ..components.badge import Badge
+from ..components.row_next import RowNext
 from ..utils.docker import (
     get_image_last_tag,
     get_image_size,
@@ -72,10 +73,7 @@ class ImagesListPage(Adw.NavigationPage):
 
             row.add_suffix(size)
 
-            info = Gtk.Image.new_from_icon_name("go-next-symbolic")
-            info.add_css_class("flat")
-
-            row.add_suffix(info)
+            row.add_suffix(RowNext())
 
             self.images_group.add(row)
 

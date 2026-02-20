@@ -4,6 +4,8 @@ from docker.models.containers import Container
 from gi.repository import Adw, GObject, Gtk
 
 from ..components.badge import Badge
+from ..components.row_button import RowButton
+from ..components.row_next import RowNext
 from ..utils.docker import (
     get_container_image,
     get_container_next_action,
@@ -81,26 +83,21 @@ class ContainersListPage(Adw.NavigationPage):
             next_action = get_container_next_action(container)
 
             if next_action == "start":
-                button = self.build_next_action_button(
-                    container,
-                    self.row_start_container,
-                    "media-playback-start-symbolic",
+                button = RowButton(
+                    icon_name="media-playback-start-symbolic",
+                    callback=lambda c=container: start_container(c.name),
                 )
+                button.set_margin_end(6)
 
                 row.add_suffix(button)
             elif next_action == "stop":
-                button = self.build_next_action_button(
-                    container,
-                    self.row_stop_container,
-                    "media-playback-stop-symbolic",
+                button = RowButton(
+                    icon_name="media-playback-stop-symbolic",
+                    callback=lambda c=container: stop_container(c.name),
                 )
+                button.set_margin_end(6)
 
-                row.add_suffix(button)
-
-            info = Gtk.Image.new_from_icon_name("go-next-symbolic")
-            info.add_css_class("flat")
-
-            row.add_suffix(info)
+            row.add_suffix(RowNext())
 
             self.containers_group.add(row)
 
