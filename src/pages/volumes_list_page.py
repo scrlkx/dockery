@@ -3,6 +3,7 @@ from typing import Any, List
 from docker.models.volumes import Volume
 from gi.repository import Adw, GObject, Gtk
 
+from ..components.row_next import RowNext
 from ..utils.docker import get_volume_short_name, get_volumes
 
 
@@ -46,10 +47,7 @@ class VolumesPage(Adw.NavigationPage):
 
             self.volume_rows.append(row)
 
-            info = Gtk.Image.new_from_icon_name("go-next-symbolic")
-            info.add_css_class("flat")
-
-            row.add_suffix(info)
+            row.add_suffix(RowNext())
 
             self.volumes_group.add(row)
 

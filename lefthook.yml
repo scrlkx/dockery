@@ -1,0 +1,12 @@
+pre-commit:
+  parallel: true
+  commands:
+    lint:
+      glob: "*.py"
+      run: pylint {staged_files}
+    format:
+      glob: "*.py"
+      run: black --check {staged_files}
+    import-sort:
+      glob: "*.py"
+      run: isort --check-only {staged_files}

@@ -4,6 +4,7 @@ from docker.models.networks import Network
 from gi.repository import Adw, GObject, Gtk
 
 from ..components.badge import Badge
+from ..components.row_next import RowNext
 from ..utils.docker import get_network_driver, get_networks
 
 
@@ -58,10 +59,7 @@ class NetworksListPage(Adw.NavigationPage):
 
             row.add_suffix(driver)
 
-            info = Gtk.Image.new_from_icon_name("go-next-symbolic")
-            info.add_css_class("flat")
-
-            row.add_suffix(info)
+            row.add_suffix(RowNext())
 
             self.networks_group.add(row)
 
