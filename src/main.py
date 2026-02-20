@@ -31,7 +31,7 @@ gi.require_version("Adw", "1")
 gi.require_version("Vte", "3.91")
 
 # pylint: disable=wrong-import-position
-from gi.repository import Adw, Gio, GLib, Gtk
+from gi.repository import Adw, Gdk, Gio, GLib, Gtk
 
 try:
     locale.setlocale(locale.LC_ALL, "")
@@ -78,6 +78,15 @@ class DockeryApplication(Adw.Application):
         self.create_action("about", self.on_about_action)
         # self.create_action("preferences", self.on_preferences_action)
         self.create_action("help", self.on_help_action)
+
+    def do_startup(self) -> None:
+        Adw.Application.do_startup(self)
+
+        display = Gdk.Display.get_default()
+
+        if display:
+            icon_theme = Gtk.IconTheme.get_for_display(display)
+            icon_theme.add_resource_path("/com/scrlkx/dockery/icons")
 
     def do_activate(self) -> None:
         win = self.props.active_window
