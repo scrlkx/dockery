@@ -8,6 +8,8 @@ from ..utils import ui
 
 
 class QuickActionButton(Gtk.Button):
+    __gtype_name__ = "QuickActionButton"
+
     def __init__(
         self,
         label: str,
@@ -25,10 +27,9 @@ class QuickActionButton(Gtk.Button):
 
         self.set_hexpand(True)
 
-        content = Adw.ButtonContent(
-            icon_name=icon_name,
-            label=label,
-        )
+        content = Adw.ButtonContent()
+        content.set_icon_name(icon_name)
+        content.set_label(label)
 
         self.set_child(content)
         self.connect("clicked", self.on_clicked)

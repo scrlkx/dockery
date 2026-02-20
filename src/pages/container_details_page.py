@@ -275,7 +275,8 @@ class ContainerDetailsPage(Adw.NavigationPage):
         threading.Thread(target=task).start()
 
     def open_console(self) -> None:
-        window = Gtk.Window(title=f"{self.container.name} ({self.container.id})")
+        window = Gtk.Window()
+        window.set_title(f"{self.container.name} ({self.container.id})")
         window.set_default_size(800, 600)
 
         terminal = Vte.Terminal()

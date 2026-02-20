@@ -14,16 +14,19 @@ class SidebarRow(Gtk.ListBoxRow):
         self.signal: str | None = None
         self.callback: Callable[..., Any] | None = None
 
-        box = Gtk.Box(
-            spacing=12,
-            margin_top=10,
-            margin_bottom=10,
-            margin_start=12,
-            margin_end=12,
-        )
+        box = Gtk.Box()
+        box.set_spacing(12)
+        box.set_margin_top(10)
+        box.set_margin_bottom(10)
+        box.set_margin_start(12)
+        box.set_margin_end(12)
 
-        box.append(Gtk.Image.new_from_icon_name(icon_name))
+        icon = Gtk.Image()
+        icon.set_from_icon_name(icon_name)
+        box.append(icon)
 
-        box.append(Gtk.Label(label=title))
+        label = Gtk.Label()
+        label.set_label(title)
+        box.append(label)
 
         self.set_child(box)

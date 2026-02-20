@@ -118,7 +118,7 @@ class DockeryWindow(Adw.ApplicationWindow):
         ]
 
         for title, icon, page_class, signal, callback in rows:
-            row = SidebarRow(title=title, icon_name=icon)
+            row = SidebarRow(title, icon)
             row.page_class = page_class
             row.signal = signal
             row.callback = callback

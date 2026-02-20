@@ -7,10 +7,10 @@ flatpak-builder flatpak-build-dir com.scrlkx.dockery.json \
     --user \
     --install
 
-read -p "Language (e.g. pt_BR, optional): " lang
+read -p "Language (e.g. pt_BR, optional): " locale
 
-if [ -n "$lang" ]; then
-    flatpak run --env=LANG=$lang.UTF-8 com.scrlkx.dockery//master
+if [ -n "$locale" ]; then
+    flatpak run --env=LANG=$locale.UTF-8 com.scrlkx.dockery//master
 else
     flatpak run com.scrlkx.dockery//master
 fi

@@ -6,6 +6,8 @@ from ..utils.i18n import _
 
 
 class HelpOverlay(Gtk.ShortcutsWindow):
+    __gtype_name__ = "HelpOverlay"
+
     def __init__(self, **kwargs: Any):
         super().__init__(**kwargs)
 
