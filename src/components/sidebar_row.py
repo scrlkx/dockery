@@ -1,17 +1,15 @@
 from typing import Any, Callable
 
-from gi.repository import GObject, Gtk
+from gi.repository import Gtk
 
 
 class SidebarRow(Gtk.ListBoxRow):
     __gtype_name__ = "SidebarRow"
 
-    title = GObject.Property(type=str, default="")
-    icon_name = GObject.Property(type=str, default="")
-
-    def __init__(self, **kwargs: Any):
+    def __init__(self, title: str, icon_name: str, **kwargs: Any):
         super().__init__(**kwargs)
 
+        self.title = title
         self.page_class: Any = None
         self.signal: str | None = None
         self.callback: Callable[..., Any] | None = None
@@ -24,24 +22,8 @@ class SidebarRow(Gtk.ListBoxRow):
             margin_end=12,
         )
 
-        self.icon_image = Gtk.Image()
-        box.append(self.icon_image)
+        box.append(Gtk.Image.new_from_icon_name(icon_name))
 
-        self.title_label = Gtk.Label()
-        box.append(self.title_label)
+        box.append(Gtk.Label(label=title))
 
         self.set_child(box)
-
-        self.bind_property(
-            "title",
-            self.title_label,
-            "label",
-            GObject.BindingFlags.SYNC_CREATE,
-        )
-
-        self.bind_property(
-            "icon_name",
-            self.icon_image,
-            "icon-name",
-            GObject.BindingFlags.SYNC_CREATE,
-        )

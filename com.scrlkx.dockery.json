@@ -79,7 +79,13 @@
                     "type": "dir",
                     "path": "."
                 }
+            ],
+            "config-opts": [
+                "--libdir=lib"
             ]
         }
-    ]
+    ],
+    "build-options": {
+        "env": {}
+    }
 }
