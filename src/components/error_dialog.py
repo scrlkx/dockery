@@ -6,6 +6,8 @@ from ..utils.i18n import _
 
 
 class ErrorDialog(Adw.MessageDialog):
+    __gtype_name__ = "ErrorDialog"
+
     def __init__(self, message: str, **kwargs: Any):
         super().__init__(**kwargs)
 

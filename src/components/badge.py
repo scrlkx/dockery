@@ -2,13 +2,16 @@ from gi.repository import Gtk
 
 
 class Badge(Gtk.Label):
+    __gtype_name__ = "Badge"
+
     def __init__(
         self,
         text: str,
         style_class: str = "",
         margin_end: int = 0,
     ) -> None:
-        super().__init__(label=text)
+        super().__init__()
+        self.set_label(text)
 
         self.set_valign(Gtk.Align.CENTER)
         self.set_margin_end(margin_end)

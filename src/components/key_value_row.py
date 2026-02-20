@@ -2,6 +2,8 @@ from gi.repository import Adw, Gtk, Pango
 
 
 class KeyValueRow(Adw.ActionRow):
+    __gtype_name__ = "KeyValueRow"
+
     label: Gtk.Label
 
     def __init__(self, title: str, value: str):
@@ -10,7 +12,8 @@ class KeyValueRow(Adw.ActionRow):
         self.set_title(title)
         self.set_title_lines(1)
 
-        self.label = Gtk.Label(label=value)
+        self.label = Gtk.Label()
+        self.label.set_label(value)
         self.label.set_margin_start(12)
         self.label.set_valign(Gtk.Align.CENTER)
         self.label.set_xalign(1.0)

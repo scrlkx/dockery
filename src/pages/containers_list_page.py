@@ -56,7 +56,8 @@ class ContainersListPage(Adw.NavigationPage):
         containers = get_containers()
 
         for container in containers:
-            row = ContainerRow(title=container.name)
+            row = ContainerRow()
+            row.set_title(container.name)
             row.id = container.id
             row.name = container.name.lower()
             row.image = get_container_image(container)
@@ -123,12 +124,11 @@ class ContainersListPage(Adw.NavigationPage):
 
         image = Gtk.Image.new_from_icon_name(icon_name)
 
-        box = Gtk.Box(
-            orientation=Gtk.Orientation.HORIZONTAL,
-            spacing=6,
-            halign=Gtk.Align.CENTER,
-            valign=Gtk.Align.CENTER,
-        )
+        box = Gtk.Box()
+        box.set_orientation(Gtk.Orientation.HORIZONTAL)
+        box.set_spacing(6)
+        box.set_halign(Gtk.Align.CENTER)
+        box.set_valign(Gtk.Align.CENTER)
 
         box.append(image)
 
