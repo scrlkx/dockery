@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dockery\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-21 21:06-0300\n"
+"POT-Creation-Date: 2026-02-19 22:48-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -97,7 +97,7 @@ msgid "ID"
 msgstr ""
 
 #: src/pages/container_details_page.py:107 src/pages/network_details_page.py:44
-#: src/pages/volume_details_page.py:45 src/pages/system_page.py:35
+#: src/pages/system_page.py:35 src/pages/volume_details_page.py:45
 msgid "Name"
 msgstr ""
 
@@ -209,14 +209,6 @@ msgstr ""
 msgid "Search by ID or name"
 msgstr ""
 
-#: src/pages/volume_details_page.py:47
-msgid "Mount path"
-msgstr ""
-
-#: src/pages/volumes_list_page.ui:24
-msgid "Search by name"
-msgstr ""
-
 #: src/pages/system_page.py:36
 msgid "Type"
 msgstr ""
@@ -271,6 +263,14 @@ msgstr ""
 
 #: src/pages/system_page.ui:34
 msgid "Plugins"
+msgstr ""
+
+#: src/pages/volume_details_page.py:47
+msgid "Mount path"
+msgstr ""
+
+#: src/pages/volumes_list_page.ui:24
+msgid "Search by name"
 msgstr ""
 
 #: src/utils/ui.py:31

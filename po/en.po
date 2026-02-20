@@ -82,7 +82,7 @@ msgid "ID"
 msgstr "ID"
 
 #: src/pages/container_details_page.py:107 src/pages/network_details_page.py:44
-#: src/pages/volume_details_page.py:45 src/pages/system_page.py:35
+#: src/pages/system_page.py:35 src/pages/volume_details_page.py:45
 msgid "Name"
 msgstr "Name"
 
@@ -194,14 +194,6 @@ msgstr "Driver"
 msgid "Search by ID or name"
 msgstr "Search by ID or name"
 
-#: src/pages/volume_details_page.py:47
-msgid "Mount path"
-msgstr "Mount path"
-
-#: src/pages/volumes_list_page.ui:24
-msgid "Search by name"
-msgstr "Search by name"
-
 #: src/pages/system_page.py:36
 msgid "Type"
 msgstr "Type"
@@ -257,6 +249,14 @@ msgstr "Engine"
 #: src/pages/system_page.ui:34
 msgid "Plugins"
 msgstr "Plugins"
+
+#: src/pages/volume_details_page.py:47
+msgid "Mount path"
+msgstr "Mount path"
+
+#: src/pages/volumes_list_page.ui:24
+msgid "Search by name"
+msgstr "Search by name"
 
 #: src/utils/ui.py:31
 msgid "Running"
