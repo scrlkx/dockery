@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-21 21:06-0300\n"
+"POT-Creation-Date: 2026-02-19 22:48-0300\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 
 #: data/com.scrlkx.dockery.desktop.in:2
@@ -88,7 +88,7 @@ msgid "ID"
 msgstr "ID"
 
 #: src/pages/container_details_page.py:107 src/pages/network_details_page.py:44
-#: src/pages/volume_details_page.py:45 src/pages/system_page.py:35
+#: src/pages/system_page.py:35 src/pages/volume_details_page.py:45
 msgid "Name"
 msgstr "Nome"
 
@@ -200,14 +200,6 @@ msgstr "Driver"
 msgid "Search by ID or name"
 msgstr "Busque por ID ou nome"
 
-#: src/pages/volume_details_page.py:47
-msgid "Mount path"
-msgstr "Ponto de montagem"
-
-#: src/pages/volumes_list_page.ui:24
-msgid "Search by name"
-msgstr "Busque por nome"
-
 #: src/pages/system_page.py:36
 msgid "Type"
 msgstr "Tipo"
@@ -263,6 +255,14 @@ msgstr "Motor"
 #: src/pages/system_page.ui:34
 msgid "Plugins"
 msgstr "Plugins"
+
+#: src/pages/volume_details_page.py:47
+msgid "Mount path"
+msgstr "Ponto de montagem"
+
+#: src/pages/volumes_list_page.ui:24
+msgid "Search by name"
+msgstr "Busque por nome"
 
 #: src/utils/ui.py:31
 msgid "Running"
