@@ -1,7 +1,8 @@
-from typing import Any, cast
+from typing import Any, List, Tuple, cast
 
 from gi.repository import Adw, Gtk
 
+from ..components.async_list import AsyncList
 from ..components.key_value_row import KeyValueRow
 from ..utils.docker import get_system_info
 from ..utils.i18n import _
@@ -11,74 +12,92 @@ from ..utils.i18n import _
 class SystemPage(Adw.NavigationPage):
     __gtype_name__ = "SystemPage"
 
-    host_group = Gtk.Template.Child()
-    engine_group = Gtk.Template.Child()
-    plugins_group = Gtk.Template.Child()
-
-    host_rows: list[Adw.ActionRow] = []
-    engine_rows: list[Adw.ActionRow] = []
-    plugins_rows: list[Adw.ActionRow] = []
+    content_box = Gtk.Template.Child()
 
     def __init__(self, **kwargs: Any) -> None:
         super().__init__(**kwargs)
 
-        self.host_rows = []
-        self.engine_rows = []
-        self.plugins_rows = []
-
         self.build_ui()
 
     def build_ui(self) -> None:
-        system_info = get_system_info()
+        self.host_list = AsyncList(
+            provider=self.get_host_items,
+            row_factory=self.render_row,
+            search_enabled=False,
+            title=_("Host"),
+        )
 
-        host = {
-            _("Name"): system_info.get("Name"),
-            _("Type"): system_info.get("OSType"),
-            _("OS"): system_info.get("OperatingSystem"),
-            _("Kernel"): system_info.get("KernelVersion"),
-            _("Architecture"): system_info.get("Architecture"),
-            _("Time"): system_info.get("SystemTime"),
-        }
+        self.engine_list = AsyncList(
+            provider=self.get_engine_items,
+            row_factory=self.render_row,
+            search_enabled=False,
+            title=_("Engine"),
+        )
 
-        for key, value in host.items():
-            if not value:
-                continue
+        self.plugins_list = AsyncList(
+            provider=self.get_plugins_items,
+            row_factory=self.render_row,
+            search_enabled=False,
+            title=_("Plugins"),
+        )
 
-            row = KeyValueRow(key, value)
+        self.content_box.append(self.host_list)
+        self.content_box.append(self.engine_list)
+        self.content_box.append(self.plugins_list)
 
-            self.host_group.add(row)
-            self.host_rows.append(row)
+    def get_host_items(self) -> List[Tuple[str, str]]:
+        info = get_system_info()
 
-        engine = {
-            _("Version"): system_info.get("ServerVersion"),
-            _("Root directory"): system_info.get("DockerRootDir"),
-            _("Storage driver"): system_info.get("Driver"),
-        }
+        return [
+            (k, v)
+            for k, v in {
+                _("Name"): info.get("Name"),
+                _("Type"): info.get("OSType"),
+                _("OS"): info.get("OperatingSystem"),
+                _("Kernel"): info.get("KernelVersion"),
+                _("Architecture"): info.get("Architecture"),
+                _("Time"): info.get("SystemTime"),
+            }.items()
+            if v
+        ]
 
-        for key, value in engine.items():
-            if not value:
-                continue
+    def get_engine_items(self) -> List[Tuple[str, str]]:
+        info = get_system_info()
 
-            row = KeyValueRow(key, value)
+        return [
+            (k, v)
+            for k, v in {
+                _("Version"): info.get("ServerVersion"),
+                _("Root directory"): info.get("DockerRootDir"),
+                _("Storage driver"): info.get("Driver"),
+            }.items()
+            if v
+        ]
 
-            self.engine_group.add(row)
-            self.engine_rows.append(row)
+    def get_plugins_items(self) -> List[Tuple[str, str]]:
+        info = get_system_info()
+        plugins = info.get("Plugins", {})
 
-        plugins = {
-            _("Authorization"): system_info.get("Plugins", {}).get("Authorization"),
-            _("Log"): system_info.get("Plugins", {}).get("Log"),
-            _("Network"): system_info.get("Plugins", {}).get("Network"),
-            _("Volume"): system_info.get("Plugins", {}).get("Volume"),
-        }
+        items: List[Tuple[str, str]] = []
 
-        for key, value in plugins.items():
+        for key, name in [
+            (_("Authorization"), "Authorization"),
+            (_("Log"), "Log"),
+            (_("Network"), "Network"),
+            (_("Volume"), "Volume"),
+        ]:
+            value = plugins.get(name)
+
             if not value:
                 continue
 
             if isinstance(value, list):
                 value = ", ".join(cast(list[str], value))
 
-            row = KeyValueRow(key, value)
+            items.append((key, value))
 
-            self.plugins_group.add(row)
-            self.plugins_rows.append(row)
+        return items
+
+    def render_row(self, item: Tuple[str, str]) -> KeyValueRow:
+        key, value = item
+        return KeyValueRow(key, value)

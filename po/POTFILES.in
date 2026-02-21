@@ -1,12 +1,15 @@
 data/com.scrlkx.dockery.desktop.in
 data/com.scrlkx.dockery.gschema.xml
 data/com.scrlkx.dockery.metainfo.xml.in
+src/components/async_list.py
 src/components/badge.py
 src/components/confirmation_dialog.py
 src/components/error_dialog.py
 src/components/help_overlay.py
 src/components/key_value_row.py
 src/components/quick_action_button.py
+src/components/row_button.py
+src/components/row_next.py
 src/components/sidebar_row.py
 src/main.py
 src/pages/container_details_page.py

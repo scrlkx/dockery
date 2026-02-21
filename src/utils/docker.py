@@ -119,10 +119,7 @@ def get_container_started_at(container: Container) -> str | None:
 
 
 def get_container_image(container: Container) -> str | None:
-    if container.image and len(container.image.tags) > 0:
-        return container.image.tags[0]
-
-    return None
+    return get_attribute(container, "Config.Image")
 
 
 def get_container_cmd(container: Container) -> str | None:

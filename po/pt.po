@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-19 22:48-0300\n"
+"POT-Creation-Date: 2026-02-21 01:30-0300\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 
 #: data/com.scrlkx.dockery.desktop.in:2
@@ -53,32 +53,32 @@ msgstr "Continuar"
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: src/components/error_dialog.py:12
+#: src/components/error_dialog.py:14
 msgid "Something went wrong!"
 msgstr "Algo deu errado!"
 
-#: src/components/error_dialog.py:14
+#: src/components/error_dialog.py:16
 msgid "The operation could not be completed."
 msgstr "A operação não pôde ser concluída."
 
-#: src/components/error_dialog.py:21
+#: src/components/error_dialog.py:23
 msgid "Close"
 msgstr "Fechar"
 
-#: src/components/help_overlay.py:14
+#: src/components/help_overlay.py:16
 msgid "General"
 msgstr "Geral"
 
-#: src/components/help_overlay.py:17
+#: src/components/help_overlay.py:19
 msgid "Application"
 msgstr "Aplicação"
 
-#: src/components/help_overlay.py:20
+#: src/components/help_overlay.py:22
 msgid "Quit"
 msgstr "Sair"
 
 #. menu.append(_("Preferences"), "app.preferences")
-#: src/components/help_overlay.py:24 src/window.py:65
+#: src/components/help_overlay.py:26 src/window.py:65
 msgid "Keyboard Shortcuts"
 msgstr "Atalhos do Teclado"
 
@@ -88,7 +88,7 @@ msgid "ID"
 msgstr "ID"
 
 #: src/pages/container_details_page.py:107 src/pages/network_details_page.py:44
-#: src/pages/system_page.py:35 src/pages/volume_details_page.py:45
+#: src/pages/system_page.py:54 src/pages/volume_details_page.py:45
 msgid "Name"
 msgstr "Nome"
 
@@ -142,13 +142,13 @@ msgstr "Ações rápidas"
 msgid "Details"
 msgstr "Detalhes"
 
-#: src/pages/container_details_page.ui:47 src/pages/volumes_list_page.ui:6
-#: src/window.py:98
+#: src/pages/container_details_page.ui:47 src/pages/volumes_list_page.py:39
+#: src/pages/volumes_list_page.ui:6 src/window.py:98
 msgid "Volumes"
 msgstr "Volumes"
 
-#: src/pages/container_details_page.ui:52 src/pages/networks_list_page.ui:6
-#: src/window.py:105
+#: src/pages/container_details_page.ui:52 src/pages/networks_list_page.py:42
+#: src/pages/networks_list_page.ui:6 src/window.py:105
 msgid "Networks"
 msgstr "Redes"
 
@@ -160,23 +160,24 @@ msgstr "Portas vinculadas"
 msgid "Environment variables"
 msgstr "Variáveis de ambiente"
 
-#: src/pages/containers_list_page.ui:6 src/window.py:84
-msgid "Containers"
-msgstr "Containers"
-
-#: src/pages/containers_list_page.ui:24
+#: src/pages/containers_list_page.py:54
 msgid "Search by ID, name or image"
 msgstr "Busque por ID, nome ou imagem"
+
+#: src/pages/containers_list_page.py:56 src/pages/containers_list_page.ui:6
+#: src/window.py:84
+msgid "Containers"
+msgstr "Containers"
 
 #: src/pages/image_details_page.py:49
 msgid "Size"
 msgstr "Tamanho"
 
-#: src/pages/image_details_page.py:50 src/pages/system_page.py:39
+#: src/pages/image_details_page.py:50 src/pages/system_page.py:58
 msgid "Architecture"
 msgstr "Arquitetura"
 
-#: src/pages/image_details_page.py:51 src/pages/system_page.py:37
+#: src/pages/image_details_page.py:51 src/pages/system_page.py:56
 msgid "OS"
 msgstr "SO"
 
@@ -184,59 +185,72 @@ msgstr "SO"
 msgid "Tags"
 msgstr "Etiquetas"
 
-#: src/pages/images_list_page.ui:6 src/window.py:91
-msgid "Images"
-msgstr "Imagens"
-
-#: src/pages/images_list_page.ui:24
+#: src/pages/images_list_page.py:44
 msgid "Search by short ID or tag"
 msgstr "Busque por ID curto ou etiqueta"
+
+#: src/pages/images_list_page.py:46 src/pages/images_list_page.ui:6
+#: src/window.py:91
+msgid "Images"
+msgstr "Imagens"
 
 #: src/pages/network_details_page.py:45 src/pages/volume_details_page.py:46
 msgid "Driver"
 msgstr "Driver"
 
-#: src/pages/networks_list_page.ui:24
+#: src/pages/networks_list_page.py:40
 msgid "Search by ID or name"
 msgstr "Busque por ID ou nome"
 
-#: src/pages/system_page.py:36
+#: src/pages/system_page.py:27
+msgid "Host"
+msgstr "Host"
+
+#: src/pages/system_page.py:34
+msgid "Engine"
+msgstr "Motor"
+
+#: src/pages/system_page.py:41
+msgid "Plugins"
+msgstr "Plugins"
+
+#: src/pages/system_page.py:55
 msgid "Type"
 msgstr "Tipo"
 
-#: src/pages/system_page.py:38
+#: src/pages/system_page.py:57
 msgid "Kernel"
 msgstr "Kernel"
 
-#: src/pages/system_page.py:40
+#: src/pages/system_page.py:59
 msgid "Time"
 msgstr "Horário"
 
-#: src/pages/system_page.py:53
+#: src/pages/system_page.py:70
 msgid "Version"
 msgstr "Versão"
 
-#: src/pages/system_page.py:54
+#: src/pages/system_page.py:71
 msgid "Root directory"
 msgstr "Diretório raiz"
 
-#: src/pages/system_page.py:55
+#: src/pages/system_page.py:72
 msgid "Storage driver"
 msgstr "Driver de armazenamento"
 
-#: src/pages/system_page.py:68
+#: src/pages/system_page.py:84
 msgid "Authorization"
 msgstr "Autorização"
 
-#: src/pages/system_page.py:69
+#: src/pages/system_page.py:85
 msgid "Log"
 msgstr "Log"
 
-#: src/pages/system_page.py:70
+#: src/pages/system_page.py:86
 msgid "Network"
 msgstr "Rede"
 
-#: src/pages/system_page.py:71
+#: src/pages/system_page.py:87
 msgid "Volume"
 msgstr "Volume"
 
@@ -244,23 +258,11 @@ msgstr "Volume"
 msgid "System"
 msgstr "Sistema"
 
-#: src/pages/system_page.ui:24
-msgid "Host"
-msgstr "Host"
-
-#: src/pages/system_page.ui:29
-msgid "Engine"
-msgstr "Motor"
-
-#: src/pages/system_page.ui:34
-msgid "Plugins"
-msgstr "Plugins"
-
 #: src/pages/volume_details_page.py:47
 msgid "Mount path"
 msgstr "Ponto de montagem"
 
-#: src/pages/volumes_list_page.ui:24
+#: src/pages/volumes_list_page.py:37
 msgid "Search by name"
 msgstr "Busque por nome"
 
