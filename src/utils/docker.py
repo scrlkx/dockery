@@ -11,7 +11,7 @@ from typing import (
     cast,
 )
 
-from docker import from_env
+from docker import DockerClient
 from docker.models.containers import Container
 from docker.models.images import Image, ImageCollection
 from docker.models.networks import Network
@@ -69,6 +69,8 @@ class DockerClientProto(Protocol):
 
     def info(self) -> Dict[str, Any]: ...
 
+    def ping(self) -> None: ...
+
 
 class DockerObject(Protocol):
     @property
@@ -92,7 +94,16 @@ class DockerPortBinding(TypedDict, total=False):
 
 @lru_cache(maxsize=1)
 def get_docker_client() -> DockerClientProto:
-    return cast(DockerClientProto, from_env())
+    client = DockerClient(
+        base_url="unix:///var/run/docker.sock",
+        timeout=30,
+        use_ssh_client=True,
+    )
+
+    client = cast(DockerClientProto, client)
+    client.ping()
+
+    return client
 
 
 def get_attribute(obj: DockerObject, attribute: str, default: Any | None = None) -> Any:

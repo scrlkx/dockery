@@ -76,7 +76,7 @@ msgstr "Quit"
 msgid "Keyboard Shortcuts"
 msgstr "Keyboard Shortcuts"
 
-#: src/pages/container_details_page.py:106 src/pages/image_details_page.py:48
+#: src/pages/container_details_page.py:106 src/pages/image_details_page.py:47
 #: src/pages/network_details_page.py:43
 msgid "ID"
 msgstr "ID"
@@ -94,7 +94,7 @@ msgstr "Image"
 msgid "Status"
 msgstr "Status"
 
-#: src/pages/container_details_page.py:110 src/pages/image_details_page.py:52
+#: src/pages/container_details_page.py:110 src/pages/image_details_page.py:51
 #: src/pages/network_details_page.py:46 src/pages/volume_details_page.py:48
 msgid "Created at"
 msgstr "Created at"
@@ -163,15 +163,15 @@ msgstr "Search by ID, name or image"
 msgid "Containers"
 msgstr "Containers"
 
-#: src/pages/image_details_page.py:49
+#: src/pages/image_details_page.py:48
 msgid "Size"
 msgstr "Size"
 
-#: src/pages/image_details_page.py:50 src/pages/system_page.py:58
+#: src/pages/image_details_page.py:49 src/pages/system_page.py:58
 msgid "Architecture"
 msgstr "Architecture"
 
-#: src/pages/image_details_page.py:51 src/pages/system_page.py:56
+#: src/pages/image_details_page.py:50 src/pages/system_page.py:56
 msgid "OS"
 msgstr "OS"
 

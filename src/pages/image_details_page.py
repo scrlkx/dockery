@@ -3,7 +3,6 @@ from gi.repository import Adw, Gtk
 
 from ..components.key_value_row import KeyValueRow
 from ..utils.docker import (
-    get_image,
     get_image_architecture,
     get_image_created_at,
     get_image_os,
@@ -32,7 +31,7 @@ class ImageDetailsPage(Adw.NavigationPage):
         self.detail_rows = []
         self.tag_rows = []
 
-        self.image = get_image(image.id or image.short_id)
+        self.image = image
 
         self.build_ui()
 
