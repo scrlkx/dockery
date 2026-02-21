@@ -1,10 +1,12 @@
-from typing import Any, List
+from typing import Any
 
 from docker.models.volumes import Volume
 from gi.repository import Adw, GObject, Gtk
 
+from ..components.async_list import AsyncList
 from ..components.row_next import RowNext
 from ..utils.docker import get_volume_short_name, get_volumes
+from ..utils.i18n import _
 
 
 class VolumeRow(Adw.ActionRow):
@@ -21,42 +23,36 @@ class VolumesPage(Adw.NavigationPage):
         "volume-activated": (GObject.SignalFlags.RUN_FIRST, None, (object,))
     }
 
-    search_entry = Gtk.Template.Child()
-    volumes_group = Gtk.Template.Child()
-
-    volume_rows: List[VolumeRow] = []
+    content_box = Gtk.Template.Child()
 
     def __init__(self, **kwargs: Any) -> None:
         super().__init__(**kwargs)
 
-        self.register_events()
         self.build_ui()
 
-    def register_events(self) -> None:
-        self.search_entry.connect("search-changed", self.on_search_changed)
-
     def build_ui(self) -> None:
-        volumes = get_volumes()
+        self.list_widget = AsyncList(
+            provider=get_volumes,
+            row_factory=self.render_row,
+            search_placeholder=_("Search by name"),
+            search_callback=self.search,
+            title=_("Volumes"),
+        )
 
-        for volume in volumes:
-            row = VolumeRow(title=get_volume_short_name(volume))
-            row.name = volume.name
+        self.content_box.append(self.list_widget)
 
-            row.set_activatable(True)
-            row.connect("activated", self.on_volume_row_clicked, volume)
+    def render_row(self, volume: Volume) -> VolumeRow:
+        row = VolumeRow(title=get_volume_short_name(volume))
+        row.name = volume.name
+        row.set_activatable(True)
+        row.connect("activated", self.on_row_clicked, volume)
 
-            self.volume_rows.append(row)
+        row.add_suffix(RowNext())
 
-            row.add_suffix(RowNext())
+        return row
 
-            self.volumes_group.add(row)
+    def search(self, volume: Volume, text: str) -> bool:
+        return text.lower() in volume.name.lower()
 
-    def on_search_changed(self, entry: Gtk.SearchEntry) -> None:
-        text = entry.get_text().lower()
-
-        for row in self.volume_rows:
-            visible = text in row.name
-            row.set_visible(visible)
-
-    def on_volume_row_clicked(self, _: Gtk.ListBoxRow, volume: Volume) -> None:
+    def on_row_clicked(self, _: AsyncList, volume: Volume) -> None:
         self.emit("volume-activated", volume)
