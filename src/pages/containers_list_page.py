@@ -97,6 +97,8 @@ class ContainersListPage(Adw.NavigationPage):
             )
             button.set_margin_end(6)
 
+            row.add_suffix(button)
+
         row.add_suffix(RowNext())
 
         return row
