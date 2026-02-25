@@ -1,11 +1,11 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-21 11:33-0300\n"
+"POT-Creation-Date: 2026-02-24 23:23-0300\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 
 #: data/com.scrlkx.dockery.desktop.in:2
-#: data/com.scrlkx.dockery.metainfo.xml.in:7
+#: data/com.scrlkx.dockery.metainfo.xml.in:7 src/pages/connections_page.ui:22
 msgid "Dockery"
 msgstr "Dockery"
 
@@ -13,7 +13,16 @@ msgstr "Dockery"
 msgid "Docker;Containers;DevOps;"
 msgstr "Docker;Containers;DevOps;"
 
-#: data/com.scrlkx.dockery.metainfo.xml.in:8
+#: data/com.scrlkx.dockery.gschema.xml:6
+msgid "Docker connection URIs"
+msgstr "URIs de conexão Docker"
+
+#: data/com.scrlkx.dockery.gschema.xml:7
+msgid "List of saved Docker connection URIs"
+msgstr "Lista de conexões Docker salvas"
+
+#: data/com.scrlkx.dockery.metainfo.xml.in:8 src/pages/connections_page.py:17
+#: src/pages/connections_page.ui:23
 msgid "Adwaita-based Docker management UI"
 msgstr "Interface de gerenciamento do Docker baseada em Adwaita"
 
@@ -49,7 +58,7 @@ msgstr "Você realmente deseja continuar?"
 msgid "Continue"
 msgstr "Continuar"
 
-#: src/components/confirmation_dialog.py:21
+#: src/components/confirmation_dialog.py:21 src/dialogs/connection_dialog.ui:14
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -77,18 +86,37 @@ msgstr "Aplicação"
 msgid "Quit"
 msgstr "Sair"
 
-#. menu.append(_("Preferences"), "app.preferences")
-#: src/components/help_overlay.py:26 src/window.py:65
+#: src/components/help_overlay.py:26 src/window.py:64
 msgid "Keyboard Shortcuts"
 msgstr "Atalhos do Teclado"
 
+#: src/dialogs/connection_dialog.ui:6 src/pages/connections_page.py:34
+msgid "Add Connection"
+msgstr "Adicionar Conexão"
+
+#: src/dialogs/connection_dialog.ui:20
+msgid "Add"
+msgstr "Adicionar"
+
+#: src/dialogs/connection_dialog.ui:41
+msgid "URI"
+msgstr "URI"
+
+#: src/pages/connections_page.py:45
+msgid "Saved Connections"
+msgstr "Conexões Salvas"
+
+#: src/pages/connections_page.py:71
+msgid "Connecting…"
+msgstr "Conectando..."
+
 #: src/pages/container_details_page.py:106 src/pages/image_details_page.py:47
-#: src/pages/network_details_page.py:43
+#: src/pages/network_details_page.py:42
 msgid "ID"
 msgstr "ID"
 
-#: src/pages/container_details_page.py:107 src/pages/network_details_page.py:44
-#: src/pages/system_page.py:54 src/pages/volume_details_page.py:45
+#: src/pages/container_details_page.py:107 src/pages/network_details_page.py:43
+#: src/pages/system_page.py:54 src/pages/volume_details_page.py:44
 msgid "Name"
 msgstr "Nome"
 
@@ -101,7 +129,7 @@ msgid "Status"
 msgstr "Estado"
 
 #: src/pages/container_details_page.py:110 src/pages/image_details_page.py:51
-#: src/pages/network_details_page.py:46 src/pages/volume_details_page.py:48
+#: src/pages/network_details_page.py:45 src/pages/volume_details_page.py:47
 msgid "Created at"
 msgstr "Criado em"
 
@@ -143,12 +171,12 @@ msgid "Details"
 msgstr "Detalhes"
 
 #: src/pages/container_details_page.ui:47 src/pages/volumes_list_page.py:39
-#: src/pages/volumes_list_page.ui:6 src/window.py:98
+#: src/pages/volumes_list_page.ui:6 src/window.py:115
 msgid "Volumes"
 msgstr "Volumes"
 
 #: src/pages/container_details_page.ui:52 src/pages/networks_list_page.py:42
-#: src/pages/networks_list_page.ui:6 src/window.py:105
+#: src/pages/networks_list_page.ui:6 src/window.py:122
 msgid "Networks"
 msgstr "Redes"
 
@@ -165,7 +193,7 @@ msgid "Search by ID, name or image"
 msgstr "Busque por ID, nome ou imagem"
 
 #: src/pages/containers_list_page.py:56 src/pages/containers_list_page.ui:6
-#: src/window.py:84
+#: src/window.py:101 src/window.py:158
 msgid "Containers"
 msgstr "Containers"
 
@@ -190,11 +218,11 @@ msgid "Search by short ID or tag"
 msgstr "Busque por ID curto ou etiqueta"
 
 #: src/pages/images_list_page.py:46 src/pages/images_list_page.ui:6
-#: src/window.py:91
+#: src/window.py:108
 msgid "Images"
 msgstr "Imagens"
 
-#: src/pages/network_details_page.py:45 src/pages/volume_details_page.py:46
+#: src/pages/network_details_page.py:44 src/pages/volume_details_page.py:45
 msgid "Driver"
 msgstr "Driver"
 
@@ -254,11 +282,11 @@ msgstr "Rede"
 msgid "Volume"
 msgstr "Volume"
 
-#: src/pages/system_page.ui:6 src/window.py:112
+#: src/pages/system_page.ui:6 src/window.py:129
 msgid "System"
 msgstr "Sistema"
 
-#: src/pages/volume_details_page.py:47
+#: src/pages/volume_details_page.py:46
 msgid "Mount path"
 msgstr "Ponto de montagem"
 
@@ -338,14 +366,18 @@ msgstr "privado"
 msgid "slave"
 msgstr "servo"
 
-#: src/window.py:66
+#: src/window.py:65
 msgid "Help"
 msgstr "Ajuda"
 
-#: src/window.py:67
+#: src/window.py:66
 msgid "About"
 msgstr "Sobre"
 
-#: src/window.py:72
+#: src/window.py:78
 msgid "Main Menu"
 msgstr "Menu Principal"
+
+#: src/window.ui:27
+msgid "Disconnect"
+msgstr "Disconectar"

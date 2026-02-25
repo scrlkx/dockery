@@ -1,5 +1,5 @@
 #: data/com.scrlkx.dockery.desktop.in:2
-#: data/com.scrlkx.dockery.metainfo.xml.in:7
+#: data/com.scrlkx.dockery.metainfo.xml.in:7 src/pages/connections_page.ui:22
 msgid "Dockery"
 msgstr "Dockery"
 
@@ -7,7 +7,16 @@ msgstr "Dockery"
 msgid "Docker;Containers;DevOps;"
 msgstr "Docker;Containers;DevOps;"
 
-#: data/com.scrlkx.dockery.metainfo.xml.in:8
+#: data/com.scrlkx.dockery.gschema.xml:6
+msgid "Docker connection URIs"
+msgstr "Docker connection URIs"
+
+#: data/com.scrlkx.dockery.gschema.xml:7
+msgid "List of saved Docker connection URIs"
+msgstr "List of saved Docker connection URIs"
+
+#: data/com.scrlkx.dockery.metainfo.xml.in:8 src/pages/connections_page.py:17
+#: src/pages/connections_page.ui:23
 msgid "Adwaita-based Docker management UI"
 msgstr "Adwaita-based Docker management UI"
 
@@ -43,7 +52,7 @@ msgstr "Do you really want to continue?"
 msgid "Continue"
 msgstr "Continue"
 
-#: src/components/confirmation_dialog.py:21
+#: src/components/confirmation_dialog.py:21 src/dialogs/connection_dialog.ui:14
 msgid "Cancel"
 msgstr "Cancel"
 
@@ -71,18 +80,37 @@ msgstr "Application"
 msgid "Quit"
 msgstr "Quit"
 
-#. menu.append(_("Preferences"), "app.preferences")
-#: src/components/help_overlay.py:26 src/window.py:65
+#: src/components/help_overlay.py:26 src/window.py:64
 msgid "Keyboard Shortcuts"
 msgstr "Keyboard Shortcuts"
 
+#: src/dialogs/connection_dialog.ui:6 src/pages/connections_page.py:34
+msgid "Add Connection"
+msgstr "Add Connection"
+
+#: src/dialogs/connection_dialog.ui:20
+msgid "Add"
+msgstr "Add"
+
+#: src/dialogs/connection_dialog.ui:41
+msgid "URI"
+msgstr "URI"
+
+#: src/pages/connections_page.py:45
+msgid "Saved Connections"
+msgstr "Saved Connections"
+
+#: src/pages/connections_page.py:71
+msgid "Connecting"
+msgstr ""
+
 #: src/pages/container_details_page.py:106 src/pages/image_details_page.py:47
-#: src/pages/network_details_page.py:43
+#: src/pages/network_details_page.py:42
 msgid "ID"
 msgstr "ID"
 
-#: src/pages/container_details_page.py:107 src/pages/network_details_page.py:44
-#: src/pages/system_page.py:54 src/pages/volume_details_page.py:45
+#: src/pages/container_details_page.py:107 src/pages/network_details_page.py:43
+#: src/pages/system_page.py:54 src/pages/volume_details_page.py:44
 msgid "Name"
 msgstr "Name"
 
@@ -95,7 +123,7 @@ msgid "Status"
 msgstr "Status"
 
 #: src/pages/container_details_page.py:110 src/pages/image_details_page.py:51
-#: src/pages/network_details_page.py:46 src/pages/volume_details_page.py:48
+#: src/pages/network_details_page.py:45 src/pages/volume_details_page.py:47
 msgid "Created at"
 msgstr "Created at"
 
@@ -137,12 +165,12 @@ msgid "Details"
 msgstr "Details"
 
 #: src/pages/container_details_page.ui:47 src/pages/volumes_list_page.py:39
-#: src/pages/volumes_list_page.ui:6 src/window.py:98
+#: src/pages/volumes_list_page.ui:6 src/window.py:115
 msgid "Volumes"
 msgstr "Volumes"
 
 #: src/pages/container_details_page.ui:52 src/pages/networks_list_page.py:42
-#: src/pages/networks_list_page.ui:6 src/window.py:105
+#: src/pages/networks_list_page.ui:6 src/window.py:122
 msgid "Networks"
 msgstr "Networks"
 
@@ -159,7 +187,7 @@ msgid "Search by ID, name or image"
 msgstr "Search by ID, name or image"
 
 #: src/pages/containers_list_page.py:56 src/pages/containers_list_page.ui:6
-#: src/window.py:84
+#: src/window.py:101 src/window.py:158
 msgid "Containers"
 msgstr "Containers"
 
@@ -184,11 +212,11 @@ msgid "Search by short ID or tag"
 msgstr "Search by short ID or tag"
 
 #: src/pages/images_list_page.py:46 src/pages/images_list_page.ui:6
-#: src/window.py:91
+#: src/window.py:108
 msgid "Images"
 msgstr "Images"
 
-#: src/pages/network_details_page.py:45 src/pages/volume_details_page.py:46
+#: src/pages/network_details_page.py:44 src/pages/volume_details_page.py:45
 msgid "Driver"
 msgstr "Driver"
 
@@ -248,11 +276,11 @@ msgstr "Network"
 msgid "Volume"
 msgstr "Volume"
 
-#: src/pages/system_page.ui:6 src/window.py:112
+#: src/pages/system_page.ui:6 src/window.py:129
 msgid "System"
 msgstr "System"
 
-#: src/pages/volume_details_page.py:47
+#: src/pages/volume_details_page.py:46
 msgid "Mount path"
 msgstr "Mount path"
 
@@ -332,14 +360,21 @@ msgstr "private"
 msgid "slave"
 msgstr "slave"
 
-#: src/window.py:66
+#: src/window.py:65
 msgid "Help"
 msgstr "Help"
 
-#: src/window.py:67
+#: src/window.py:66
 msgid "About"
 msgstr "About"
 
-#: src/window.py:72
+#: src/window.py:78
 msgid "Main Menu"
 msgstr "Main Menu"
+
+#: src/window.ui:27
+msgid "Disconnect"
+msgstr "Disconnect"
+
+#~ msgid "Connecting"
+#~ msgstr "Connecting"

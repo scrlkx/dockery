@@ -3,7 +3,6 @@ from gi.repository import Adw, Gtk
 
 from ..components.key_value_row import KeyValueRow
 from ..utils.docker import (
-    get_network,
     get_network_created_at,
     get_network_driver,
 )
@@ -28,7 +27,7 @@ class NetworkDetailsPage(Adw.NavigationPage):
         self.detail_rows = []
         self.tag_rows = []
 
-        self.network = get_network(network.short_id)
+        self.network = network
 
         self.build_ui()
 

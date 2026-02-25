@@ -7,51 +7,71 @@
     <property name="default-width">1100</property>
     <property name="default-height">600</property>
     <property name="content">
-      <object class="AdwNavigationSplitView" id="split_view">
-        <property name="sidebar">
-          <object class="AdwNavigationPage">
-            <property name="title">Dockery</property>
+      <object class="GtkStack" id="main_stack">
+        <property name="transition-type">crossfade</property>
+        <child>
+          <object class="GtkStackPage">
+            <property name="name">connected</property>
             <property name="child">
-              <object class="AdwToolbarView">
-                <child type="top">
-                  <object class="AdwHeaderBar"/>
-                </child>
-                <property name="content">
-                  <object class="GtkListBox" id="sidebar_list">
-                    <style>
-                      <class name="navigation-sidebar"/>
-                    </style>
-                    <property name="selection-mode">browse</property>
-                  </object>
-                </property>
-              </object>
-            </property>
-          </object>
-        </property>
-        <property name="content">
-          <object class="AdwNavigationPage" id="content_page">
-            <property name="child">
-              <object class="AdwToolbarView">
-                <child type="top">
-                  <object class="AdwHeaderBar" id="header_bar">
-                    <child type="start">
-                      <object class="GtkButton" id="back_button">
-                        <property name="icon-name">go-previous-symbolic</property>
-                        <property name="visible">false</property>
-                        <style>
-                          <class name="flat"/>
-                        </style>
+              <object class="AdwNavigationSplitView" id="split_view">
+                <property name="sidebar">
+                  <object class="AdwNavigationPage">
+                    <property name="title">Dockery</property>
+                    <property name="child">
+                      <object class="AdwToolbarView">
+                        <child type="top">
+                          <object class="AdwHeaderBar">
+                            <child type="end">
+                              <object class="GtkButton" id="disconnect_button">
+                                <property name="icon-name">system-log-out-symbolic</property>
+                                <property name="tooltip-text" translatable="yes">Disconnect</property>
+                                <style>
+                                  <class name="flat"/>
+                                </style>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                        <property name="content">
+                          <object class="GtkListBox" id="sidebar_list">
+                            <style>
+                              <class name="navigation-sidebar"/>
+                            </style>
+                            <property name="selection-mode">browse</property>
+                          </object>
+                        </property>
                       </object>
-                    </child>
+                    </property>
                   </object>
-                </child>
+                </property>
                 <property name="content">
-                  <object class="AdwNavigationView" id="nav_view"/>
+                  <object class="AdwNavigationPage" id="content_page">
+                    <property name="child">
+                      <object class="AdwToolbarView">
+                        <child type="top">
+                          <object class="AdwHeaderBar" id="header_bar">
+                            <child type="start">
+                              <object class="GtkButton" id="back_button">
+                                <property name="icon-name">go-previous-symbolic</property>
+                                <property name="visible">false</property>
+                                <style>
+                                  <class name="flat"/>
+                                </style>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                        <property name="content">
+                          <object class="AdwNavigationView" id="nav_view"/>
+                        </property>
+                      </object>
+                    </property>
+                  </object>
                 </property>
               </object>
             </property>
           </object>
-        </property>
+        </child>
       </object>
     </property>
     <child>

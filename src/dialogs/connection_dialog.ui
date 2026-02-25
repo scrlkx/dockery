@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+    <requires lib="gtk" version="4.0"/>
+    <requires lib="Adw" version="1.0"/>
+    <template class="ConnectionDialog" parent="AdwDialog">
+        <property name="title" translatable="yes">Add Connection</property>
+        <property name="content-width">420</property>
+        <child>
+            <object class="AdwToolbarView">
+                <child type="top">
+                    <object class="AdwHeaderBar">
+                        <child type="start">
+                            <object class="GtkButton" id="cancel_button">
+                                <property name="label" translatable="yes">Cancel</property>
+                                <property name="action-name">window.close</property>
+                            </object>
+                        </child>
+                        <child type="end">
+                            <object class="GtkButton" id="add_button">
+                                <property name="label" translatable="yes">Add</property>
+                                <style>
+                                    <class name="suggested-action"/>
+                                </style>
+                            </object>
+                        </child>
+                    </object>
+                </child>
+                <property name="content">
+                    <object class="GtkListBox">
+                        <property name="selection-mode">none</property>
+                        <property name="valign">start</property>
+                        <property name="margin-top">12</property>
+                        <property name="margin-bottom">12</property>
+                        <property name="margin-start">12</property>
+                        <property name="margin-end">12</property>
+                        <style>
+                            <class name="boxed-list"/>
+                        </style>
+                        <child>
+                            <object class="AdwEntryRow" id="uri_entry">
+                                <property name="title" translatable="yes">URI</property>
+                                <property name="text">unix:///var/run/docker.sock</property>
+                            </object>
+                        </child>
+                    </object>
+                </property>
+            </object>
+        </child>
+    </template>
+</interface>

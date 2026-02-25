@@ -1,4 +1,4 @@
-from functools import lru_cache
+import threading
 from typing import (
     Any,
     Dict,
@@ -71,6 +71,8 @@ class DockerClientProto(Protocol):
 
     def ping(self) -> None: ...
 
+    def close(self) -> None: ...
+
 
 class DockerObject(Protocol):
     @property
@@ -92,18 +94,36 @@ class DockerPortBinding(TypedDict, total=False):
     HostPort: str
 
 
-@lru_cache(maxsize=1)
-def get_docker_client() -> DockerClientProto:
-    client = DockerClient(
-        base_url="unix:///var/run/docker.sock",
-        timeout=30,
-        use_ssh_client=True,
-    )
+_client: DockerClientProto | None = None  # pylint: disable=invalid-name
+_client_lock = threading.Lock()
 
+
+def connect(uri: str) -> None:
+    global _client
+
+    client = DockerClient(base_url=uri, timeout=30, use_ssh_client=True)
     client = cast(DockerClientProto, client)
     client.ping()
 
-    return client
+    with _client_lock:
+        _client = client
+
+
+def disconnect() -> None:
+    global _client
+
+    with _client_lock:
+        if _client is not None:
+            _client.close()
+
+        _client = None
+
+
+def get_docker_client() -> DockerClientProto:
+    if _client is None:
+        raise RuntimeError("Not connected to Docker")
+
+    return _client
 
 
 def get_attribute(obj: DockerObject, attribute: str, default: Any | None = None) -> Any:

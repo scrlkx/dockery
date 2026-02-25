@@ -3,7 +3,6 @@ from gi.repository import Adw, Gtk
 
 from ..components.key_value_row import KeyValueRow
 from ..utils.docker import (
-    get_volume,
     get_volume_created_at,
     get_volume_driver,
     get_volume_mount_path,
@@ -30,7 +29,7 @@ class VolumeDetailsPage(Adw.NavigationPage):
         self.detail_rows = []
         self.tag_rows = []
 
-        self.volume = get_volume(volume.name)
+        self.volume = volume
 
         self.build_ui()
 

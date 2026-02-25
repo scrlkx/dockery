@@ -36,6 +36,9 @@
     <file preprocess="xml-stripblanks">pages/networks_list_page.ui</file>
     <!-- System -->
     <file preprocess="xml-stripblanks">pages/system_page.ui</file>
+    <!-- Connections -->
+    <file preprocess="xml-stripblanks">pages/connections_page.ui</file>
+    <file preprocess="xml-stripblanks">dialogs/connection_dialog.ui</file>
     <!-- Styles -->
     <file>style.css</file>
   </gresource>

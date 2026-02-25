@@ -11,7 +11,11 @@ src/components/quick_action_button.py
 src/components/row_button.py
 src/components/row_next.py
 src/components/sidebar_row.py
+src/dialogs/connection_dialog.py
+src/dialogs/connection_dialog.ui
 src/main.py
+src/pages/connections_page.py
+src/pages/connections_page.ui
 src/pages/container_details_page.py
 src/pages/container_details_page.ui
 src/pages/containers_list_page.py
@@ -30,6 +34,7 @@ src/pages/volume_details_page.py
 src/pages/volume_details_page.ui
 src/pages/volumes_list_page.py
 src/pages/volumes_list_page.ui
+src/utils/connections.py
 src/utils/docker.py
 src/utils/events.py
 src/utils/i18n.py
