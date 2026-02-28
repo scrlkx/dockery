@@ -14,7 +14,7 @@ from ..utils.docker import (
     start_container,
     stop_container,
 )
-from ..utils.events import on_containers_change
+from ..utils.events import on_containers_change, unsubscribe
 from ..utils.i18n import _
 from ..utils.ui import (
     get_container_status_class,
@@ -45,7 +45,16 @@ class ContainersListPage(Adw.NavigationPage):
     def __init__(self, **kwargs: Any) -> None:
         super().__init__(**kwargs)
 
+        self.connect("unrealize", self.on_unrealize)
+
         self.build_ui()
+        self.register_events()
+
+    def on_unrealize(self, _widget: Gtk.Widget) -> None:
+        unsubscribe(self.list_widget.reload_content)
+
+    def register_events(self) -> None:
+        on_containers_change(self.list_widget.reload_content)
 
     def build_ui(self) -> None:
         self.list_widget = AsyncList(
@@ -57,8 +66,6 @@ class ContainersListPage(Adw.NavigationPage):
         )
 
         self.content_box.append(self.list_widget)
-
-        on_containers_change(self.list_widget.reload_content)
 
     def render_row(self, container: Container) -> ContainerRow:
         row = ContainerRow()

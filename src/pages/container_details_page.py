@@ -29,7 +29,7 @@ from ..utils.docker import (
     stop_container,
     unpause_container,
 )
-from ..utils.events import on_container_change
+from ..utils.events import on_container_change, unsubscribe
 from ..utils.i18n import _
 from ..utils.ui import (
     get_container_action_icon,
@@ -71,13 +71,18 @@ class ContainerDetailsPage(Adw.NavigationPage):
         self.ports_rows = []
         self.environment_rows = []
 
-        self.container = container
+        self.container = get_container(container.name)
+
+        self.connect("unrealize", self.on_unrealize)
 
         self.register_events()
         self.build_ui()
 
+    def on_unrealize(self, _widget: Gtk.Widget) -> None:
+        unsubscribe(self.reload_ui)
+
     def register_events(self) -> None:
-        on_container_change(self.reload_ui, self.container)
+        on_container_change(self.reload_ui, self.container.id)
 
     def build_ui(self) -> None:
         self.load_details()
@@ -125,7 +130,7 @@ class ContainerDetailsPage(Adw.NavigationPage):
         if entrypoint:
             details[_("Entrypoint")] = entrypoint
 
-        details[_("Restart Policy")] = get_container_restart_policy(self.container)
+        details[_("Restart policy")] = get_container_restart_policy(self.container)
 
         for row in self.detail_rows:
             self.details_group.remove(row)
@@ -247,7 +252,7 @@ class ContainerDetailsPage(Adw.NavigationPage):
 
     def on_remove_clicked(self) -> None:
         dialog = ConfirmationDialog(
-            heading=_("Remove Container?"),
+            heading=_("Remove container?"),
             body=_("Are you sure you want to remove this container?"),
             action_label=_("Remove"),
         )

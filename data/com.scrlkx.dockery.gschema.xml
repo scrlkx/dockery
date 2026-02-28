@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist gettext-domain="dockery">
 	<schema id="com.scrlkx.dockery" path="/com/scrlkx/dockery/">
-		<key name="connections" type="as">
-			<default>['unix:///var/run/docker.sock']</default>
-			<summary>Docker connection URIs</summary>
-			<description>List of saved Docker connection URIs</description>
+		<key name="connection-profiles" type="s">
+			<default>'[]'</default>
+			<summary>Docker connection profiles</summary>
+			<description>JSON-encoded list of Docker connection profiles</description>
 		</key>
 	</schema>
 </schemalist>

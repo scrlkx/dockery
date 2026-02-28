@@ -8,6 +8,7 @@ src/components/error_dialog.py
 src/components/help_overlay.py
 src/components/key_value_row.py
 src/components/quick_action_button.py
+src/components/row_action.py
 src/components/row_button.py
 src/components/row_next.py
 src/components/sidebar_row.py
@@ -34,8 +35,10 @@ src/pages/volume_details_page.py
 src/pages/volume_details_page.ui
 src/pages/volumes_list_page.py
 src/pages/volumes_list_page.ui
+src/utils/connection_profile.py
 src/utils/connections.py
 src/utils/docker.py
+src/utils/docker_ssh.py
 src/utils/events.py
 src/utils/i18n.py
 src/utils/ui.py

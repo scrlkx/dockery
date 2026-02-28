@@ -27,9 +27,8 @@ from .utils.i18n import _
 class DockeryWindow(Adw.ApplicationWindow):
     __gtype_name__ = "DockeryWindow"
 
-    CONNECTIONS_WIDTH = 700
-    CONNECTED_WIDTH = 1100
-    DEFAULT_HEIGHT = 600
+    DEFAULT_WIDTH = 1100
+    DEFAULT_HEIGHT = 750
 
     main_stack = Gtk.Template.Child()
     header_bar = Gtk.Template.Child()
@@ -42,6 +41,8 @@ class DockeryWindow(Adw.ApplicationWindow):
     def __init__(self, **kwargs: Any) -> None:
         super().__init__(**kwargs)
         self.connections_page: ConnectionsPage | None = None
+
+        self.set_default_size(self.DEFAULT_WIDTH, self.DEFAULT_HEIGHT)
 
         self.register_events()
         self.build_ui()
@@ -88,7 +89,6 @@ class DockeryWindow(Adw.ApplicationWindow):
 
         self.main_stack.add_named(self.connections_page, "connections")
         self.main_stack.set_visible_child_name("connections")
-        self.set_default_size(self.CONNECTIONS_WIDTH, self.DEFAULT_HEIGHT)
 
     def build_sidebar(self) -> None:
         while row := self.sidebar_list.get_row_at_index(0):
@@ -158,7 +158,6 @@ class DockeryWindow(Adw.ApplicationWindow):
         self.content_page.set_title(_("Containers"))
 
         self.main_stack.set_visible_child_name("connected")
-        self.set_default_size(self.CONNECTED_WIDTH, self.DEFAULT_HEIGHT)
 
     def on_disconnect_clicked(self, _button: Gtk.Button) -> None:
         assert self.connections_page is not None
@@ -170,7 +169,6 @@ class DockeryWindow(Adw.ApplicationWindow):
 
         self.connections_page.refresh()
         self.main_stack.set_visible_child_name("connections")
-        self.set_default_size(self.CONNECTIONS_WIDTH, self.DEFAULT_HEIGHT)
 
     def on_back_button_clicked(self, __: Gtk.Button) -> None:
         self.nav_view.pop()

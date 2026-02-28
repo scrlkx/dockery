@@ -1,8 +1,8 @@
-from typing import Any, List, Tuple, cast
+import threading
+from typing import Any, Dict, List, Tuple, cast
 
-from gi.repository import Adw, Gtk
+from gi.repository import Adw, GLib, Gtk
 
-from ..components.async_list import AsyncList
 from ..components.key_value_row import KeyValueRow
 from ..utils.docker import get_system_info
 from ..utils.i18n import _
@@ -20,34 +20,63 @@ class SystemPage(Adw.NavigationPage):
         self.build_ui()
 
     def build_ui(self) -> None:
-        self.host_list = AsyncList(
-            provider=self.get_host_items,
-            row_factory=self.render_row,
-            search_enabled=False,
-            title=_("Host"),
-        )
+        self.host_group = Adw.PreferencesGroup()
+        self.host_group.set_title(_("Host"))
 
-        self.engine_list = AsyncList(
-            provider=self.get_engine_items,
-            row_factory=self.render_row,
-            search_enabled=False,
-            title=_("Engine"),
-        )
+        self.engine_group = Adw.PreferencesGroup()
+        self.engine_group.set_title(_("Engine"))
 
-        self.plugins_list = AsyncList(
-            provider=self.get_plugins_items,
-            row_factory=self.render_row,
-            search_enabled=False,
-            title=_("Plugins"),
-        )
+        self.plugins_group = Adw.PreferencesGroup()
+        self.plugins_group.set_title(_("Plugins"))
 
-        self.content_box.append(self.host_list)
-        self.content_box.append(self.engine_list)
-        self.content_box.append(self.plugins_list)
+        spinner = Gtk.Spinner()
+        spinner.set_spinning(True)
+        spinner.set_halign(Gtk.Align.CENTER)
+        spinner.set_size_request(48, 48)
 
-    def get_host_items(self) -> List[Tuple[str, str]]:
-        info = get_system_info()
+        spinner_box = Gtk.Box()
+        spinner_box.set_orientation(Gtk.Orientation.VERTICAL)
+        spinner_box.set_vexpand(True)
+        spinner_box.set_valign(Gtk.Align.CENTER)
+        spinner_box.append(spinner)
 
+        self.stack = Gtk.Stack()
+        self.stack.set_vexpand(True)
+        self.stack.add_named(spinner_box, "loading")
+
+        content = Gtk.Box()
+        content.set_orientation(Gtk.Orientation.VERTICAL)
+        content.set_spacing(12)
+        content.append(self.host_group)
+        content.append(self.engine_group)
+        content.append(self.plugins_group)
+
+        self.stack.add_named(content, "content")
+        self.content_box.append(self.stack)
+
+        self.stack.set_visible_child_name("loading")
+        self.load_info()
+
+    def load_info(self) -> None:
+        def task() -> None:
+            info = get_system_info()
+            GLib.idle_add(self.on_info_loaded, info)
+
+        threading.Thread(target=task, daemon=True).start()
+
+    def on_info_loaded(self, info: Dict[str, Any]) -> None:
+        for key, value in self.get_host_items(info):
+            self.host_group.add(KeyValueRow(key, value))
+
+        for key, value in self.get_engine_items(info):
+            self.engine_group.add(KeyValueRow(key, value))
+
+        for key, value in self.get_plugins_items(info):
+            self.plugins_group.add(KeyValueRow(key, value))
+
+        self.stack.set_visible_child_name("content")
+
+    def get_host_items(self, info: Dict[str, Any]) -> List[Tuple[str, str]]:
         return [
             (k, v)
             for k, v in {
@@ -61,9 +90,7 @@ class SystemPage(Adw.NavigationPage):
             if v
         ]
 
-    def get_engine_items(self) -> List[Tuple[str, str]]:
-        info = get_system_info()
-
+    def get_engine_items(self, info: Dict[str, Any]) -> List[Tuple[str, str]]:
         return [
             (k, v)
             for k, v in {
@@ -74,8 +101,7 @@ class SystemPage(Adw.NavigationPage):
             if v
         ]
 
-    def get_plugins_items(self) -> List[Tuple[str, str]]:
-        info = get_system_info()
+    def get_plugins_items(self, info: Dict[str, Any]) -> List[Tuple[str, str]]:
         plugins = info.get("Plugins", {})
 
         items: List[Tuple[str, str]] = []
@@ -97,7 +123,3 @@ class SystemPage(Adw.NavigationPage):
             items.append((key, value))
 
         return items
-
-    def render_row(self, item: Tuple[str, str]) -> KeyValueRow:
-        key, value = item
-        return KeyValueRow(key, value)

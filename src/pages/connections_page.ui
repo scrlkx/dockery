@@ -23,8 +23,8 @@
                                 <property name="description" translatable="yes">Adwaita-based Docker management UI</property>
                                 <property name="child">
                                     <object class="AdwClamp">
-                                        <property name="maximum-size">420</property>
-                                        <property name="tightening-threshold">320</property>
+                                        <property name="maximum-size">560</property>
+                                        <property name="tightening-threshold">420</property>
                                         <property name="child">
                                             <object class="GtkBox" id="content_box">
                                                 <property name="orientation">vertical</property>

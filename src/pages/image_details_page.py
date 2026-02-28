@@ -3,6 +3,7 @@ from gi.repository import Adw, Gtk
 
 from ..components.key_value_row import KeyValueRow
 from ..utils.docker import (
+    get_image,
     get_image_architecture,
     get_image_created_at,
     get_image_os,
@@ -31,7 +32,8 @@ class ImageDetailsPage(Adw.NavigationPage):
         self.detail_rows = []
         self.tag_rows = []
 
-        self.image = image
+        assert image.id is not None
+        self.image = get_image(image.id)
 
         self.build_ui()
 

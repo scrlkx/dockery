@@ -3,16 +3,15 @@
     <requires lib="gtk" version="4.0"/>
     <requires lib="Adw" version="1.0"/>
     <template class="ConnectionDialog" parent="AdwDialog">
-        <property name="title" translatable="yes">Add Connection</property>
-        <property name="content-width">420</property>
-        <child>
+        <property name="title" translatable="yes">Add connection</property>
+        <property name="content-width">520</property>
+        <property name="child">
             <object class="AdwToolbarView">
                 <child type="top">
                     <object class="AdwHeaderBar">
                         <child type="start">
                             <object class="GtkButton" id="cancel_button">
                                 <property name="label" translatable="yes">Cancel</property>
-                                <property name="action-name">window.close</property>
                             </object>
                         </child>
                         <child type="end">
@@ -26,25 +25,182 @@
                     </object>
                 </child>
                 <property name="content">
-                    <object class="GtkListBox">
-                        <property name="selection-mode">none</property>
-                        <property name="valign">start</property>
+                    <object class="GtkBox">
+                        <property name="orientation">vertical</property>
+                        <property name="spacing">12</property>
                         <property name="margin-top">12</property>
                         <property name="margin-bottom">12</property>
                         <property name="margin-start">12</property>
                         <property name="margin-end">12</property>
-                        <style>
-                            <class name="boxed-list"/>
-                        </style>
                         <child>
-                            <object class="AdwEntryRow" id="uri_entry">
-                                <property name="title" translatable="yes">URI</property>
-                                <property name="text">unix:///var/run/docker.sock</property>
+                            <object class="GtkListBox" id="type_list">
+                                <property name="selection-mode">none</property>
+                                <style>
+                                    <class name="boxed-list"/>
+                                </style>
+                                <child>
+                                    <object class="AdwEntryRow" id="name_entry">
+                                        <property name="title" translatable="yes">Name (optional)</property>
+                                    </object>
+                                </child>
+                                <child>
+                                    <object class="AdwComboRow" id="type_combo">
+                                        <property name="title" translatable="yes">Type</property>
+                                        <property name="model">
+                                            <object class="GtkStringList">
+                                                <items>
+                                                    <item translatable="yes">Unix Socket</item>
+                                                    <item translatable="yes">SSH</item>
+                                                </items>
+                                            </object>
+                                        </property>
+                                    </object>
+                                </child>
+                            </object>
+                        </child>
+                        <child>
+                            <object class="GtkListBox" id="uri_list">
+                                <property name="selection-mode">none</property>
+                                <style>
+                                    <class name="boxed-list"/>
+                                </style>
+                                <child>
+                                    <object class="AdwEntryRow" id="uri_entry">
+                                        <property name="title" translatable="yes">URI</property>
+                                        <property name="text">unix:///var/run/docker.sock</property>
+                                    </object>
+                                </child>
+                            </object>
+                        </child>
+                        <child>
+                            <object class="GtkListBox" id="ssh_list">
+                                <property name="selection-mode">none</property>
+                                <property name="visible">false</property>
+                                <style>
+                                    <class name="boxed-list"/>
+                                </style>
+                                <child>
+                                    <object class="AdwEntryRow" id="ssh_host_entry">
+                                        <property name="title" translatable="yes">Host</property>
+                                    </object>
+                                </child>
+                                <child>
+                                    <object class="AdwSpinRow" id="ssh_port_spin">
+                                        <property name="title" translatable="yes">Port</property>
+                                        <property name="adjustment">
+                                            <object class="GtkAdjustment">
+                                                <property name="lower">1</property>
+                                                <property name="upper">65535</property>
+                                                <property name="value">22</property>
+                                                <property name="step-increment">1</property>
+                                            </object>
+                                        </property>
+                                    </object>
+                                </child>
+                                <child>
+                                    <object class="AdwEntryRow" id="ssh_user_entry">
+                                        <property name="title" translatable="yes">User</property>
+                                    </object>
+                                </child>
+                                <child>
+                                    <object class="AdwActionRow" id="ssh_identity_row">
+                                        <property name="title" translatable="yes">Identity file (optional)</property>
+                                        <property name="subtitle-lines">1</property>
+                                        <child type="suffix">
+                                            <object class="GtkBox">
+                                                <property name="spacing">6</property>
+                                                <property name="valign">center</property>
+                                                <child>
+                                                    <object class="GtkButton" id="ssh_identity_clear_button">
+                                                        <property name="icon-name">edit-clear-symbolic</property>
+                                                        <property name="valign">center</property>
+                                                        <property name="visible">false</property>
+                                                        <style>
+                                                            <class name="flat"/>
+                                                        </style>
+                                                    </object>
+                                                </child>
+                                                <child>
+                                                    <object class="GtkButton" id="ssh_identity_button">
+                                                        <property name="icon-name">document-open-symbolic</property>
+                                                        <property name="valign">center</property>
+                                                        <style>
+                                                            <class name="flat"/>
+                                                        </style>
+                                                    </object>
+                                                </child>
+                                            </object>
+                                        </child>
+                                    </object>
+                                </child>
+                            </object>
+                        </child>
+                        <child>
+                            <object class="GtkListBox" id="jump_list">
+                                <property name="selection-mode">none</property>
+                                <property name="visible">false</property>
+                                <style>
+                                    <class name="boxed-list"/>
+                                </style>
+                                <child>
+                                    <object class="AdwEntryRow" id="jump_host_entry">
+                                        <property name="title" translatable="yes">Jump host (optional)</property>
+                                    </object>
+                                </child>
+                                <child>
+                                    <object class="AdwSpinRow" id="jump_port_spin">
+                                        <property name="title" translatable="yes">Jump port</property>
+                                        <property name="adjustment">
+                                            <object class="GtkAdjustment">
+                                                <property name="lower">1</property>
+                                                <property name="upper">65535</property>
+                                                <property name="value">22</property>
+                                                <property name="step-increment">1</property>
+                                            </object>
+                                        </property>
+                                    </object>
+                                </child>
+                                <child>
+                                    <object class="AdwEntryRow" id="jump_user_entry">
+                                        <property name="title" translatable="yes">Jump user (optional)</property>
+                                    </object>
+                                </child>
+                                <child>
+                                    <object class="AdwActionRow" id="jump_identity_row">
+                                        <property name="title" translatable="yes">Jump identity file (optional)</property>
+                                        <property name="subtitle-lines">1</property>
+                                        <child type="suffix">
+                                            <object class="GtkBox">
+                                                <property name="spacing">6</property>
+                                                <property name="valign">center</property>
+                                                <child>
+                                                    <object class="GtkButton" id="jump_identity_clear_button">
+                                                        <property name="icon-name">edit-clear-symbolic</property>
+                                                        <property name="valign">center</property>
+                                                        <property name="visible">false</property>
+                                                        <style>
+                                                            <class name="flat"/>
+                                                        </style>
+                                                    </object>
+                                                </child>
+                                                <child>
+                                                    <object class="GtkButton" id="jump_identity_button">
+                                                        <property name="icon-name">document-open-symbolic</property>
+                                                        <property name="valign">center</property>
+                                                        <style>
+                                                            <class name="flat"/>
+                                                        </style>
+                                                    </object>
+                                                </child>
+                                            </object>
+                                        </child>
+                                    </object>
+                                </child>
                             </object>
                         </child>
                     </object>
                 </property>
             </object>
-        </child>
+        </property>
     </template>
 </interface>

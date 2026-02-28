@@ -67,6 +67,7 @@ class AsyncList(Gtk.Box):
             content_container.append(self.search_entry)
 
         self.content_group = Adw.PreferencesGroup()
+
         if self.title:
             self.content_group.set_title(self.title)
 

@@ -82,8 +82,15 @@ def get_container_action_icon(action: str) -> str | None:
     return actions.get(action)
 
 
-def iso_to_local(original: str) -> str:
-    date_time = datetime.fromisoformat(original)
+def iso_to_local(original: str | int | None) -> str:
+    if original is None:
+        return "-"
+
+    if isinstance(original, int):
+        date_time = datetime.fromtimestamp(original)
+    else:
+        date_time = datetime.fromisoformat(original)
+
     local_date_time = date_time.astimezone()
 
     return local_date_time.strftime("%x %H:%M")

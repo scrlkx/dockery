@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-24 23:23-0300\n"
+"POT-Creation-Date: 2026-02-28 13:02-0300\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 
 #: data/com.scrlkx.dockery.desktop.in:2
@@ -14,14 +14,14 @@ msgid "Docker;Containers;DevOps;"
 msgstr "Docker;Containers;DevOps;"
 
 #: data/com.scrlkx.dockery.gschema.xml:6
-msgid "Docker connection URIs"
-msgstr "URIs de conexão Docker"
+msgid "Docker connection profiles"
+msgstr "Perfis de conexão do Docker"
 
 #: data/com.scrlkx.dockery.gschema.xml:7
-msgid "List of saved Docker connection URIs"
-msgstr "Lista de conexões Docker salvas"
+msgid "JSON-encoded list of Docker connection profiles"
+msgstr "Lista de perfis de conexão do Docker codificada em JSON"
 
-#: data/com.scrlkx.dockery.metainfo.xml.in:8 src/pages/connections_page.py:17
+#: data/com.scrlkx.dockery.metainfo.xml.in:8 src/pages/connections_page.py:25
 #: src/pages/connections_page.ui:23
 msgid "Adwaita-based Docker management UI"
 msgstr "Interface de gerenciamento do Docker baseada em Adwaita"
@@ -86,80 +86,153 @@ msgstr "Aplicação"
 msgid "Quit"
 msgstr "Sair"
 
-#: src/components/help_overlay.py:26 src/window.py:64
+#: src/components/help_overlay.py:26 src/window.py:65
 msgid "Keyboard Shortcuts"
 msgstr "Atalhos do Teclado"
 
-#: src/dialogs/connection_dialog.ui:6 src/pages/connections_page.py:34
-msgid "Add Connection"
-msgstr "Adicionar Conexão"
+#: src/dialogs/connection_dialog.py:52
+msgid "Edit connection"
+msgstr "Editar conexão"
 
-#: src/dialogs/connection_dialog.ui:20
+#: src/dialogs/connection_dialog.py:53
+msgid "Save"
+msgstr "Salvar"
+
+#: src/dialogs/connection_dialog.py:183
+msgid "Select identity file"
+msgstr "Selecionar arquivo de identidade"
+
+#: src/dialogs/connection_dialog.py:186
+msgid "All files"
+msgstr "Todos os arquivos"
+
+#: src/dialogs/connection_dialog.ui:6 src/pages/connections_page.py:42
+msgid "Add connection"
+msgstr "Adicionar conexão"
+
+#: src/dialogs/connection_dialog.ui:19
 msgid "Add"
 msgstr "Adicionar"
 
-#: src/dialogs/connection_dialog.ui:41
+#: src/dialogs/connection_dialog.ui:43
+msgid "Name (optional)"
+msgstr "Nome (opcional)"
+
+#: src/dialogs/connection_dialog.ui:48 src/pages/system_page.py:84
+msgid "Type"
+msgstr "Tipo"
+
+#: src/dialogs/connection_dialog.ui:52
+msgid "Unix Socket"
+msgstr "Socket Unix"
+
+#: src/dialogs/connection_dialog.ui:53
+msgid "SSH"
+msgstr "SSH"
+
+#: src/dialogs/connection_dialog.ui:69
 msgid "URI"
 msgstr "URI"
 
-#: src/pages/connections_page.py:45
-msgid "Saved Connections"
-msgstr "Conexões Salvas"
+#: src/dialogs/connection_dialog.ui:84 src/pages/system_page.py:24
+msgid "Host"
+msgstr "Host"
 
-#: src/pages/connections_page.py:71
+#: src/dialogs/connection_dialog.ui:89
+msgid "Port"
+msgstr "Porta"
+
+#: src/dialogs/connection_dialog.ui:102
+msgid "User"
+msgstr "Usuário"
+
+#: src/dialogs/connection_dialog.ui:107
+msgid "Identity file (optional)"
+msgstr "Arquivo de identidade (opcional)"
+
+#: src/dialogs/connection_dialog.ui:147
+msgid "Jump host (optional)"
+msgstr "Host do Proxy (opcional)"
+
+#: src/dialogs/connection_dialog.ui:152
+msgid "Jump port"
+msgstr "Porta do Proxy"
+
+#: src/dialogs/connection_dialog.ui:165
+msgid "Jump user (optional)"
+msgstr "Usuário do Proxy (opcional)"
+
+#: src/dialogs/connection_dialog.ui:170
+msgid "Jump identity file (optional)"
+msgstr "Arquivo de identidade do Proxy (opcional)"
+
+#: src/pages/connections_page.py:54
+msgid "Saved connections"
+msgstr "Conexões salvas"
+
+#: src/pages/connections_page.py:117
+msgid "Remove saved connection?"
+msgstr "Remover conexão salva?"
+
+#: src/pages/connections_page.py:118
+msgid "Are you sure you want to remove this connection?"
+msgstr "Você tem certeza que quer remover esta conexão?"
+
+#: src/pages/connections_page.py:119 src/pages/container_details_page.py:257
+#: src/utils/ui.py:63
+msgid "Remove"
+msgstr "Remover"
+
+#: src/pages/connections_page.py:162
 msgid "Connecting…"
 msgstr "Conectando..."
 
-#: src/pages/container_details_page.py:106 src/pages/image_details_page.py:47
+#: src/pages/container_details_page.py:111 src/pages/image_details_page.py:48
 #: src/pages/network_details_page.py:42
 msgid "ID"
 msgstr "ID"
 
-#: src/pages/container_details_page.py:107 src/pages/network_details_page.py:43
-#: src/pages/system_page.py:54 src/pages/volume_details_page.py:44
+#: src/pages/container_details_page.py:112 src/pages/network_details_page.py:43
+#: src/pages/system_page.py:83 src/pages/volume_details_page.py:44
 msgid "Name"
 msgstr "Nome"
 
-#: src/pages/container_details_page.py:108
+#: src/pages/container_details_page.py:113
 msgid "Image"
 msgstr "Imagem"
 
-#: src/pages/container_details_page.py:109
+#: src/pages/container_details_page.py:114
 msgid "Status"
 msgstr "Estado"
 
-#: src/pages/container_details_page.py:110 src/pages/image_details_page.py:51
+#: src/pages/container_details_page.py:115 src/pages/image_details_page.py:52
 #: src/pages/network_details_page.py:45 src/pages/volume_details_page.py:47
 msgid "Created at"
 msgstr "Criado em"
 
-#: src/pages/container_details_page.py:116
+#: src/pages/container_details_page.py:121
 msgid "Started at"
 msgstr "Iniciado em"
 
-#: src/pages/container_details_page.py:121
+#: src/pages/container_details_page.py:126
 msgid "CMD"
 msgstr "Comando"
 
-#: src/pages/container_details_page.py:126
+#: src/pages/container_details_page.py:131
 msgid "Entrypoint"
 msgstr "Ponto de entrada"
 
-#: src/pages/container_details_page.py:128
-msgid "Restart Policy"
+#: src/pages/container_details_page.py:133
+msgid "Restart policy"
 msgstr "Política de reinício"
 
-#: src/pages/container_details_page.py:250
-msgid "Remove Container?"
-msgstr "Remover Container?"
+#: src/pages/container_details_page.py:255
+msgid "Remove container?"
+msgstr "Remover container?"
 
-#: src/pages/container_details_page.py:251
+#: src/pages/container_details_page.py:256
 msgid "Are you sure you want to remove this container?"
 msgstr "Você quer realmente remover este container?"
-
-#: src/pages/container_details_page.py:252 src/utils/ui.py:63
-msgid "Remove"
-msgstr "Remover"
 
 #: src/pages/container_details_page.ui:31
 msgid "Quick actions"
@@ -188,26 +261,26 @@ msgstr "Portas vinculadas"
 msgid "Environment variables"
 msgstr "Variáveis de ambiente"
 
-#: src/pages/containers_list_page.py:54
+#: src/pages/containers_list_page.py:62
 msgid "Search by ID, name or image"
 msgstr "Busque por ID, nome ou imagem"
 
-#: src/pages/containers_list_page.py:56 src/pages/containers_list_page.ui:6
+#: src/pages/containers_list_page.py:64 src/pages/containers_list_page.ui:6
 #: src/window.py:101 src/window.py:158
 msgid "Containers"
 msgstr "Containers"
 
-#: src/pages/image_details_page.py:48
+#: src/pages/image_details_page.py:49
 msgid "Size"
 msgstr "Tamanho"
 
-#: src/pages/image_details_page.py:49 src/pages/system_page.py:58
+#: src/pages/image_details_page.py:50 src/pages/system_page.py:87
 msgid "Architecture"
 msgstr "Arquitetura"
 
-#: src/pages/image_details_page.py:50 src/pages/system_page.py:56
+#: src/pages/image_details_page.py:51 src/pages/system_page.py:85
 msgid "OS"
-msgstr "SO"
+msgstr "Sistema Operacional"
 
 #: src/pages/image_details_page.ui:36
 msgid "Tags"
@@ -231,54 +304,46 @@ msgid "Search by ID or name"
 msgstr "Busque por ID ou nome"
 
 #: src/pages/system_page.py:27
-msgid "Host"
-msgstr "Host"
-
-#: src/pages/system_page.py:34
 msgid "Engine"
 msgstr "Motor"
 
-#: src/pages/system_page.py:41
+#: src/pages/system_page.py:30
 msgid "Plugins"
 msgstr "Plugins"
 
-#: src/pages/system_page.py:55
-msgid "Type"
-msgstr "Tipo"
-
-#: src/pages/system_page.py:57
+#: src/pages/system_page.py:86
 msgid "Kernel"
 msgstr "Kernel"
 
-#: src/pages/system_page.py:59
+#: src/pages/system_page.py:88
 msgid "Time"
 msgstr "Horário"
 
-#: src/pages/system_page.py:70
+#: src/pages/system_page.py:97
 msgid "Version"
 msgstr "Versão"
 
-#: src/pages/system_page.py:71
+#: src/pages/system_page.py:98
 msgid "Root directory"
 msgstr "Diretório raiz"
 
-#: src/pages/system_page.py:72
+#: src/pages/system_page.py:99
 msgid "Storage driver"
 msgstr "Driver de armazenamento"
 
-#: src/pages/system_page.py:84
+#: src/pages/system_page.py:110
 msgid "Authorization"
 msgstr "Autorização"
 
-#: src/pages/system_page.py:85
+#: src/pages/system_page.py:111
 msgid "Log"
 msgstr "Log"
 
-#: src/pages/system_page.py:86
+#: src/pages/system_page.py:112
 msgid "Network"
 msgstr "Rede"
 
-#: src/pages/system_page.py:87
+#: src/pages/system_page.py:113
 msgid "Volume"
 msgstr "Volume"
 
@@ -346,38 +411,38 @@ msgstr "Matar"
 msgid "Console"
 msgstr "Console"
 
-#: src/utils/ui.py:94 src/utils/ui.py:101
+#: src/utils/ui.py:101 src/utils/ui.py:108
 msgid "Read-write"
 msgstr "Leitura e escrita"
 
-#: src/utils/ui.py:99
+#: src/utils/ui.py:106
 msgid "Read-only"
 msgstr "Apenas leitura"
 
-#: src/utils/ui.py:106 src/utils/ui.py:111
+#: src/utils/ui.py:113 src/utils/ui.py:118
 msgid "shared"
 msgstr "compartilhado"
 
-#: src/utils/ui.py:108 src/utils/ui.py:115
+#: src/utils/ui.py:115 src/utils/ui.py:122
 msgid "private"
 msgstr "privado"
 
-#: src/utils/ui.py:113
+#: src/utils/ui.py:120
 msgid "slave"
 msgstr "servo"
 
-#: src/window.py:65
+#: src/window.py:66
 msgid "Help"
 msgstr "Ajuda"
 
-#: src/window.py:66
+#: src/window.py:67
 msgid "About"
 msgstr "Sobre"
 
-#: src/window.py:78
+#: src/window.py:79
 msgid "Main Menu"
 msgstr "Menu Principal"
 
 #: src/window.ui:27
 msgid "Disconnect"
-msgstr "Disconectar"
+msgstr "Desconectar"

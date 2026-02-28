@@ -12,10 +12,18 @@ from typing import (
 )
 
 from docker import DockerClient
+from docker.constants import (
+    DEFAULT_MAX_POOL_SIZE,
+    DEFAULT_NUM_POOLS_SSH,
+    MINIMUM_DOCKER_API_VERSION,
+)
 from docker.models.containers import Container
 from docker.models.images import Image, ImageCollection
 from docker.models.networks import Network
 from docker.models.volumes import Volume
+
+from .connection_profile import ConnectionProfile, build_ssh_uri
+from .docker_ssh import DockerySSHAdapter
 
 
 class ContainerCollectionProto(Protocol):
@@ -59,6 +67,9 @@ class DockerClientProto(Protocol):
     @property
     def networks(self) -> NetworkCollectionProto: ...
 
+    @property
+    def api(self) -> Any: ...
+
     def events(
         self,
         since: Optional[int] = None,
@@ -72,6 +83,37 @@ class DockerClientProto(Protocol):
     def ping(self) -> None: ...
 
     def close(self) -> None: ...
+
+
+class DockerImagesAPIProto(Protocol):
+    def images(
+        self,
+        name: str | None = None,
+        quiet: bool = False,
+        all: bool = False,  # pylint: disable=redefined-builtin
+        filters: dict[str, Any] | None = None,
+    ) -> list[dict[str, Any]]: ...
+
+
+class DockerImagesClientProto(Protocol):
+    api: DockerImagesAPIProto
+
+
+class DockerLowLevelAPIProto(Protocol):
+    def containers(
+        self,
+        all: bool = False,  # pylint: disable=redefined-builtin
+        filters: dict[str, Any] | None = None,
+    ) -> list[dict[str, Any]]: ...
+
+    def volumes(self) -> dict[str, Any]: ...
+
+    def networks(
+        self,
+        names: list[str] | None = None,
+        ids: list[str] | None = None,
+        filters: dict[str, Any] | None = None,
+    ) -> list[dict[str, Any]]: ...
 
 
 class DockerObject(Protocol):
@@ -98,11 +140,65 @@ _client: DockerClientProto | None = None  # pylint: disable=invalid-name
 _client_lock = threading.Lock()
 
 
-def connect(uri: str) -> None:
+def _build_ssh_client(profile: ConnectionProfile) -> DockerClient:
+    uri = build_ssh_uri(profile)
+    client = DockerClient(
+        base_url=uri,
+        timeout=30,
+        version=MINIMUM_DOCKER_API_VERSION,
+        use_ssh_client=True,
+        max_pool_size=DEFAULT_MAX_POOL_SIZE,
+    )
+
+    # docker SDK exposes these knobs as private attrs;
+    # access dynamically to avoid protected-member/type checker diagnostics.
+    api = cast(Any, client.api)
+    custom_adapter = getattr(api, "_custom_adapter", None)
+
+    if custom_adapter is not None:
+        custom_adapter.close()
+
+    adapter = DockerySSHAdapter(
+        profile,
+        timeout=30,
+        pool_connections=DEFAULT_NUM_POOLS_SSH,
+        max_pool_size=DEFAULT_MAX_POOL_SIZE,
+    )
+
+    setattr(api, "_custom_adapter", adapter)
+
+    api.mount("http+docker://ssh", adapter)
+
+    retrieve_server_version = cast(Any, getattr(api, "_retrieve_server_version", None))
+
+    if callable(retrieve_server_version):
+        setattr(api, "_version", retrieve_server_version())
+
+    return client
+
+
+def _build_local_client(profile: ConnectionProfile) -> DockerClient:
+    uri = profile.get("uri", "unix:///var/run/docker.sock")
+    return DockerClient(base_url=uri, timeout=30)
+
+
+def _build_client_for_profile(profile: ConnectionProfile) -> DockerClientProto:
+    kind = profile.get("kind", "unix")
+
+    if kind == "tcp":
+        raise RuntimeError("TCP connections are no longer supported")
+
+    client = (
+        _build_ssh_client(profile) if kind == "ssh" else _build_local_client(profile)
+    )
+
+    return cast(DockerClientProto, client)
+
+
+def connect(profile: ConnectionProfile) -> None:
     global _client
 
-    client = DockerClient(base_url=uri, timeout=30, use_ssh_client=True)
-    client = cast(DockerClientProto, client)
+    client = _build_client_for_profile(profile)
     client.ping()
 
     with _client_lock:
@@ -119,11 +215,15 @@ def disconnect() -> None:
         _client = None
 
 
-def get_docker_client() -> DockerClientProto:
+def get_client() -> DockerClientProto:
     if _client is None:
         raise RuntimeError("Not connected to Docker")
 
     return _client
+
+
+def get_api() -> DockerLowLevelAPIProto:
+    return cast(DockerLowLevelAPIProto, get_client().api)
 
 
 def get_attribute(obj: DockerObject, attribute: str, default: Any | None = None) -> Any:
@@ -264,12 +364,24 @@ def get_container_ports(
 
 
 def get_container(name: str) -> Container:
-    return get_docker_client().containers.get(name)
+    return get_client().containers.get(name)
 
 
 def get_containers() -> list[Container]:
-    containers = get_docker_client().containers.list(all=True)
-    containers.sort(key=lambda item: item.name)
+    api = get_api()
+    response = api.containers(all=True)
+
+    containers: list[Container] = []
+
+    for item in response:
+        names = cast(list[str], item.get("Names", []))
+
+        if names:
+            item["Name"] = names[0].lstrip("/")
+
+        containers.append(cast(Any, Container)(attrs=item, client=api))
+
+    containers.sort(key=lambda item: item.name or "")
 
     return containers
 
@@ -299,7 +411,7 @@ def kill_container(name: str) -> None:
 
 
 def remove_container(name: str) -> None:
-    container = get_docker_client().containers.get(name)
+    container = get_client().containers.get(name)
     container.remove()
 
 
@@ -323,7 +435,10 @@ def get_container_next_action(container: Container) -> str:
 
 
 def get_images() -> list[Image]:
-    images = get_docker_client().images.list()
+    client = get_client()
+    response = cast(DockerImagesClientProto, client.images.client).api.images()
+
+    images = [Image(attrs=r, client=client.images.client) for r in response]
     images.sort(key=lambda image: image.short_id)
 
     return images
@@ -350,18 +465,26 @@ def get_image_created_at(image: Image) -> str:
 
 
 def get_image(identifier: str) -> Image:
-    return get_docker_client().images.get(identifier)
+    return get_client().images.get(identifier)
 
 
 def get_volumes() -> list[Volume]:
-    volumes = get_docker_client().volumes.list()
+    api = get_api()
+    response = api.volumes()
+
+    raw_volumes = cast(list[dict[str, Any]], response.get("Volumes", []))
+
+    volumes = [
+        cast(Any, Volume)(attrs=row_volume, client=api) for row_volume in raw_volumes
+    ]
+
     volumes.sort(key=lambda volume: volume.name)
 
     return volumes
 
 
 def get_volume(identifier: str) -> Volume:
-    return get_docker_client().volumes.get(identifier)
+    return get_client().volumes.get(identifier)
 
 
 def get_volume_short_name(volume: Volume) -> str:
@@ -384,7 +507,10 @@ def get_volume_created_at(volume: Volume) -> str:
 
 
 def get_networks() -> list[Network]:
-    networks = get_docker_client().networks.list()
+    api = get_api()
+    response = api.networks()
+
+    networks = [cast(Any, Network)(attrs=item, client=api) for item in response]
     networks.sort(key=lambda network: network.name or network.short_id)
 
     return networks
@@ -399,8 +525,8 @@ def get_network_created_at(network: Network) -> str:
 
 
 def get_network(identifier: str) -> Network:
-    return get_docker_client().networks.get(identifier)
+    return get_client().networks.get(identifier)
 
 
 def get_system_info() -> dict[str, Any]:
-    return get_docker_client().info()
+    return get_client().info()
