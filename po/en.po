@@ -92,11 +92,11 @@ msgstr "Edit connection"
 msgid "Save"
 msgstr "Save"
 
-#: src/dialogs/connection_dialog.py:183
+#: src/dialogs/connection_dialog.py:185
 msgid "Select identity file"
 msgstr "Select identity file"
 
-#: src/dialogs/connection_dialog.py:186
+#: src/dialogs/connection_dialog.py:188
 msgid "All files"
 msgstr "All files"
 
@@ -178,10 +178,10 @@ msgid "Remove"
 msgstr "Remove"
 
 #: src/pages/connections_page.py:162
-msgid "Connecting"
-msgstr ""
+msgid "Connecting..."
+msgstr "Connecting..."
 
-#: src/pages/container_details_page.py:111 src/pages/image_details_page.py:48
+#: src/pages/container_details_page.py:111 src/pages/image_details_page.py:49
 #: src/pages/network_details_page.py:42
 msgid "ID"
 msgstr "ID"
@@ -199,7 +199,7 @@ msgstr "Image"
 msgid "Status"
 msgstr "Status"
 
-#: src/pages/container_details_page.py:115 src/pages/image_details_page.py:52
+#: src/pages/container_details_page.py:115 src/pages/image_details_page.py:53
 #: src/pages/network_details_page.py:45 src/pages/volume_details_page.py:47
 msgid "Created at"
 msgstr "Created at"
@@ -255,24 +255,24 @@ msgstr "Port bindings"
 msgid "Environment variables"
 msgstr "Environment variables"
 
-#: src/pages/containers_list_page.py:62
+#: src/pages/containers_list_page.py:63
 msgid "Search by ID, name or image"
 msgstr "Search by ID, name or image"
 
-#: src/pages/containers_list_page.py:64 src/pages/containers_list_page.ui:6
+#: src/pages/containers_list_page.py:65 src/pages/containers_list_page.ui:6
 #: src/window.py:101 src/window.py:158
 msgid "Containers"
 msgstr "Containers"
 
-#: src/pages/image_details_page.py:49
+#: src/pages/image_details_page.py:50
 msgid "Size"
 msgstr "Size"
 
-#: src/pages/image_details_page.py:50 src/pages/system_page.py:87
+#: src/pages/image_details_page.py:51 src/pages/system_page.py:87
 msgid "Architecture"
 msgstr "Architecture"
 
-#: src/pages/image_details_page.py:51 src/pages/system_page.py:85
+#: src/pages/image_details_page.py:52 src/pages/system_page.py:85
 msgid "OS"
 msgstr "OS"
 

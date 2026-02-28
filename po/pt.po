@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-28 13:02-0300\n"
+"POT-Creation-Date: 2026-02-28 13:17-0300\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 
 #: data/com.scrlkx.dockery.desktop.in:2
@@ -98,11 +98,11 @@ msgstr "Editar conexão"
 msgid "Save"
 msgstr "Salvar"
 
-#: src/dialogs/connection_dialog.py:183
+#: src/dialogs/connection_dialog.py:185
 msgid "Select identity file"
 msgstr "Selecionar arquivo de identidade"
 
-#: src/dialogs/connection_dialog.py:186
+#: src/dialogs/connection_dialog.py:188
 msgid "All files"
 msgstr "Todos os arquivos"
 
@@ -184,10 +184,10 @@ msgid "Remove"
 msgstr "Remover"
 
 #: src/pages/connections_page.py:162
-msgid "Connecting…"
+msgid "Connecting..."
 msgstr "Conectando..."
 
-#: src/pages/container_details_page.py:111 src/pages/image_details_page.py:48
+#: src/pages/container_details_page.py:111 src/pages/image_details_page.py:49
 #: src/pages/network_details_page.py:42
 msgid "ID"
 msgstr "ID"
@@ -205,7 +205,7 @@ msgstr "Imagem"
 msgid "Status"
 msgstr "Estado"
 
-#: src/pages/container_details_page.py:115 src/pages/image_details_page.py:52
+#: src/pages/container_details_page.py:115 src/pages/image_details_page.py:53
 #: src/pages/network_details_page.py:45 src/pages/volume_details_page.py:47
 msgid "Created at"
 msgstr "Criado em"
@@ -261,24 +261,24 @@ msgstr "Portas vinculadas"
 msgid "Environment variables"
 msgstr "Variáveis de ambiente"
 
-#: src/pages/containers_list_page.py:62
+#: src/pages/containers_list_page.py:63
 msgid "Search by ID, name or image"
 msgstr "Busque por ID, nome ou imagem"
 
-#: src/pages/containers_list_page.py:64 src/pages/containers_list_page.ui:6
+#: src/pages/containers_list_page.py:65 src/pages/containers_list_page.ui:6
 #: src/window.py:101 src/window.py:158
 msgid "Containers"
 msgstr "Containers"
 
-#: src/pages/image_details_page.py:49
+#: src/pages/image_details_page.py:50
 msgid "Size"
 msgstr "Tamanho"
 
-#: src/pages/image_details_page.py:50 src/pages/system_page.py:87
+#: src/pages/image_details_page.py:51 src/pages/system_page.py:87
 msgid "Architecture"
 msgstr "Arquitetura"
 
-#: src/pages/image_details_page.py:51 src/pages/system_page.py:85
+#: src/pages/image_details_page.py:52 src/pages/system_page.py:85
 msgid "OS"
 msgstr "Sistema Operacional"
 

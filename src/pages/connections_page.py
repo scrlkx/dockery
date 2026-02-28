@@ -159,7 +159,7 @@ class ConnectionsPage(Gtk.Box):
 
     def try_connect(self, profile: ConnectionProfile) -> None:
         self.set_sensitive(False)
-        self.status_page.set_description(_("Connecting…"))
+        self.status_page.set_description(_("Connecting..."))
 
         def task() -> None:
             try:
