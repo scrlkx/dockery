@@ -136,6 +136,8 @@ class DockerPortBinding(TypedDict, total=False):
     HostPort: str
 
 
+DOCKER_CALL_TIMEOUT_SECONDS = 10
+
 _client: DockerClientProto | None = None  # pylint: disable=invalid-name
 _client_lock = threading.Lock()
 
@@ -144,7 +146,7 @@ def _build_ssh_client(profile: ConnectionProfile) -> DockerClient:
     uri = build_ssh_uri(profile)
     client = DockerClient(
         base_url=uri,
-        timeout=30,
+        timeout=DOCKER_CALL_TIMEOUT_SECONDS,
         version=MINIMUM_DOCKER_API_VERSION,
         use_ssh_client=True,
         max_pool_size=DEFAULT_MAX_POOL_SIZE,
@@ -160,7 +162,7 @@ def _build_ssh_client(profile: ConnectionProfile) -> DockerClient:
 
     adapter = DockerySSHAdapter(
         profile,
-        timeout=30,
+        timeout=DOCKER_CALL_TIMEOUT_SECONDS,
         pool_connections=DEFAULT_NUM_POOLS_SSH,
         max_pool_size=DEFAULT_MAX_POOL_SIZE,
     )
@@ -179,7 +181,7 @@ def _build_ssh_client(profile: ConnectionProfile) -> DockerClient:
 
 def _build_local_client(profile: ConnectionProfile) -> DockerClient:
     uri = profile.get("uri", "unix:///var/run/docker.sock")
-    return DockerClient(base_url=uri, timeout=30)
+    return DockerClient(base_url=uri, timeout=DOCKER_CALL_TIMEOUT_SECONDS)
 
 
 def _build_client_for_profile(profile: ConnectionProfile) -> DockerClientProto:
