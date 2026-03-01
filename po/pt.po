@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-28 13:17-0300\n"
+"POT-Creation-Date: 2026-03-01 13:39-0300\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 
 #: data/com.scrlkx.dockery.desktop.in:2
@@ -61,6 +61,22 @@ msgstr "Continuar"
 #: src/components/confirmation_dialog.py:21 src/dialogs/connection_dialog.ui:14
 msgid "Cancel"
 msgstr "Cancelar"
+
+#: src/components/connection_error_dialog.py:14
+msgid "Could not load Docker data."
+msgstr "Não foi possível carregar os dados do Docker"
+
+#: src/components/connection_error_dialog.py:19
+msgid "Connection lost"
+msgstr "Conexão perdida"
+
+#: src/components/connection_error_dialog.py:22
+msgid "Reconnect"
+msgstr "Reconectar"
+
+#: src/components/connection_error_dialog.py:23 src/window.ui:27
+msgid "Disconnect"
+msgstr "Desconectar"
 
 #: src/components/error_dialog.py:14
 msgid "Something went wrong!"
@@ -179,7 +195,7 @@ msgid "Are you sure you want to remove this connection?"
 msgstr "Você tem certeza que quer remover esta conexão?"
 
 #: src/pages/connections_page.py:119 src/pages/container_details_page.py:257
-#: src/utils/ui.py:63
+#: src/utils/ui.py:104
 msgid "Remove"
 msgstr "Remover"
 
@@ -359,75 +375,75 @@ msgstr "Ponto de montagem"
 msgid "Search by name"
 msgstr "Busque por nome"
 
-#: src/utils/ui.py:31
+#: src/utils/ui.py:72
 msgid "Running"
 msgstr "Em execução"
 
-#: src/utils/ui.py:32
+#: src/utils/ui.py:73
 msgid "Paused"
 msgstr "Pausado"
 
-#: src/utils/ui.py:33
+#: src/utils/ui.py:74
 msgid "Restarting"
 msgstr "Reiniciando"
 
-#: src/utils/ui.py:34
+#: src/utils/ui.py:75
 msgid "Created"
 msgstr "Criado"
 
-#: src/utils/ui.py:35
+#: src/utils/ui.py:76
 msgid "Exited"
 msgstr "Parado"
 
-#: src/utils/ui.py:36 src/utils/ui.py:39
+#: src/utils/ui.py:77 src/utils/ui.py:80
 msgid "Dead"
 msgstr "Morto"
 
-#: src/utils/ui.py:57
+#: src/utils/ui.py:98
 msgid "Start"
 msgstr "Iniciar"
 
-#: src/utils/ui.py:58
+#: src/utils/ui.py:99
 msgid "Stop"
 msgstr "Parar"
 
-#: src/utils/ui.py:59
+#: src/utils/ui.py:100
 msgid "Pause"
 msgstr "Pausar"
 
-#: src/utils/ui.py:60
+#: src/utils/ui.py:101
 msgid "Resume"
 msgstr "Continuar"
 
-#: src/utils/ui.py:61
+#: src/utils/ui.py:102
 msgid "Restart"
 msgstr "Reiniciar"
 
-#: src/utils/ui.py:62
+#: src/utils/ui.py:103
 msgid "Kill"
 msgstr "Matar"
 
-#: src/utils/ui.py:64
+#: src/utils/ui.py:105
 msgid "Console"
 msgstr "Console"
 
-#: src/utils/ui.py:101 src/utils/ui.py:108
+#: src/utils/ui.py:142 src/utils/ui.py:149
 msgid "Read-write"
 msgstr "Leitura e escrita"
 
-#: src/utils/ui.py:106
+#: src/utils/ui.py:147
 msgid "Read-only"
 msgstr "Apenas leitura"
 
-#: src/utils/ui.py:113 src/utils/ui.py:118
+#: src/utils/ui.py:154 src/utils/ui.py:159
 msgid "shared"
 msgstr "compartilhado"
 
-#: src/utils/ui.py:115 src/utils/ui.py:122
+#: src/utils/ui.py:156 src/utils/ui.py:163
 msgid "private"
 msgstr "privado"
 
-#: src/utils/ui.py:120
+#: src/utils/ui.py:161
 msgid "slave"
 msgstr "servo"
 
@@ -442,7 +458,3 @@ msgstr "Sobre"
 #: src/window.py:79
 msgid "Main Menu"
 msgstr "Menu Principal"
-
-#: src/window.ui:27
-msgid "Disconnect"
-msgstr "Desconectar"

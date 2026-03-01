@@ -4,6 +4,7 @@ data/com.scrlkx.dockery.metainfo.xml.in
 src/components/async_list.py
 src/components/badge.py
 src/components/confirmation_dialog.py
+src/components/connection_error_dialog.py
 src/components/error_dialog.py
 src/components/help_overlay.py
 src/components/key_value_row.py

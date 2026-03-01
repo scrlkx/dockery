@@ -1,12 +1,16 @@
 from datetime import datetime
+from typing import Callable
 
 from docker.models.containers import Container
 from gi.repository import Adw
 
+from ..components.connection_error_dialog import ConnectionErrorDialog
 from ..components.error_dialog import ErrorDialog
+from .docker import disconnect
 from .i18n import _
 
 _window: Adw.ApplicationWindow | None = None  # pylint: disable=invalid-name
+_connection_error_dialog_open = False  # pylint: disable=invalid-name
 
 
 def set_main_window(window: Adw.ApplicationWindow) -> None:
@@ -23,6 +27,43 @@ def show_error_dialog(message: str) -> None:
         message=message,
         transient_for=_window,
     )
+    dialog.present()
+
+
+def show_connection_error_dialog(
+    message: str, on_reconnect: Callable[[], None]
+) -> None:
+    global _connection_error_dialog_open
+
+    if _connection_error_dialog_open:
+        return
+
+    assert _window is not None
+
+    _connection_error_dialog_open = True
+
+    dialog = ConnectionErrorDialog(message=message)
+
+    def on_response(message_dialog: Adw.MessageDialog, response: str) -> None:
+        global _connection_error_dialog_open
+
+        _connection_error_dialog_open = False
+        message_dialog.close()
+
+        if response == "disconnect":
+            disconnect()
+
+            if _window is not None:
+                show_connections = getattr(_window, "show_connections_view", None)
+
+                if callable(show_connections):
+                    show_connections()
+
+            return
+
+        on_reconnect()
+
+    dialog.connect("response", on_response)
     dialog.present()
 
 

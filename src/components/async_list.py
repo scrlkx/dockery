@@ -3,6 +3,8 @@ from typing import Any, Callable, List, Optional
 
 from gi.repository import Adw, GLib, Gtk
 
+from ..utils import ui
+
 
 class AsyncList(Gtk.Box):
     __gtype_name__ = "AsyncList"
@@ -89,8 +91,11 @@ class AsyncList(Gtk.Box):
         self.stack.set_visible_child_name("loading")
 
         def task() -> None:
-            items = self.provider()
-            GLib.idle_add(self.on_content_load, items, generation)
+            try:
+                items = self.provider()
+                GLib.idle_add(self.on_content_load, items, generation)
+            except Exception as exception:
+                GLib.idle_add(self.on_content_error, str(exception), generation)
 
         threading.Thread(target=task, daemon=True).start()
 
@@ -107,6 +112,13 @@ class AsyncList(Gtk.Box):
 
         if self.search_entry:
             self.on_search_changed(self.search_entry)
+
+    def on_content_error(self, message: str, generation: int) -> None:
+        if generation != self._load_generation:
+            return
+
+        self.stack.set_visible_child_name("content")
+        ui.show_connection_error_dialog(message, self.reload_content)
 
     def reload_content(self) -> None:
         self.load_content()

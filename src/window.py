@@ -160,9 +160,11 @@ class DockeryWindow(Adw.ApplicationWindow):
         self.main_stack.set_visible_child_name("connected")
 
     def on_disconnect_clicked(self, _button: Gtk.Button) -> None:
-        assert self.connections_page is not None
-
         disconnect()
+        self.show_connections_view()
+
+    def show_connections_view(self) -> None:
+        assert self.connections_page is not None
 
         while row := self.sidebar_list.get_row_at_index(0):
             self.sidebar_list.remove(row)
