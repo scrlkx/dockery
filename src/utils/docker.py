@@ -1,6 +1,7 @@
 import threading
 from typing import (
     Any,
+    Callable,
     Dict,
     Iterable,
     Iterator,
@@ -8,6 +9,7 @@ from typing import (
     Optional,
     Protocol,
     TypedDict,
+    TypeVar,
     cast,
 )
 
@@ -17,10 +19,12 @@ from docker.constants import (
     DEFAULT_NUM_POOLS_SSH,
     MINIMUM_DOCKER_API_VERSION,
 )
+from docker.errors import DockerException
 from docker.models.containers import Container
 from docker.models.images import Image, ImageCollection
 from docker.models.networks import Network
 from docker.models.volumes import Volume
+from requests import exceptions as requests_exceptions
 
 from .connection_profile import ConnectionProfile, build_ssh_uri
 from .docker_ssh import DockerySSHAdapter
@@ -137,9 +141,23 @@ class DockerPortBinding(TypedDict, total=False):
 
 
 DOCKER_CALL_TIMEOUT_SECONDS = 10
+DOCKER_CONNECTION_RETRY_ATTEMPTS = 2
+_CONNECTION_FAILURE_MARKERS = (
+    "connection aborted",
+    "connection refused",
+    "connection reset",
+    "connection broken",
+    "broken pipe",
+    "timed out",
+    "timeout",
+    "unreachable",
+    "cannot connect",
+)
 
 _client: DockerClientProto | None = None  # pylint: disable=invalid-name
+_profile: ConnectionProfile | None = None  # pylint: disable=invalid-name
 _client_lock = threading.Lock()
+T = TypeVar("T")
 
 
 def _build_ssh_client(profile: ConnectionProfile) -> DockerClient:
@@ -198,23 +216,25 @@ def _build_client_for_profile(profile: ConnectionProfile) -> DockerClientProto:
 
 
 def connect(profile: ConnectionProfile) -> None:
-    global _client
+    global _client, _profile
 
     client = _build_client_for_profile(profile)
     client.ping()
 
     with _client_lock:
         _client = client
+        _profile = cast(ConnectionProfile, dict(profile))
 
 
 def disconnect() -> None:
-    global _client
+    global _client, _profile
 
     with _client_lock:
         if _client is not None:
             _client.close()
 
         _client = None
+        _profile = None
 
 
 def get_client() -> DockerClientProto:
@@ -226,6 +246,56 @@ def get_client() -> DockerClientProto:
 
 def get_api() -> DockerLowLevelAPIProto:
     return cast(DockerLowLevelAPIProto, get_client().api)
+
+
+def _is_connection_failure(exception: Exception) -> bool:
+    if isinstance(
+        exception,
+        (
+            requests_exceptions.ConnectionError,
+            requests_exceptions.Timeout,
+        ),
+    ):
+        return True
+
+    if isinstance(exception, DockerException):
+        message = str(exception).lower()
+        return any(marker in message for marker in _CONNECTION_FAILURE_MARKERS)
+
+    return False
+
+
+def _reconnect() -> None:
+    global _client
+
+    profile = _profile
+    if profile is None:
+        raise RuntimeError("Not connected to Docker")
+
+    new_client = _build_client_for_profile(profile)
+    new_client.ping()
+
+    with _client_lock:
+        old_client = _client
+        _client = new_client
+
+    if old_client is not None:
+        old_client.close()
+
+
+def _with_connection_retry(operation: Callable[[], T]) -> T:
+    for attempt in range(DOCKER_CONNECTION_RETRY_ATTEMPTS):
+        try:
+            return operation()
+        except Exception as exception:
+            is_last_attempt = attempt >= (DOCKER_CONNECTION_RETRY_ATTEMPTS - 1)
+
+            if is_last_attempt or not _is_connection_failure(exception):
+                raise
+
+            _reconnect()
+
+    raise RuntimeError("Unexpected retry state")
 
 
 def get_attribute(obj: DockerObject, attribute: str, default: Any | None = None) -> Any:
@@ -366,55 +436,57 @@ def get_container_ports(
 
 
 def get_container(name: str) -> Container:
-    return get_client().containers.get(name)
+    return _with_connection_retry(lambda: get_client().containers.get(name))
 
 
 def get_containers() -> list[Container]:
-    api = get_api()
-    response = api.containers(all=True)
+    def operation() -> list[Container]:
+        api = get_api()
+        response = api.containers(all=True)
 
-    containers: list[Container] = []
+        containers: list[Container] = []
 
-    for item in response:
-        names = cast(list[str], item.get("Names", []))
+        for item in response:
+            names = cast(list[str], item.get("Names", []))
 
-        if names:
-            item["Name"] = names[0].lstrip("/")
+            if names:
+                item["Name"] = names[0].lstrip("/")
 
-        containers.append(cast(Any, Container)(attrs=item, client=api))
+            containers.append(cast(Any, Container)(attrs=item, client=api))
 
-    containers.sort(key=lambda item: item.name or "")
+        containers.sort(key=lambda item: item.name or "")
 
-    return containers
+        return containers
+
+    return _with_connection_retry(operation)
 
 
 def start_container(name: str) -> None:
-    get_container(name).start()
+    _with_connection_retry(lambda: get_client().containers.get(name).start())
 
 
 def stop_container(name: str) -> None:
-    get_container(name).stop()
+    _with_connection_retry(lambda: get_client().containers.get(name).stop())
 
 
 def pause_container(name: str) -> None:
-    get_container(name).pause()
+    _with_connection_retry(lambda: get_client().containers.get(name).pause())
 
 
 def unpause_container(name: str) -> None:
-    get_container(name).unpause()
+    _with_connection_retry(lambda: get_client().containers.get(name).unpause())
 
 
 def restart_container(name: str) -> None:
-    get_container(name).restart()
+    _with_connection_retry(lambda: get_client().containers.get(name).restart())
 
 
 def kill_container(name: str) -> None:
-    get_container(name).kill()
+    _with_connection_retry(lambda: get_client().containers.get(name).kill())
 
 
 def remove_container(name: str) -> None:
-    container = get_client().containers.get(name)
-    container.remove()
+    _with_connection_retry(lambda: get_client().containers.get(name).remove())
 
 
 def get_container_actions(container: Container) -> list[str]:
@@ -437,13 +509,16 @@ def get_container_next_action(container: Container) -> str:
 
 
 def get_images() -> list[Image]:
-    client = get_client()
-    response = cast(DockerImagesClientProto, client.images.client).api.images()
+    def operation() -> list[Image]:
+        client = get_client()
+        response = cast(DockerImagesClientProto, client.images.client).api.images()
 
-    images = [Image(attrs=r, client=client.images.client) for r in response]
-    images.sort(key=lambda image: image.short_id)
+        images = [Image(attrs=r, client=client.images.client) for r in response]
+        images.sort(key=lambda image: image.short_id)
 
-    return images
+        return images
+
+    return _with_connection_retry(operation)
 
 
 def get_image_last_tag(image: Image) -> str | None:
@@ -467,26 +542,30 @@ def get_image_created_at(image: Image) -> str:
 
 
 def get_image(identifier: str) -> Image:
-    return get_client().images.get(identifier)
+    return _with_connection_retry(lambda: get_client().images.get(identifier))
 
 
 def get_volumes() -> list[Volume]:
-    api = get_api()
-    response = api.volumes()
+    def operation() -> list[Volume]:
+        api = get_api()
+        response = api.volumes()
 
-    raw_volumes = cast(list[dict[str, Any]], response.get("Volumes", []))
+        raw_volumes = cast(list[dict[str, Any]], response.get("Volumes", []))
 
-    volumes = [
-        cast(Any, Volume)(attrs=row_volume, client=api) for row_volume in raw_volumes
-    ]
+        volumes = [
+            cast(Any, Volume)(attrs=row_volume, client=api)
+            for row_volume in raw_volumes
+        ]
 
-    volumes.sort(key=lambda volume: volume.name)
+        volumes.sort(key=lambda volume: volume.name)
 
-    return volumes
+        return volumes
+
+    return _with_connection_retry(operation)
 
 
 def get_volume(identifier: str) -> Volume:
-    return get_client().volumes.get(identifier)
+    return _with_connection_retry(lambda: get_client().volumes.get(identifier))
 
 
 def get_volume_short_name(volume: Volume) -> str:
@@ -509,13 +588,16 @@ def get_volume_created_at(volume: Volume) -> str:
 
 
 def get_networks() -> list[Network]:
-    api = get_api()
-    response = api.networks()
+    def operation() -> list[Network]:
+        api = get_api()
+        response = api.networks()
 
-    networks = [cast(Any, Network)(attrs=item, client=api) for item in response]
-    networks.sort(key=lambda network: network.name or network.short_id)
+        networks = [cast(Any, Network)(attrs=item, client=api) for item in response]
+        networks.sort(key=lambda network: network.name or network.short_id)
 
-    return networks
+        return networks
+
+    return _with_connection_retry(operation)
 
 
 def get_network_driver(network: Network) -> str:
@@ -527,8 +609,8 @@ def get_network_created_at(network: Network) -> str:
 
 
 def get_network(identifier: str) -> Network:
-    return get_client().networks.get(identifier)
+    return _with_connection_retry(lambda: get_client().networks.get(identifier))
 
 
 def get_system_info() -> dict[str, Any]:
-    return get_client().info()
+    return _with_connection_retry(lambda: get_client().info())
