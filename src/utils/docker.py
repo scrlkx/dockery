@@ -15,8 +15,6 @@ from typing import (
 
 from docker import DockerClient
 from docker.constants import (
-    DEFAULT_MAX_POOL_SIZE,
-    DEFAULT_NUM_POOLS_SSH,
     MINIMUM_DOCKER_API_VERSION,
 )
 from docker.errors import DockerException
@@ -24,6 +22,7 @@ from docker.models.containers import Container
 from docker.models.images import Image, ImageCollection
 from docker.models.networks import Network
 from docker.models.volumes import Volume
+from paramiko.ssh_exception import ChannelException, SSHException
 from requests import exceptions as requests_exceptions
 
 from .connection_profile import ConnectionProfile, build_ssh_uri
@@ -142,6 +141,8 @@ class DockerPortBinding(TypedDict, total=False):
 
 DOCKER_CALL_TIMEOUT_SECONDS = 10
 DOCKER_CONNECTION_RETRY_ATTEMPTS = 2
+SSH_NUM_POOLS = 1
+SSH_MAX_POOL_SIZE = 4
 _CONNECTION_FAILURE_MARKERS = (
     "connection aborted",
     "connection refused",
@@ -167,7 +168,7 @@ def _build_ssh_client(profile: ConnectionProfile) -> DockerClient:
         timeout=DOCKER_CALL_TIMEOUT_SECONDS,
         version=MINIMUM_DOCKER_API_VERSION,
         use_ssh_client=True,
-        max_pool_size=DEFAULT_MAX_POOL_SIZE,
+        max_pool_size=SSH_MAX_POOL_SIZE,
     )
 
     # docker SDK exposes these knobs as private attrs;
@@ -181,8 +182,8 @@ def _build_ssh_client(profile: ConnectionProfile) -> DockerClient:
     adapter = DockerySSHAdapter(
         profile,
         timeout=DOCKER_CALL_TIMEOUT_SECONDS,
-        pool_connections=DEFAULT_NUM_POOLS_SSH,
-        max_pool_size=DEFAULT_MAX_POOL_SIZE,
+        pool_connections=SSH_NUM_POOLS,
+        max_pool_size=SSH_MAX_POOL_SIZE,
     )
 
     setattr(api, "_custom_adapter", adapter)
@@ -249,6 +250,9 @@ def get_api() -> DockerLowLevelAPIProto:
 
 
 def _is_connection_failure(exception: Exception) -> bool:
+    if isinstance(exception, (ChannelException, SSHException)):
+        return True
+
     if isinstance(
         exception,
         (
