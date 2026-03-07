@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-07 11:22-0300\n"
+"POT-Creation-Date: 2026-03-07 13:13-0300\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 
 #: data/com.scrlkx.dockery.desktop.in:2
@@ -195,6 +195,7 @@ msgid "Are you sure you want to remove this connection?"
 msgstr "Você tem certeza que quer remover esta conexão?"
 
 #: src/pages/connections_page.py:119 src/pages/container_details_page.py:258
+#: src/pages/image_details_page.py:115 src/pages/image_details_page.py:207
 #: src/utils/ui.py:104
 msgid "Remove"
 msgstr "Remover"
@@ -203,7 +204,7 @@ msgstr "Remover"
 msgid "Connecting..."
 msgstr "Conectando..."
 
-#: src/pages/container_details_page.py:112 src/pages/image_details_page.py:49
+#: src/pages/container_details_page.py:112 src/pages/image_details_page.py:71
 #: src/pages/network_details_page.py:42
 msgid "ID"
 msgstr "ID"
@@ -221,7 +222,7 @@ msgstr "Imagem"
 msgid "Status"
 msgstr "Estado"
 
-#: src/pages/container_details_page.py:116 src/pages/image_details_page.py:53
+#: src/pages/container_details_page.py:116 src/pages/image_details_page.py:75
 #: src/pages/network_details_page.py:45 src/pages/volume_details_page.py:47
 msgid "Created at"
 msgstr "Criado em"
@@ -250,11 +251,11 @@ msgstr "Remover container?"
 msgid "Are you sure you want to remove this container?"
 msgstr "Você quer realmente remover este container?"
 
-#: src/pages/container_details_page.ui:31
+#: src/pages/container_details_page.ui:31 src/pages/image_details_page.ui:31
 msgid "Quick actions"
 msgstr "Ações rápidas"
 
-#: src/pages/container_details_page.ui:42 src/pages/image_details_page.ui:31
+#: src/pages/container_details_page.ui:42 src/pages/image_details_page.ui:42
 #: src/pages/network_details_page.ui:31 src/pages/volume_details_page.ui:31
 msgid "Details"
 msgstr "Detalhes"
@@ -277,36 +278,64 @@ msgstr "Portas vinculadas"
 msgid "Environment variables"
 msgstr "Variáveis de ambiente"
 
-#: src/pages/containers_list_page.py:63
-msgid "Search by ID, name or image"
-msgstr "Busque por ID, nome ou imagem"
+#: src/pages/containers_list_page.py:61 src/pages/networks_list_page.py:40
+msgid "Search by ID or name"
+msgstr "Busque por ID ou nome"
 
-#: src/pages/containers_list_page.py:65 src/pages/containers_list_page.ui:6
+#: src/pages/containers_list_page.py:63 src/pages/containers_list_page.ui:6
 #: src/window.py:101 src/window.py:158
 msgid "Containers"
 msgstr "Containers"
 
-#: src/pages/image_details_page.py:50
+#: src/pages/image_details_page.py:72
 msgid "Size"
 msgstr "Tamanho"
 
-#: src/pages/image_details_page.py:51 src/pages/system_page.py:87
+#: src/pages/image_details_page.py:73 src/pages/system_page.py:87
 msgid "Architecture"
 msgstr "Arquitetura"
 
-#: src/pages/image_details_page.py:52 src/pages/system_page.py:85
+#: src/pages/image_details_page.py:74 src/pages/system_page.py:85
 msgid "OS"
 msgstr "Sistema Operacional"
 
-#: src/pages/image_details_page.ui:36
+#: src/pages/image_details_page.py:94
+msgid "Pull"
+msgstr "Baixar"
+
+#: src/pages/image_details_page.py:101
+msgid "Push"
+msgstr "Enviar"
+
+#: src/pages/image_details_page.py:108
+msgid "Export"
+msgstr "Exportar"
+
+#: src/pages/image_details_page.py:167
+msgid "Export image"
+msgstr "Exportar imagem"
+
+#: src/pages/image_details_page.py:187
+msgid "The selected location is not available."
+msgstr "A localização selecionada não está disponível."
+
+#: src/pages/image_details_page.py:205
+msgid "Remove image?"
+msgstr "Remover imagem?"
+
+#: src/pages/image_details_page.py:206
+msgid "Are you sure you want to remove this image?"
+msgstr "Você quer realmente remover esta imagem?"
+
+#: src/pages/image_details_page.ui:47
 msgid "Tags"
 msgstr "Etiquetas"
 
-#: src/pages/images_list_page.py:44
+#: src/pages/images_list_page.py:54
 msgid "Search by short ID or tag"
 msgstr "Busque por ID curto ou etiqueta"
 
-#: src/pages/images_list_page.py:46 src/pages/images_list_page.ui:6
+#: src/pages/images_list_page.py:56 src/pages/images_list_page.ui:6
 #: src/window.py:108
 msgid "Images"
 msgstr "Imagens"
@@ -314,10 +343,6 @@ msgstr "Imagens"
 #: src/pages/network_details_page.py:44 src/pages/volume_details_page.py:45
 msgid "Driver"
 msgstr "Driver"
-
-#: src/pages/networks_list_page.py:40
-msgid "Search by ID or name"
-msgstr "Busque por ID ou nome"
 
 #: src/pages/system_page.py:27
 msgid "Engine"

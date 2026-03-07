@@ -8,6 +8,8 @@
     <file preprocess="xml-stripblanks" alias="network-symbolic.svg">../data/icons/scalable/actions/network-symbolic.svg</file>
     <file preprocess="xml-stripblanks" alias="system-symbolic.svg">../data/icons/scalable/actions/system-symbolic.svg</file>
     <!-- Navigation -->
+    <file preprocess="xml-stripblanks" alias="go-up-symbolic.svg">../data/icons/scalable/actions/go-up-symbolic.svg</file>
+    <file preprocess="xml-stripblanks" alias="go-down-symbolic.svg">../data/icons/scalable/actions/go-down-symbolic.svg</file>
     <file preprocess="xml-stripblanks" alias="go-previous-symbolic.svg">../data/icons/scalable/actions/go-previous-symbolic.svg</file>
     <file preprocess="xml-stripblanks" alias="go-next-symbolic.svg">../data/icons/scalable/actions/go-next-symbolic.svg</file>
     <file preprocess="xml-stripblanks" alias="open-menu-symbolic.svg">../data/icons/scalable/actions/open-menu-symbolic.svg</file>
@@ -17,6 +19,7 @@
     <file preprocess="xml-stripblanks" alias="media-playback-pause-symbolic.svg">../data/icons/scalable/actions/media-playback-pause-symbolic.svg</file>
     <file preprocess="xml-stripblanks" alias="system-reboot-symbolic.svg">../data/icons/scalable/actions/system-reboot-symbolic.svg</file>
     <file preprocess="xml-stripblanks" alias="process-stop-symbolic.svg">../data/icons/scalable/actions/process-stop-symbolic.svg</file>
+    <file preprocess="xml-stripblanks" alias="package-x-generic-symbolic.svg">../data/icons/scalable/actions/package-x-generic-symbolic.svg</file>
     <file preprocess="xml-stripblanks" alias="user-trash-symbolic.svg">../data/icons/scalable/actions/user-trash-symbolic.svg</file>
     <file preprocess="xml-stripblanks" alias="utilities-terminal-symbolic.svg">../data/icons/scalable/actions/utilities-terminal-symbolic.svg</file>
   </gresource>

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dockery\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-07 11:22-0300\n"
+"POT-Creation-Date: 2026-03-07 13:13-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -204,6 +204,7 @@ msgid "Are you sure you want to remove this connection?"
 msgstr ""
 
 #: src/pages/connections_page.py:119 src/pages/container_details_page.py:258
+#: src/pages/image_details_page.py:115 src/pages/image_details_page.py:207
 #: src/utils/ui.py:104
 msgid "Remove"
 msgstr ""
@@ -212,7 +213,7 @@ msgstr ""
 msgid "Connecting..."
 msgstr ""
 
-#: src/pages/container_details_page.py:112 src/pages/image_details_page.py:49
+#: src/pages/container_details_page.py:112 src/pages/image_details_page.py:71
 #: src/pages/network_details_page.py:42
 msgid "ID"
 msgstr ""
@@ -230,7 +231,7 @@ msgstr ""
 msgid "Status"
 msgstr ""
 
-#: src/pages/container_details_page.py:116 src/pages/image_details_page.py:53
+#: src/pages/container_details_page.py:116 src/pages/image_details_page.py:75
 #: src/pages/network_details_page.py:45 src/pages/volume_details_page.py:47
 msgid "Created at"
 msgstr ""
@@ -259,11 +260,11 @@ msgstr ""
 msgid "Are you sure you want to remove this container?"
 msgstr ""
 
-#: src/pages/container_details_page.ui:31
+#: src/pages/container_details_page.ui:31 src/pages/image_details_page.ui:31
 msgid "Quick actions"
 msgstr ""
 
-#: src/pages/container_details_page.ui:42 src/pages/image_details_page.ui:31
+#: src/pages/container_details_page.ui:42 src/pages/image_details_page.ui:42
 #: src/pages/network_details_page.ui:31 src/pages/volume_details_page.ui:31
 msgid "Details"
 msgstr ""
@@ -286,46 +287,70 @@ msgstr ""
 msgid "Environment variables"
 msgstr ""
 
-#: src/pages/containers_list_page.py:63
-msgid "Search by ID, name or image"
+#: src/pages/containers_list_page.py:61 src/pages/networks_list_page.py:40
+msgid "Search by ID or name"
 msgstr ""
 
-#: src/pages/containers_list_page.py:65 src/pages/containers_list_page.ui:6
+#: src/pages/containers_list_page.py:63 src/pages/containers_list_page.ui:6
 #: src/window.py:101 src/window.py:158
 msgid "Containers"
 msgstr ""
 
-#: src/pages/image_details_page.py:50
+#: src/pages/image_details_page.py:72
 msgid "Size"
 msgstr ""
 
-#: src/pages/image_details_page.py:51 src/pages/system_page.py:87
+#: src/pages/image_details_page.py:73 src/pages/system_page.py:87
 msgid "Architecture"
 msgstr ""
 
-#: src/pages/image_details_page.py:52 src/pages/system_page.py:85
+#: src/pages/image_details_page.py:74 src/pages/system_page.py:85
 msgid "OS"
 msgstr ""
 
-#: src/pages/image_details_page.ui:36
+#: src/pages/image_details_page.py:94
+msgid "Pull"
+msgstr ""
+
+#: src/pages/image_details_page.py:101
+msgid "Push"
+msgstr ""
+
+#: src/pages/image_details_page.py:108
+msgid "Export"
+msgstr ""
+
+#: src/pages/image_details_page.py:167
+msgid "Export image"
+msgstr ""
+
+#: src/pages/image_details_page.py:187
+msgid "The selected location is not available."
+msgstr ""
+
+#: src/pages/image_details_page.py:205
+msgid "Remove image?"
+msgstr ""
+
+#: src/pages/image_details_page.py:206
+msgid "Are you sure you want to remove this image?"
+msgstr ""
+
+#: src/pages/image_details_page.ui:47
 msgid "Tags"
 msgstr ""
 
-#: src/pages/images_list_page.py:44
+#: src/pages/images_list_page.py:54
 msgid "Search by short ID or tag"
 msgstr ""
 
-#: src/pages/images_list_page.py:46 src/pages/images_list_page.ui:6
+#: src/pages/images_list_page.py:56 src/pages/images_list_page.ui:6
 #: src/window.py:108
 msgid "Images"
 msgstr ""
 
 #: src/pages/network_details_page.py:44 src/pages/volume_details_page.py:45
 msgid "Driver"
-msgstr ""
-
-#: src/pages/networks_list_page.py:40
-msgid "Search by ID or name"
 msgstr ""
 
 #: src/pages/system_page.py:27

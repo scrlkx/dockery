@@ -11,6 +11,7 @@ from ..utils.docker import (
     get_image_size,
     get_images,
 )
+from ..utils.events import on_images_change, unsubscribe
 from ..utils.i18n import _
 from ..utils.ui import humanize_size
 
@@ -35,7 +36,16 @@ class ImagesListPage(Adw.NavigationPage):
     def __init__(self, **kwargs: Any) -> None:
         super().__init__(**kwargs)
 
+        self.connect("unrealize", self.on_unrealize)
+
         self.build_ui()
+        self.register_events()
+
+    def on_unrealize(self, _widget: Gtk.Widget) -> None:
+        unsubscribe(self.list_widget.reload_content)
+
+    def register_events(self) -> None:
+        on_images_change(self.list_widget.reload_content)
 
     def build_ui(self) -> None:
         self.list_widget = AsyncList(

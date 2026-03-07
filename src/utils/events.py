@@ -1,10 +1,14 @@
 import threading
 from collections.abc import Callable
-from typing import Any, TypedDict, cast
+from typing import Literal, TypedDict, cast
 
 from gi.repository import GLib
 
 from .docker import get_client
+
+
+class DockerEventActor(TypedDict, total=False):
+    ID: str
 
 
 class DockerEvent(TypedDict, total=False):
@@ -14,10 +18,10 @@ class DockerEvent(TypedDict, total=False):
     status: str
     time: int
     timeNano: int
-    Actor: dict[str, Any]
+    Actor: DockerEventActor
 
 
-_Listener = tuple[Callable[[], None], str | None]
+_Listener = tuple[Callable[[], None], Literal["container", "image"], str | None]
 
 _listeners: list[_Listener] = []
 _listeners_lock = threading.Lock()
@@ -42,25 +46,20 @@ def _start_listener() -> None:
                 _event
             ) in client.events(  # pyright: ignore[reportUnknownMemberType, reportUnknownVariableType] pylint: disable=line-too-long
                 decode=True,
-                filters={
-                    "type": "container",
-                    "event": [
-                        "start",
-                        "stop",
-                        "die",
-                        "pause",
-                        "unpause",
-                        "restart",
-                        "destroy",
-                    ],
-                },
             ):
                 event = cast(DockerEvent, _event)
-                container_id = event.get("Actor", {}).get("ID")
+                event_type = event.get("Type")
+                event_id = event.get("Actor", {}).get("ID") or event.get("id")
+
+                if event_type not in {"container", "image"}:
+                    continue
 
                 with _listeners_lock:
-                    for callback, filter_id in _listeners:
-                        if filter_id is None or filter_id == container_id:
+                    for callback, listener_type, filter_id in _listeners:
+                        if listener_type != event_type:
+                            continue
+
+                        if filter_id is None or filter_id == event_id:
                             GLib.idle_add(callback)
         except Exception:
             _started = False
@@ -76,14 +75,21 @@ def _start_listener() -> None:
 
 def on_containers_change(on_change: Callable[[], None]) -> None:
     with _listeners_lock:
-        _listeners.append((on_change, None))
+        _listeners.append((on_change, "container", None))
 
     _start_listener()
 
 
 def on_container_change(on_change: Callable[[], None], container_id: str) -> None:
     with _listeners_lock:
-        _listeners.append((on_change, container_id))
+        _listeners.append((on_change, "container", container_id))
+
+    _start_listener()
+
+
+def on_images_change(on_change: Callable[[], None]) -> None:
+    with _listeners_lock:
+        _listeners.append((on_change, "image", None))
 
     _start_listener()
 
@@ -91,5 +97,7 @@ def on_container_change(on_change: Callable[[], None], container_id: str) -> Non
 def unsubscribe(on_change: Callable[[], None]) -> None:
     with _listeners_lock:
         _listeners[:] = [
-            (callback, fid) for callback, fid in _listeners if callback != on_change
+            (callback, resource_type, fid)
+            for callback, resource_type, fid in _listeners
+            if callback != on_change
         ]

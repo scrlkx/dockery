@@ -173,6 +173,9 @@ class DockeryWindow(Adw.ApplicationWindow):
         self.main_stack.set_visible_child_name("connections")
 
     def on_back_button_clicked(self, __: Gtk.Button) -> None:
+        self.navigate_back()
+
+    def navigate_back(self) -> None:
         self.nav_view.pop()
 
         if self.nav_view.get_visible_page() is not None:

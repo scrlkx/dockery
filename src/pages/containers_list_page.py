@@ -8,7 +8,6 @@ from ..components.badge import Badge
 from ..components.row_button import RowButton
 from ..components.row_next import RowNext
 from ..utils.docker import (
-    get_container_image,
     get_container_next_action,
     get_containers,
     start_container,
@@ -27,7 +26,6 @@ class ContainerRow(Adw.ActionRow):
 
     id = GObject.Property(type=str)
     name = GObject.Property(type=str)
-    image = GObject.Property(type=str)
     status_label = GObject.Property(type=str)
     status_class = GObject.Property(type=str)
 
@@ -60,7 +58,7 @@ class ContainersListPage(Adw.NavigationPage):
         self.list_widget = AsyncList(
             provider=get_containers,
             row_factory=self.render_row,
-            search_placeholder=_("Search by ID, name or image"),
+            search_placeholder=_("Search by ID or name"),
             search_callback=self.search,
             title=_("Containers"),
         )
@@ -72,7 +70,6 @@ class ContainersListPage(Adw.NavigationPage):
         row.set_title(container.name)
         row.id = container.id
         row.name = container.name.lower()
-        row.image = get_container_image(container)
         row.status_label = get_container_status_label(container)
         row.status_class = get_container_status_class(container)
         row.set_activatable(True)
@@ -111,7 +108,7 @@ class ContainersListPage(Adw.NavigationPage):
         return row
 
     def search(self, container: ContainerRow, text: str) -> bool:
-        return text in container.id or text in container.name or text in container.image
+        return text in container.id or text in container.name
 
     def on_row_clicked(self, _: AsyncList, container: Container) -> None:
         self.emit("container-activated", container)

@@ -310,6 +310,13 @@ class ContainerDetailsPage(Adw.NavigationPage):
         window.present()
 
     def navigate_back(self) -> None:
+        root = self.get_root()
+        navigate_back = getattr(root, "navigate_back", None)
+
+        if callable(navigate_back):
+            navigate_back()
+            return
+
         navigation_view = cast(
             Adw.NavigationView, self.get_ancestor(Adw.NavigationView)
         )

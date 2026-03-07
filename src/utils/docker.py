@@ -1,5 +1,8 @@
+from __future__ import annotations
+
 import json
 import os
+import re
 import sys
 import threading
 from typing import (
@@ -22,9 +25,10 @@ from docker.constants import (
 )
 from docker.errors import DockerException
 from docker.models.containers import Container
-from docker.models.images import Image, ImageCollection
+from docker.models.images import Image
 from docker.models.networks import Network
 from docker.models.volumes import Volume
+from docker.utils import parse_repository_tag
 from paramiko.ssh_exception import ChannelException, SSHException
 from requests import exceptions as requests_exceptions
 
@@ -65,7 +69,7 @@ class DockerClientProto(Protocol):
     def containers(self) -> ContainerCollectionProto: ...
 
     @property
-    def images(self) -> ImageCollection: ...
+    def images(self) -> DockerImagesCollectionProto: ...
 
     @property
     def volumes(self) -> VolumeCollectionProto: ...
@@ -105,6 +109,27 @@ class DockerImagesClientProto(Protocol):
     api: DockerImagesAPIProto
 
 
+class DockerImagesCollectionProto(Protocol):
+    client: DockerImagesClientProto
+
+    def get(self, name: str) -> Image: ...
+
+    def pull(
+        self,
+        repository: str,
+        tag: str | None = None,
+        all_tags: bool = False,
+        **kwargs: Any,
+    ) -> Image: ...
+
+    def remove(
+        self,
+        image: str,
+        force: bool = False,
+        noprune: bool = False,
+    ) -> Any: ...
+
+
 class DockerLowLevelAPIProto(Protocol):
     def containers(
         self,
@@ -120,6 +145,20 @@ class DockerLowLevelAPIProto(Protocol):
         ids: list[str] | None = None,
         filters: dict[str, Any] | None = None,
     ) -> list[dict[str, Any]]: ...
+
+    def push(
+        self,
+        repository: str,
+        tag: str | None = None,
+        stream: bool = False,
+        decode: bool = False,
+    ) -> Any: ...
+
+    def get_image(
+        self,
+        image: str,
+        chunk_size: int | None = None,
+    ) -> Iterable[bytes]: ...
 
 
 class DockerObject(Protocol):
@@ -546,9 +585,10 @@ def get_container_next_action(container: Container) -> str:
 def get_images() -> list[Image]:
     def operation() -> list[Image]:
         client = get_client()
-        response = cast(DockerImagesClientProto, client.images.client).api.images()
+        images_client = client.images.client
+        response = images_client.api.images()
 
-        images = [Image(attrs=r, client=client.images.client) for r in response]
+        images = [Image(attrs=r, client=cast(Any, images_client)) for r in response]
         images.sort(key=lambda image: image.short_id)
 
         return images
@@ -578,6 +618,58 @@ def get_image_created_at(image: Image) -> str:
 
 def get_image(identifier: str) -> Image:
     return _with_connection_retry(lambda: get_client().images.get(identifier))
+
+
+def get_image_export_filename(image: Image) -> str:
+    tag = get_image_last_tag(image)
+    base_name = tag if tag else image.short_id
+
+    sanitized = re.sub(r"[^A-Za-z0-9._-]+", "-", base_name).strip("-")
+
+    if not sanitized:
+        sanitized = "image"
+
+    return f"{sanitized}.tar"
+
+
+def pull_image(reference: str) -> Image:
+    repository, tag = parse_repository_tag(reference)
+
+    return _with_connection_retry(lambda: get_client().images.pull(repository, tag=tag))
+
+
+def push_image(reference: str) -> None:
+    repository, tag = parse_repository_tag(reference)
+
+    def operation() -> None:
+        events = cast(
+            Iterable[dict[str, Any]],
+            get_api().push(repository, tag=tag, stream=True, decode=True),
+        )
+
+        for event in events:
+            error = event.get("error")
+
+            if error:
+                raise RuntimeError(str(error))
+
+    _with_connection_retry(operation)
+
+
+def save_image(image_id: str, output_path: str) -> None:
+    def operation() -> None:
+        stream = get_api().get_image(image_id)
+
+        with open(output_path, "wb") as handle:
+            for chunk in stream:
+                if chunk:
+                    handle.write(chunk)
+
+    _with_connection_retry(operation)
+
+
+def remove_image(image_id: str) -> None:
+    _with_connection_retry(lambda: get_client().images.remove(image=image_id))
 
 
 def get_volumes() -> list[Volume]:
