@@ -10,3 +10,8 @@ pre-commit:
     import-sort:
       glob: "*.py"
       run: isort --check-only {staged_files}
+
+commit-msg:
+  commands:
+    gitlint:
+      run: gitlint --msg-filename {1}

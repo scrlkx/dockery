@@ -1,0 +1,8 @@
+[general]
+ignore=body-is-missing
+
+[title-max-length]
+line-length=72
+
+[title-match-regex]
+regex=^(feat|fix|refactor|docs|test|build|ci|chore|style|perf|revert)(\((connection|flatpak|ui|containers|images|volumes|networks|system)\))?!?: .+
