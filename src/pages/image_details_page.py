@@ -91,14 +91,14 @@ class ImageDetailsPage(Adw.NavigationPage):
             (
                 "pull",
                 _("Pull"),
-                "go-down-symbolic",
+                "vertical-arrows-up-symbolic",
                 self.on_pull_clicked,
                 bool(image_tag),
             ),
             (
                 "push",
                 _("Push"),
-                "go-up-symbolic",
+                "vertical-arrows-down-symbolic",
                 self.on_push_clicked,
                 bool(image_tag),
             ),
