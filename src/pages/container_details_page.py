@@ -12,6 +12,7 @@ from ..utils.docker import (
     get_container,
     get_container_actions,
     get_container_cmd,
+    get_container_console_command,
     get_container_created_at,
     get_container_entrypoint,
     get_container_environment_variables,
@@ -290,15 +291,7 @@ class ContainerDetailsPage(Adw.NavigationPage):
 
         window.set_child(terminal)
 
-        command = [
-            "flatpak-spawn",
-            "--host",
-            "docker",
-            "exec",
-            "-it",
-            self.container.id,
-            "/bin/sh",
-        ]
+        command = get_container_console_command(self.container.id)
 
         terminal.spawn_async(
             Vte.PtyFlags.DEFAULT,

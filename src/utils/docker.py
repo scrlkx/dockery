@@ -1,3 +1,6 @@
+import json
+import os
+import sys
 import threading
 from typing import (
     Any,
@@ -504,6 +507,34 @@ def get_container_actions(container: Container) -> list[str]:
     }
 
     return actions.get(container.status, ["start", "stop"])
+
+
+def get_container_console_command(container_id: str) -> list[str]:
+    profile = _profile
+    is_socket = profile is None or profile.get("kind", "unix") == "unix"
+    is_ssh = profile is not None and profile.get("kind") == "ssh"
+
+    if is_socket:
+        docker_cmd = ["docker", "exec", "-it", container_id, "/bin/sh"]
+
+        return ["flatpak-spawn", "--host", *docker_cmd]
+
+    if is_ssh:
+        assert profile is not None
+
+        remote_console_path = os.path.join(
+            os.path.dirname(__file__),
+            "remote_console.py",
+        )
+
+        return [
+            sys.executable,
+            remote_console_path,
+            json.dumps(profile),
+            container_id,
+        ]
+
+    raise RuntimeError("Unsupported connection type")
 
 
 def get_container_next_action(container: Container) -> str:

@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-01 13:39-0300\n"
+"POT-Creation-Date: 2026-03-07 11:22-0300\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 
 #: data/com.scrlkx.dockery.desktop.in:2
@@ -194,7 +194,7 @@ msgstr "Remover conexão salva?"
 msgid "Are you sure you want to remove this connection?"
 msgstr "Você tem certeza que quer remover esta conexão?"
 
-#: src/pages/connections_page.py:119 src/pages/container_details_page.py:257
+#: src/pages/connections_page.py:119 src/pages/container_details_page.py:258
 #: src/utils/ui.py:104
 msgid "Remove"
 msgstr "Remover"
@@ -203,50 +203,50 @@ msgstr "Remover"
 msgid "Connecting..."
 msgstr "Conectando..."
 
-#: src/pages/container_details_page.py:111 src/pages/image_details_page.py:49
+#: src/pages/container_details_page.py:112 src/pages/image_details_page.py:49
 #: src/pages/network_details_page.py:42
 msgid "ID"
 msgstr "ID"
 
-#: src/pages/container_details_page.py:112 src/pages/network_details_page.py:43
+#: src/pages/container_details_page.py:113 src/pages/network_details_page.py:43
 #: src/pages/system_page.py:83 src/pages/volume_details_page.py:44
 msgid "Name"
 msgstr "Nome"
 
-#: src/pages/container_details_page.py:113
+#: src/pages/container_details_page.py:114
 msgid "Image"
 msgstr "Imagem"
 
-#: src/pages/container_details_page.py:114
+#: src/pages/container_details_page.py:115
 msgid "Status"
 msgstr "Estado"
 
-#: src/pages/container_details_page.py:115 src/pages/image_details_page.py:53
+#: src/pages/container_details_page.py:116 src/pages/image_details_page.py:53
 #: src/pages/network_details_page.py:45 src/pages/volume_details_page.py:47
 msgid "Created at"
 msgstr "Criado em"
 
-#: src/pages/container_details_page.py:121
+#: src/pages/container_details_page.py:122
 msgid "Started at"
 msgstr "Iniciado em"
 
-#: src/pages/container_details_page.py:126
+#: src/pages/container_details_page.py:127
 msgid "CMD"
 msgstr "Comando"
 
-#: src/pages/container_details_page.py:131
+#: src/pages/container_details_page.py:132
 msgid "Entrypoint"
 msgstr "Ponto de entrada"
 
-#: src/pages/container_details_page.py:133
+#: src/pages/container_details_page.py:134
 msgid "Restart policy"
 msgstr "Política de reinício"
 
-#: src/pages/container_details_page.py:255
+#: src/pages/container_details_page.py:256
 msgid "Remove container?"
 msgstr "Remover container?"
 
-#: src/pages/container_details_page.py:256
+#: src/pages/container_details_page.py:257
 msgid "Are you sure you want to remove this container?"
 msgstr "Você quer realmente remover este container?"
 

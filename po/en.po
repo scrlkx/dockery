@@ -188,7 +188,7 @@ msgstr "Remove saved connection?"
 msgid "Are you sure you want to remove this connection?"
 msgstr "Are you sure you want to remove this connection?"
 
-#: src/pages/connections_page.py:119 src/pages/container_details_page.py:257
+#: src/pages/connections_page.py:119 src/pages/container_details_page.py:258
 #: src/utils/ui.py:104
 msgid "Remove"
 msgstr "Remove"
@@ -197,50 +197,50 @@ msgstr "Remove"
 msgid "Connecting..."
 msgstr "Connecting..."
 
-#: src/pages/container_details_page.py:111 src/pages/image_details_page.py:49
+#: src/pages/container_details_page.py:112 src/pages/image_details_page.py:49
 #: src/pages/network_details_page.py:42
 msgid "ID"
 msgstr "ID"
 
-#: src/pages/container_details_page.py:112 src/pages/network_details_page.py:43
+#: src/pages/container_details_page.py:113 src/pages/network_details_page.py:43
 #: src/pages/system_page.py:83 src/pages/volume_details_page.py:44
 msgid "Name"
 msgstr "Name"
 
-#: src/pages/container_details_page.py:113
+#: src/pages/container_details_page.py:114
 msgid "Image"
 msgstr "Image"
 
-#: src/pages/container_details_page.py:114
+#: src/pages/container_details_page.py:115
 msgid "Status"
 msgstr "Status"
 
-#: src/pages/container_details_page.py:115 src/pages/image_details_page.py:53
+#: src/pages/container_details_page.py:116 src/pages/image_details_page.py:53
 #: src/pages/network_details_page.py:45 src/pages/volume_details_page.py:47
 msgid "Created at"
 msgstr "Created at"
 
-#: src/pages/container_details_page.py:121
+#: src/pages/container_details_page.py:122
 msgid "Started at"
 msgstr "Started at"
 
-#: src/pages/container_details_page.py:126
+#: src/pages/container_details_page.py:127
 msgid "CMD"
 msgstr "CMD"
 
-#: src/pages/container_details_page.py:131
+#: src/pages/container_details_page.py:132
 msgid "Entrypoint"
 msgstr "Entrypoint"
 
-#: src/pages/container_details_page.py:133
+#: src/pages/container_details_page.py:134
 msgid "Restart policy"
 msgstr "Restart policy"
 
-#: src/pages/container_details_page.py:255
+#: src/pages/container_details_page.py:256
 msgid "Remove container?"
 msgstr "Remove container?"
 
-#: src/pages/container_details_page.py:256
+#: src/pages/container_details_page.py:257
 msgid "Are you sure you want to remove this container?"
 msgstr "Are you sure you want to remove this container?"
 

@@ -42,6 +42,7 @@ src/utils/docker.py
 src/utils/docker_ssh.py
 src/utils/events.py
 src/utils/i18n.py
+src/utils/remote_console.py
 src/utils/ui.py
 src/window.py
 src/window.ui
