@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-07 13:13-0300\n"
+"POT-Creation-Date: 2026-03-07 13:16-0300\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 
 #: data/com.scrlkx.dockery.desktop.in:2
@@ -195,7 +195,7 @@ msgid "Are you sure you want to remove this connection?"
 msgstr "Você tem certeza que quer remover esta conexão?"
 
 #: src/pages/connections_page.py:119 src/pages/container_details_page.py:258
-#: src/pages/image_details_page.py:115 src/pages/image_details_page.py:207
+#: src/pages/image_details_page.py:114 src/pages/image_details_page.py:206
 #: src/utils/ui.py:104
 msgid "Remove"
 msgstr "Remover"
@@ -204,7 +204,7 @@ msgstr "Remover"
 msgid "Connecting..."
 msgstr "Conectando..."
 
-#: src/pages/container_details_page.py:112 src/pages/image_details_page.py:71
+#: src/pages/container_details_page.py:112 src/pages/image_details_page.py:70
 #: src/pages/network_details_page.py:42
 msgid "ID"
 msgstr "ID"
@@ -222,7 +222,7 @@ msgstr "Imagem"
 msgid "Status"
 msgstr "Estado"
 
-#: src/pages/container_details_page.py:116 src/pages/image_details_page.py:75
+#: src/pages/container_details_page.py:116 src/pages/image_details_page.py:74
 #: src/pages/network_details_page.py:45 src/pages/volume_details_page.py:47
 msgid "Created at"
 msgstr "Criado em"
@@ -287,43 +287,43 @@ msgstr "Busque por ID ou nome"
 msgid "Containers"
 msgstr "Containers"
 
-#: src/pages/image_details_page.py:72
+#: src/pages/image_details_page.py:71
 msgid "Size"
 msgstr "Tamanho"
 
-#: src/pages/image_details_page.py:73 src/pages/system_page.py:87
+#: src/pages/image_details_page.py:72 src/pages/system_page.py:87
 msgid "Architecture"
 msgstr "Arquitetura"
 
-#: src/pages/image_details_page.py:74 src/pages/system_page.py:85
+#: src/pages/image_details_page.py:73 src/pages/system_page.py:85
 msgid "OS"
 msgstr "Sistema Operacional"
 
-#: src/pages/image_details_page.py:94
+#: src/pages/image_details_page.py:93
 msgid "Pull"
 msgstr "Baixar"
 
-#: src/pages/image_details_page.py:101
+#: src/pages/image_details_page.py:100
 msgid "Push"
 msgstr "Enviar"
 
-#: src/pages/image_details_page.py:108
+#: src/pages/image_details_page.py:107
 msgid "Export"
 msgstr "Exportar"
 
-#: src/pages/image_details_page.py:167
+#: src/pages/image_details_page.py:166
 msgid "Export image"
 msgstr "Exportar imagem"
 
-#: src/pages/image_details_page.py:187
+#: src/pages/image_details_page.py:186
 msgid "The selected location is not available."
 msgstr "A localização selecionada não está disponível."
 
-#: src/pages/image_details_page.py:205
+#: src/pages/image_details_page.py:204
 msgid "Remove image?"
 msgstr "Remover imagem?"
 
-#: src/pages/image_details_page.py:206
+#: src/pages/image_details_page.py:205
 msgid "Are you sure you want to remove this image?"
 msgstr "Você quer realmente remover esta imagem?"
 

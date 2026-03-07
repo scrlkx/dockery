@@ -189,7 +189,7 @@ msgid "Are you sure you want to remove this connection?"
 msgstr "Are you sure you want to remove this connection?"
 
 #: src/pages/connections_page.py:119 src/pages/container_details_page.py:258
-#: src/pages/image_details_page.py:115 src/pages/image_details_page.py:207
+#: src/pages/image_details_page.py:114 src/pages/image_details_page.py:206
 #: src/utils/ui.py:104
 msgid "Remove"
 msgstr "Remove"
@@ -198,7 +198,7 @@ msgstr "Remove"
 msgid "Connecting..."
 msgstr "Connecting..."
 
-#: src/pages/container_details_page.py:112 src/pages/image_details_page.py:71
+#: src/pages/container_details_page.py:112 src/pages/image_details_page.py:70
 #: src/pages/network_details_page.py:42
 msgid "ID"
 msgstr "ID"
@@ -216,7 +216,7 @@ msgstr "Image"
 msgid "Status"
 msgstr "Status"
 
-#: src/pages/container_details_page.py:116 src/pages/image_details_page.py:75
+#: src/pages/container_details_page.py:116 src/pages/image_details_page.py:74
 #: src/pages/network_details_page.py:45 src/pages/volume_details_page.py:47
 msgid "Created at"
 msgstr "Created at"
@@ -281,43 +281,43 @@ msgstr "Search by ID or name"
 msgid "Containers"
 msgstr "Containers"
 
-#: src/pages/image_details_page.py:72
+#: src/pages/image_details_page.py:71
 msgid "Size"
 msgstr "Size"
 
-#: src/pages/image_details_page.py:73 src/pages/system_page.py:87
+#: src/pages/image_details_page.py:72 src/pages/system_page.py:87
 msgid "Architecture"
 msgstr "Architecture"
 
-#: src/pages/image_details_page.py:74 src/pages/system_page.py:85
+#: src/pages/image_details_page.py:73 src/pages/system_page.py:85
 msgid "OS"
 msgstr "OS"
 
-#: src/pages/image_details_page.py:94
+#: src/pages/image_details_page.py:93
 msgid "Pull"
 msgstr "Pull"
 
-#: src/pages/image_details_page.py:101
+#: src/pages/image_details_page.py:100
 msgid "Push"
 msgstr "Push"
 
-#: src/pages/image_details_page.py:108
+#: src/pages/image_details_page.py:107
 msgid "Export"
 msgstr "Export"
 
-#: src/pages/image_details_page.py:167
+#: src/pages/image_details_page.py:166
 msgid "Export image"
 msgstr "Export image"
 
-#: src/pages/image_details_page.py:187
+#: src/pages/image_details_page.py:186
 msgid "The selected location is not available."
 msgstr "The selected location is not available."
 
-#: src/pages/image_details_page.py:205
+#: src/pages/image_details_page.py:204
 msgid "Remove image?"
 msgstr "Remove image?"
 
-#: src/pages/image_details_page.py:206
+#: src/pages/image_details_page.py:205
 msgid "Are you sure you want to remove this image?"
 msgstr "Are you sure you want to remove this image?"
 

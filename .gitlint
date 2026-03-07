@@ -5,4 +5,4 @@ ignore=body-is-missing
 line-length=72
 
 [title-match-regex]
-regex=^(feat|fix|refactor|docs|test|build|ci|chore|style|perf|revert)(\((connection|containers|images|volumes|networks|system|flatpak|ui)\))?!?: .+
+regex=^(feat|fix|refactor|docs|build|chore|design)(\((connection|containers|images|volumes|networks|system|flatpak|ui)\))?!?: .+
