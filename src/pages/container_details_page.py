@@ -1,13 +1,14 @@
 import threading
-from typing import Any, cast
+from typing import cast
 
 from docker.errors import NotFound
 from docker.models.containers import Container
-from gi.repository import Adw, GLib, Gtk, Vte
+from gi.repository import Adw, GLib, Gtk
 
 from ..components.confirmation_dialog import ConfirmationDialog
 from ..components.key_value_row import KeyValueRow
 from ..components.quick_action_button import QuickActionButton
+from ..components.terminal_window import TerminalWindow
 from ..utils.docker import (
     get_container,
     get_container_actions,
@@ -281,32 +282,13 @@ class ContainerDetailsPage(Adw.NavigationPage):
         threading.Thread(target=task).start()
 
     def open_console(self) -> None:
-        window = Gtk.Window()
-        window.set_title(f"{self.container.name} ({self.container.id})")
-        window.set_default_size(800, 600)
-
-        terminal = Vte.Terminal()
-        terminal.set_vexpand(True)
-        terminal.set_hexpand(True)
-
-        window.set_child(terminal)
-
         command = get_container_console_command(self.container.id)
-
-        terminal.spawn_async(
-            Vte.PtyFlags.DEFAULT,
-            None,
-            command,
-            None,
-            GLib.SpawnFlags.SEARCH_PATH,
-            None,
-            cast(int, None),
-            cast(Any, -1),
-            None,
-            None,
+        window = TerminalWindow(
+            title=f"{self.container.name} ({self.container.id})",
+            command=command,
+            transient_for=cast(Gtk.Window, self.get_root()),
         )
 
-        terminal.grab_focus()
         window.present()
 
     def navigate_back(self) -> None:

@@ -6,6 +6,7 @@ from gi.repository import Adw, GObject, Gtk
 from ..components.async_list import AsyncList
 from ..components.row_next import RowNext
 from ..utils.docker import get_volume_short_name, get_volumes
+from ..utils.events import on_volumes_change, unsubscribe
 from ..utils.i18n import _
 
 
@@ -28,7 +29,16 @@ class VolumesPage(Adw.NavigationPage):
     def __init__(self, **kwargs: Any) -> None:
         super().__init__(**kwargs)
 
+        self.connect("unrealize", self.on_unrealize)
+
         self.build_ui()
+        self.register_events()
+
+    def on_unrealize(self, _widget: Gtk.Widget) -> None:
+        unsubscribe(self.list_widget.reload_content)
+
+    def register_events(self) -> None:
+        on_volumes_change(self.list_widget.reload_content)
 
     def build_ui(self) -> None:
         self.list_widget = AsyncList(

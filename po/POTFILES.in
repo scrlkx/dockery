@@ -13,6 +13,7 @@ src/components/row_action.py
 src/components/row_button.py
 src/components/row_next.py
 src/components/sidebar_row.py
+src/components/terminal_window.py
 src/dialogs/connection_dialog.py
 src/dialogs/connection_dialog.ui
 src/main.py

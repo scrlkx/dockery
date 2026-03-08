@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dockery\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-07 18:56-0300\n"
+"POT-Creation-Date: 2026-03-07 21:08-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -203,8 +203,9 @@ msgstr ""
 msgid "Are you sure you want to remove this connection?"
 msgstr ""
 
-#: src/pages/connections_page.py:119 src/pages/container_details_page.py:258
+#: src/pages/connections_page.py:119 src/pages/container_details_page.py:259
 #: src/pages/image_details_page.py:114 src/pages/image_details_page.py:206
+#: src/pages/volume_details_page.py:99 src/pages/volume_details_page.py:177
 #: src/utils/ui.py:104
 msgid "Remove"
 msgstr ""
@@ -213,63 +214,64 @@ msgstr ""
 msgid "Connecting..."
 msgstr ""
 
-#: src/pages/container_details_page.py:112 src/pages/image_details_page.py:70
+#: src/pages/container_details_page.py:113 src/pages/image_details_page.py:70
 #: src/pages/network_details_page.py:42
 msgid "ID"
 msgstr ""
 
-#: src/pages/container_details_page.py:113 src/pages/network_details_page.py:43
-#: src/pages/system_page.py:83 src/pages/volume_details_page.py:44
+#: src/pages/container_details_page.py:114 src/pages/network_details_page.py:43
+#: src/pages/system_page.py:83 src/pages/volume_details_page.py:63
 msgid "Name"
 msgstr ""
 
-#: src/pages/container_details_page.py:114
+#: src/pages/container_details_page.py:115
 msgid "Image"
 msgstr ""
 
-#: src/pages/container_details_page.py:115
+#: src/pages/container_details_page.py:116
 msgid "Status"
 msgstr ""
 
-#: src/pages/container_details_page.py:116 src/pages/image_details_page.py:74
-#: src/pages/network_details_page.py:45 src/pages/volume_details_page.py:47
+#: src/pages/container_details_page.py:117 src/pages/image_details_page.py:74
+#: src/pages/network_details_page.py:45 src/pages/volume_details_page.py:66
 msgid "Created at"
 msgstr ""
 
-#: src/pages/container_details_page.py:122
+#: src/pages/container_details_page.py:123
 msgid "Started at"
 msgstr ""
 
-#: src/pages/container_details_page.py:127
+#: src/pages/container_details_page.py:128
 msgid "CMD"
 msgstr ""
 
-#: src/pages/container_details_page.py:132
+#: src/pages/container_details_page.py:133
 msgid "Entrypoint"
 msgstr ""
 
-#: src/pages/container_details_page.py:134
+#: src/pages/container_details_page.py:135
 msgid "Restart policy"
 msgstr ""
 
-#: src/pages/container_details_page.py:256
+#: src/pages/container_details_page.py:257
 msgid "Remove container?"
 msgstr ""
 
-#: src/pages/container_details_page.py:257
+#: src/pages/container_details_page.py:258
 msgid "Are you sure you want to remove this container?"
 msgstr ""
 
 #: src/pages/container_details_page.ui:31 src/pages/image_details_page.ui:31
+#: src/pages/volume_details_page.ui:31
 msgid "Quick actions"
 msgstr ""
 
 #: src/pages/container_details_page.ui:42 src/pages/image_details_page.ui:42
-#: src/pages/network_details_page.ui:31 src/pages/volume_details_page.ui:31
+#: src/pages/network_details_page.ui:31 src/pages/volume_details_page.ui:42
 msgid "Details"
 msgstr ""
 
-#: src/pages/container_details_page.ui:47 src/pages/volumes_list_page.py:39
+#: src/pages/container_details_page.ui:47 src/pages/volumes_list_page.py:49
 #: src/pages/volumes_list_page.ui:6 src/window.py:115
 msgid "Volumes"
 msgstr ""
@@ -349,7 +351,7 @@ msgstr ""
 msgid "Images"
 msgstr ""
 
-#: src/pages/network_details_page.py:44 src/pages/volume_details_page.py:45
+#: src/pages/network_details_page.py:44 src/pages/volume_details_page.py:64
 msgid "Driver"
 msgstr ""
 
@@ -401,11 +403,27 @@ msgstr ""
 msgid "System"
 msgstr ""
 
-#: src/pages/volume_details_page.py:46
+#: src/pages/volume_details_page.py:65
 msgid "Mount path"
 msgstr ""
 
-#: src/pages/volumes_list_page.py:37
+#: src/pages/volume_details_page.py:85
+msgid "Inspect contents"
+msgstr ""
+
+#: src/pages/volume_details_page.py:92
+msgid "Copy mount path"
+msgstr ""
+
+#: src/pages/volume_details_page.py:175
+msgid "Remove volume?"
+msgstr ""
+
+#: src/pages/volume_details_page.py:176
+msgid "Are you sure you want to remove this volume?"
+msgstr ""
+
+#: src/pages/volumes_list_page.py:47
 msgid "Search by name"
 msgstr ""
 

@@ -46,6 +46,18 @@ class ContainerCollectionProto(Protocol):
         ignore_removed: bool = False,
     ) -> List[Container]: ...
     def get(self, container_id: str) -> Container: ...
+    def run(
+        self,
+        image: str,
+        command: Any = None,
+        auto_remove: bool = False,
+        remove: bool = False,
+        stdout: bool = True,
+        stderr: bool = False,
+        detach: bool = False,
+        volumes: Optional[Dict[str, Any]] = None,
+        **kwargs: Any,
+    ) -> Any: ...
 
 
 class VolumeCollectionProto(Protocol):
@@ -185,6 +197,12 @@ DOCKER_CALL_TIMEOUT_SECONDS = 10
 DOCKER_CONNECTION_RETRY_ATTEMPTS = 2
 SSH_NUM_POOLS = 1
 SSH_MAX_POOL_SIZE = 4
+VOLUME_INSPECT_IMAGE = "busybox:latest"
+VOLUME_INSPECT_KEEPALIVE_COMMAND = [
+    "sh",
+    "-lc",
+    "trap : TERM INT; while :; do sleep 3600; done",
+]
 _CONNECTION_FAILURE_MARKERS = (
     "connection aborted",
     "connection refused",
@@ -531,8 +549,10 @@ def kill_container(name: str) -> None:
     _with_connection_retry(lambda: get_client().containers.get(name).kill())
 
 
-def remove_container(name: str) -> None:
-    _with_connection_retry(lambda: get_client().containers.get(name).remove())
+def remove_container(name: str, force: bool = False) -> None:
+    _with_connection_retry(
+        lambda: get_client().containers.get(name).remove(force=force)
+    )
 
 
 def get_container_actions(container: Container) -> list[str]:
@@ -548,13 +568,20 @@ def get_container_actions(container: Container) -> list[str]:
     return actions.get(container.status, ["start", "stop"])
 
 
-def get_container_console_command(container_id: str) -> list[str]:
+def get_container_console_command(
+    container_id: str, workdir: str | None = None
+) -> list[str]:
     profile = _profile
     is_socket = profile is None or profile.get("kind", "unix") == "unix"
     is_ssh = profile is not None and profile.get("kind") == "ssh"
 
     if is_socket:
-        docker_cmd = ["docker", "exec", "-it", container_id, "/bin/sh"]
+        docker_cmd = ["docker", "exec", "-it"]
+
+        if workdir:
+            docker_cmd.extend(["-w", workdir])
+
+        docker_cmd.extend([container_id, "/bin/sh"])
 
         return ["flatpak-spawn", "--host", *docker_cmd]
 
@@ -580,6 +607,12 @@ def get_container_next_action(container: Container) -> str:
     actions = get_container_actions(container)
 
     return actions[0]
+
+
+def is_socket_connection() -> bool:
+    profile = _profile
+
+    return profile is None or profile.get("kind", "unix") == "unix"
 
 
 def get_images() -> list[Image]:
@@ -712,6 +745,29 @@ def get_volume_mount_path(volume: Volume) -> str:
 
 def get_volume_created_at(volume: Volume) -> str:
     return get_attribute(volume, "CreatedAt")
+
+
+def remove_volume(name: str) -> None:
+    _with_connection_retry(lambda: get_client().volumes.get(name).remove())
+
+
+def create_volume_inspect_container(name: str) -> str:
+    def operation() -> str:
+        container = get_client().containers.run(
+            VOLUME_INSPECT_IMAGE,
+            command=VOLUME_INSPECT_KEEPALIVE_COMMAND,
+            detach=True,
+            volumes={
+                name: {
+                    "bind": "/volume",
+                    "mode": "ro",
+                }
+            },
+        )
+
+        return cast(str, container.id)
+
+    return _with_connection_retry(operation)
 
 
 def get_networks() -> list[Network]:

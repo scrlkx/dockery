@@ -27,6 +27,17 @@
                                     </object>
                                 </child>
                                 <child>
+                                    <object class="AdwPreferencesGroup">
+                                        <property name="title" translatable="yes">Quick actions</property>
+                                        <child>
+                                            <object class="GtkBox" id="quick_actions_group">
+                                                <property name="orientation">horizontal</property>
+                                                <property name="spacing">6</property>
+                                            </object>
+                                        </child>
+                                    </object>
+                                </child>
+                                <child>
                                     <object class="AdwPreferencesGroup" id="details_group">
                                         <property name="title" translatable="yes">Details</property>
                                     </object>

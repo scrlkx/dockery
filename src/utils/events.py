@@ -1,6 +1,6 @@
 import threading
 from collections.abc import Callable
-from typing import Literal, TypedDict, cast
+from typing import Literal, TypeAlias, TypedDict, cast
 
 from gi.repository import GLib
 
@@ -21,7 +21,11 @@ class DockerEvent(TypedDict, total=False):
     Actor: DockerEventActor
 
 
-_Listener = tuple[Callable[[], None], Literal["container", "image"], str | None]
+_Listener: TypeAlias = tuple[
+    Callable[[], None],
+    Literal["container", "image", "volume"],
+    str | None,
+]
 
 _listeners: list[_Listener] = []
 _listeners_lock = threading.Lock()
@@ -35,6 +39,11 @@ def _start_listener() -> None:
         return
 
     _started = True
+
+    def notify_listener(callback: Callable[[], None]) -> bool:
+        callback()
+
+        return False
 
     def _listen() -> None:
         global _started
@@ -51,16 +60,18 @@ def _start_listener() -> None:
                 event_type = event.get("Type")
                 event_id = event.get("Actor", {}).get("ID") or event.get("id")
 
-                if event_type not in {"container", "image"}:
+                if event_type not in {"container", "image", "volume"}:
                     continue
 
                 with _listeners_lock:
-                    for callback, listener_type, filter_id in _listeners:
-                        if listener_type != event_type:
-                            continue
+                    listeners = list(_listeners)
 
-                        if filter_id is None or filter_id == event_id:
-                            GLib.idle_add(callback)
+                for callback, listener_type, filter_id in listeners:
+                    if listener_type != event_type:
+                        continue
+
+                    if filter_id is None or filter_id == event_id:
+                        GLib.idle_add(notify_listener, callback)
         except Exception:
             _started = False
 
@@ -90,6 +101,13 @@ def on_container_change(on_change: Callable[[], None], container_id: str) -> Non
 def on_images_change(on_change: Callable[[], None]) -> None:
     with _listeners_lock:
         _listeners.append((on_change, "image", None))
+
+    _start_listener()
+
+
+def on_volumes_change(on_change: Callable[[], None]) -> None:
+    with _listeners_lock:
+        _listeners.append((on_change, "volume", None))
 
     _start_listener()
 
