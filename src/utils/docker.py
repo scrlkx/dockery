@@ -795,5 +795,9 @@ def get_network(identifier: str) -> Network:
     return _with_connection_retry(lambda: get_client().networks.get(identifier))
 
 
+def remove_network(identifier: str) -> None:
+    _with_connection_retry(lambda: get_client().networks.get(identifier).remove())
+
+
 def get_system_info() -> dict[str, Any]:
     return _with_connection_retry(lambda: get_client().info())
