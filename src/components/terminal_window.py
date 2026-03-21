@@ -17,6 +17,7 @@ class TerminalWindow(Gtk.Window):
         super().__init__()
 
         self._on_close = on_close
+        self._close_on_exit = True
 
         self.set_title(title)
         self.set_default_size(800, 600)
@@ -52,7 +53,11 @@ class TerminalWindow(Gtk.Window):
         return False
 
     def on_child_exited(self, _terminal: Vte.Terminal, _status: int) -> None:
-        self.close()
+        if self._close_on_exit:
+            self.close()
+
+    def set_close_on_exit(self, close_on_exit: bool) -> None:
+        self._close_on_exit = close_on_exit
 
     def present(self) -> None:
         self.terminal.grab_focus()

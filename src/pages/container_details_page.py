@@ -18,6 +18,7 @@ from ..utils.docker import (
     get_container_entrypoint,
     get_container_environment_variables,
     get_container_image,
+    get_container_logs_command,
     get_container_networks,
     get_container_ports,
     get_container_restart_policy,
@@ -183,6 +184,13 @@ class ContainerDetailsPage(Adw.NavigationPage):
                     callback=self.open_console,
                     threaded=False,
                 )
+            elif action == "logs":
+                button = QuickActionButton(
+                    label=label,
+                    icon_name=icon,
+                    callback=self.open_logs,
+                    threaded=False,
+                )
             elif callback := actions_callback.get(action):
                 button = QuickActionButton(
                     label=label,
@@ -282,13 +290,26 @@ class ContainerDetailsPage(Adw.NavigationPage):
         threading.Thread(target=task).start()
 
     def open_console(self) -> None:
-        command = get_container_console_command(self.container.id)
+        command: list[str] = get_container_console_command(self.container.id)
+
         window = TerminalWindow(
-            title=f"{self.container.name} ({self.container.id})",
+            title=f"{_('Console')} - {self.container.name} ({self.container.id})",
             command=command,
             transient_for=cast(Gtk.Window, self.get_root()),
         )
 
+        window.present()
+
+    def open_logs(self) -> None:
+        command: list[str] = get_container_logs_command(self.container.id, tail=200)
+
+        window = TerminalWindow(
+            title=f"{_('Logs')} - {self.container.name} ({self.container.id})",
+            command=command,
+            transient_for=cast(Gtk.Window, self.get_root()),
+        )
+
+        window.maximize()
         window.present()
 
     def navigate_back(self) -> None:

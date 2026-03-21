@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-21 10:31-0300\n"
+"POT-Creation-Date: 2026-03-21 12:13-0300\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 
 #: data/com.scrlkx.dockery.desktop.in:2
@@ -194,7 +194,7 @@ msgstr "Remover conexão salva?"
 msgid "Are you sure you want to remove this connection?"
 msgstr "Você tem certeza que quer remover esta conexão?"
 
-#: src/pages/connections_page.py:119 src/pages/container_details_page.py:259
+#: src/pages/connections_page.py:119 src/pages/container_details_page.py:267
 #: src/pages/image_details_page.py:114 src/pages/image_details_page.py:206
 #: src/pages/network_details_page.py:50 src/pages/network_details_page.py:100
 #: src/pages/volume_details_page.py:99 src/pages/volume_details_page.py:177
@@ -206,52 +206,60 @@ msgstr "Remover"
 msgid "Connecting..."
 msgstr "Conectando..."
 
-#: src/pages/container_details_page.py:113 src/pages/image_details_page.py:70
+#: src/pages/container_details_page.py:114 src/pages/image_details_page.py:70
 #: src/pages/network_details_page.py:79
 msgid "ID"
 msgstr "ID"
 
-#: src/pages/container_details_page.py:114 src/pages/network_details_page.py:80
+#: src/pages/container_details_page.py:115 src/pages/network_details_page.py:80
 #: src/pages/system_page.py:83 src/pages/volume_details_page.py:63
 msgid "Name"
 msgstr "Nome"
 
-#: src/pages/container_details_page.py:115
+#: src/pages/container_details_page.py:116
 msgid "Image"
 msgstr "Imagem"
 
-#: src/pages/container_details_page.py:116
+#: src/pages/container_details_page.py:117
 msgid "Status"
 msgstr "Estado"
 
-#: src/pages/container_details_page.py:117 src/pages/image_details_page.py:74
+#: src/pages/container_details_page.py:118 src/pages/image_details_page.py:74
 #: src/pages/network_details_page.py:82 src/pages/volume_details_page.py:66
 msgid "Created at"
 msgstr "Criado em"
 
-#: src/pages/container_details_page.py:123
+#: src/pages/container_details_page.py:124
 msgid "Started at"
 msgstr "Iniciado em"
 
-#: src/pages/container_details_page.py:128
+#: src/pages/container_details_page.py:129
 msgid "CMD"
 msgstr "Comando"
 
-#: src/pages/container_details_page.py:133
+#: src/pages/container_details_page.py:134
 msgid "Entrypoint"
 msgstr "Ponto de entrada"
 
-#: src/pages/container_details_page.py:135
+#: src/pages/container_details_page.py:136
 msgid "Restart policy"
 msgstr "Política de reinício"
 
-#: src/pages/container_details_page.py:257
+#: src/pages/container_details_page.py:265
 msgid "Remove container?"
 msgstr "Remover container?"
 
-#: src/pages/container_details_page.py:258
+#: src/pages/container_details_page.py:266
 msgid "Are you sure you want to remove this container?"
 msgstr "Você quer realmente remover este container?"
+
+#: src/pages/container_details_page.py:296 src/utils/ui.py:106
+msgid "Console"
+msgstr "Console"
+
+#: src/pages/container_details_page.py:307 src/utils/ui.py:105
+msgid "Logs"
+msgstr "Logs"
 
 #: src/pages/container_details_page.ui:31 src/pages/image_details_page.ui:31
 #: src/pages/network_details_page.ui:31 src/pages/volume_details_page.ui:31
@@ -355,7 +363,7 @@ msgstr "Remover rede?"
 msgid "Are you sure you want to remove this network?"
 msgstr "Você quer realmente remover esta rede?"
 
-#: src/pages/network_details_page.py:119
+#: src/pages/network_details_page.py:120
 msgid "Network identifier is missing."
 msgstr "O identificador da rede está faltando."
 
@@ -479,27 +487,23 @@ msgstr "Reiniciar"
 msgid "Kill"
 msgstr "Matar"
 
-#: src/utils/ui.py:105
-msgid "Console"
-msgstr "Console"
-
-#: src/utils/ui.py:142 src/utils/ui.py:149
+#: src/utils/ui.py:144 src/utils/ui.py:151
 msgid "Read-write"
 msgstr "Leitura e escrita"
 
-#: src/utils/ui.py:147
+#: src/utils/ui.py:149
 msgid "Read-only"
 msgstr "Apenas leitura"
 
-#: src/utils/ui.py:154 src/utils/ui.py:159
+#: src/utils/ui.py:156 src/utils/ui.py:161
 msgid "shared"
 msgstr "compartilhado"
 
-#: src/utils/ui.py:156 src/utils/ui.py:163
+#: src/utils/ui.py:158 src/utils/ui.py:165
 msgid "private"
 msgstr "privado"
 
-#: src/utils/ui.py:161
+#: src/utils/ui.py:163
 msgid "slave"
 msgstr "servo"
 

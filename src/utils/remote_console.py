@@ -68,7 +68,7 @@ def _connect_client(
         return client
 
 
-def _open_ssh_clients(
+def open_ssh_clients(
     profile: ConnectionProfile,
 ) -> tuple[paramiko.SSHClient, paramiko.SSHClient | None]:
     jump_host = profile.get("jump_host")
@@ -97,7 +97,7 @@ def _update_pty_size(channel: paramiko.Channel) -> None:
 
 
 def _run_console(profile: ConnectionProfile, container_id: str) -> int:
-    ssh_client, jump_client = _open_ssh_clients(profile)
+    ssh_client, jump_client = open_ssh_clients(profile)
 
     try:
         transport = ssh_client.get_transport()

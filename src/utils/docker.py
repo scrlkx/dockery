@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import os
 import re
+import shutil
 import sys
 import threading
 from typing import (
@@ -525,6 +526,12 @@ def get_containers() -> list[Container]:
     return _with_connection_retry(operation)
 
 
+def _should_use_flatpak_spawn() -> bool:
+    return (
+        os.path.exists("/.flatpak-info") and shutil.which("flatpak-spawn") is not None
+    )
+
+
 def start_container(name: str) -> None:
     _with_connection_retry(lambda: get_client().containers.get(name).start())
 
@@ -557,11 +564,11 @@ def remove_container(name: str, force: bool = False) -> None:
 
 def get_container_actions(container: Container) -> list[str]:
     actions = {
-        "running": ["stop", "pause", "restart", "kill", "console"],
-        "restarting": ["stop", "kill"],
-        "paused": ["resume", "kill"],
-        "stopped": ["start", "remove"],
-        "exited": ["start", "remove"],
+        "running": ["stop", "pause", "restart", "kill", "logs", "console"],
+        "restarting": ["stop", "kill", "logs"],
+        "paused": ["resume", "kill", "logs"],
+        "stopped": ["start", "remove", "logs"],
+        "exited": ["start", "remove", "logs"],
         "created": ["start", "remove"],
     }
 
@@ -583,7 +590,10 @@ def get_container_console_command(
 
         docker_cmd.extend([container_id, "/bin/sh"])
 
-        return ["flatpak-spawn", "--host", *docker_cmd]
+        if _should_use_flatpak_spawn():
+            return ["flatpak-spawn", "--host", *docker_cmd]
+
+        return docker_cmd
 
     if is_ssh:
         assert profile is not None
@@ -598,6 +608,47 @@ def get_container_console_command(
             remote_console_path,
             json.dumps(profile),
             container_id,
+        ]
+
+    raise RuntimeError("Unsupported connection type")
+
+
+def get_container_logs_command(container_id: str, tail: int = 200) -> list[str]:
+    profile = _profile
+    is_socket = profile is None or profile.get("kind", "unix") == "unix"
+    is_ssh = profile is not None and profile.get("kind") == "ssh"
+
+    if is_socket:
+        docker_cmd = [
+            "docker",
+            "logs",
+            "--tail",
+            str(tail),
+            "-f",
+            container_id,
+        ]
+
+        if _should_use_flatpak_spawn():
+            return ["flatpak-spawn", "--host", *docker_cmd]
+
+        return docker_cmd
+
+    if is_ssh:
+        assert profile is not None
+
+        package_root = os.path.abspath(
+            os.path.join(os.path.dirname(__file__), "..", "..")
+        )
+
+        return [
+            "env",
+            f"PYTHONPATH={package_root}",
+            sys.executable,
+            "-m",
+            "dockery.utils.remote_logs",
+            json.dumps(profile),
+            container_id,
+            str(tail),
         ]
 
     raise RuntimeError("Unsupported connection type")
